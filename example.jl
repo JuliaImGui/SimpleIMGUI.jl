@@ -73,12 +73,15 @@ MGL.glDeleteShader(vertex_shader)
 MGL.glDeleteShader(fragment_shader)
 
 vertices = MGL.GLfloat[
--0.5f0 -0.5f0  0.0f0
- 0.5f0 -0.5f0  0.0f0
- 0.0f0  0.5f0  0.0f0
+ 0.5f0,  0.5f0, 0.0f0,  # top right
+ 0.5f0, -0.5f0, 0.0f0,  # bottom right
+-0.5f0, -0.5f0, 0.0f0,  # bottom left
+-0.5f0,  0.5f0, 0.0f0   # top left
 ]
-vertices = permutedims(vertices)
-@show vertices
+indices = MGL.GLuint[
+0, 1, 3,  # first Triangle
+1, 2, 3   # second Triangle
+]
 
 VAO_ref = Ref{MGL.GLuint}(0)
 MGL.glGenVertexArrays(1, VAO_ref)
@@ -88,14 +91,19 @@ VBO_ref = Ref{MGL.GLuint}(0)
 MGL.glGenBuffers(1, VBO_ref)
 @show VBO_ref[]
 
+EBO_ref = Ref{MGL.GLuint}(0)
+MGL.glGenBuffers(1, EBO_ref)
+@show EBO_ref[]
+
 MGL.glBindVertexArray(VAO_ref[])
 
 MGL.glBindBuffer(MGL.GL_ARRAY_BUFFER, VBO_ref[])
-
 MGL.glBufferData(MGL.GL_ARRAY_BUFFER, sizeof(vertices), vertices, MGL.GL_STATIC_DRAW)
 
-MGL.glVertexAttribPointer(0, 3, MGL.GL_FLOAT, MGL.GL_FALSE, 3 * sizeof(eltype(vertices)), C_NULL)
+MGL.glBindBuffer(MGL.GL_ELEMENT_ARRAY_BUFFER, EBO_ref[])
+MGL.glBufferData(MGL.GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, MGL.GL_STATIC_DRAW)
 
+MGL.glVertexAttribPointer(0, 3, MGL.GL_FLOAT, MGL.GL_FALSE, 3 * sizeof(MGL.GLfloat), Ptr{Cvoid}(0))
 MGL.glEnableVertexAttribArray(0)
 
 MGL.glBindBuffer(MGL.GL_ARRAY_BUFFER, 0)
@@ -110,7 +118,7 @@ while !GLFW.WindowShouldClose(window)
 
     MGL.glUseProgram(shader_program)
     MGL.glBindVertexArray(VAO_ref[])
-    MGL.glDrawArrays(MGL.GL_TRIANGLES, 0, 3)
+    MGL.glDrawElements(MGL.GL_TRIANGLES, 6, MGL.GL_UNSIGNED_INT, Ptr{Cvoid}(0))
 
     GLFW.SwapBuffers(window)
     GLFW.PollEvents()
@@ -118,6 +126,7 @@ end
 
 MGL.glDeleteVertexArrays(1, VAO_ref)
 MGL.glDeleteBuffers(1, VBO_ref)
+MGL.glDeleteBuffers(1, EBO_ref)
 MGL.glDeleteProgram(shader_program)
 
 GLFW.DestroyWindow(window)
