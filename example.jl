@@ -1,7 +1,5 @@
 import ModernGL as MGL
-import DataStructures as DS
 import GLFW
-import SimpleDraw as SD
 
 function process_input(window)
     if GLFW.GetKey(window, GLFW.KEY_Q)
