@@ -32,10 +32,14 @@ MGL.glViewport(0, 0, width_image, height_image)
 vertex_shader_source =
 "#version 330 core
 layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 aTexCoord;
+
+out vec2 TexCoord;
 
 void main()
 {
     gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+    TexCoord = vec2(aTexCoord.x, aTexCoord.y);
 }"
 vertex_shader = MGL.glCreateShader(MGL.GL_VERTEX_SHADER)
 MGL.glShaderSource(vertex_shader, 1, Ptr{MGL.GLchar}[pointer(vertex_shader_source)], C_NULL)
@@ -49,9 +53,13 @@ fragment_shader_source =
 "#version 330 core
 out vec4 FragColor;
 
+in vec2 TexCoord;
+
+uniform sampler2D texture1;
+
 void main()
 {
-    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+    FragColor = texture(texture1, TexCoord);
 }"
 fragment_shader = MGL.glCreateShader(MGL.GL_FRAGMENT_SHADER)
 MGL.glShaderSource(fragment_shader, 1, Ptr{MGL.GLchar}[pointer(fragment_shader_source)], C_NULL)
@@ -73,10 +81,10 @@ MGL.glDeleteShader(vertex_shader)
 MGL.glDeleteShader(fragment_shader)
 
 vertices = MGL.GLfloat[
- 0.5f0,  0.5f0, 0.0f0,  # top right
- 0.5f0, -0.5f0, 0.0f0,  # bottom right
--0.5f0, -0.5f0, 0.0f0,  # bottom left
--0.5f0,  0.5f0, 0.0f0   # top left
+ 0.5f0,  0.5f0, 0.0f0, 1.0f0, 1.0f0,  # top right
+ 0.5f0, -0.5f0, 0.0f0, 1.0f0, 0.0f0,  # bottom right
+-0.5f0, -0.5f0, 0.0f0, 0.0f0, 0.0f0,  # bottom left
+-0.5f0,  0.5f0, 0.0f0, 0.0f0, 1.0f0,  # top left
 ]
 indices = MGL.GLuint[
 0, 1, 3,  # first Triangle
@@ -103,12 +111,33 @@ MGL.glBufferData(MGL.GL_ARRAY_BUFFER, sizeof(vertices), vertices, MGL.GL_STATIC_
 MGL.glBindBuffer(MGL.GL_ELEMENT_ARRAY_BUFFER, EBO_ref[])
 MGL.glBufferData(MGL.GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, MGL.GL_STATIC_DRAW)
 
-MGL.glVertexAttribPointer(0, 3, MGL.GL_FLOAT, MGL.GL_FALSE, 3 * sizeof(MGL.GLfloat), Ptr{Cvoid}(0))
+MGL.glVertexAttribPointer(0, 3, MGL.GL_FLOAT, MGL.GL_FALSE, 5 * sizeof(MGL.GLfloat), Ptr{Cvoid}(0))
 MGL.glEnableVertexAttribArray(0)
+
+MGL.glVertexAttribPointer(1, 2, MGL.GL_FLOAT, MGL.GL_FALSE, 5 * sizeof(MGL.GLfloat), Ptr{Cvoid}(3 * sizeof(MGL.GLfloat)))
+MGL.glEnableVertexAttribArray(1)
 
 MGL.glBindBuffer(MGL.GL_ARRAY_BUFFER, 0)
 
 MGL.glBindVertexArray(0)
+
+texture_ref = Ref{MGL.GLuint}(0)
+MGL.glGenTextures(1, texture_ref)
+@show texture_ref[]
+MGL.glActiveTexture(MGL.GL_TEXTURE0)
+MGL.glBindTexture(MGL.GL_TEXTURE_2D, texture_ref[])
+
+MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_WRAP_S, MGL.GL_REPEAT)
+MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_WRAP_T, MGL.GL_REPEAT)
+
+MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MIN_FILTER, MGL.GL_NEAREST)
+MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MAG_FILTER, MGL.GL_NEAREST)
+
+width_texture = 10
+height_texture = 10
+channels_texture = 3
+data = rand(MGL.GLchar, width_texture * height_texture * channels_texture)
+MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGB, width_texture, height_texture, 0, MGL.GL_RGB, MGL.GL_UNSIGNED_BYTE, data)
 
 while !GLFW.WindowShouldClose(window)
     process_input(window)
@@ -116,7 +145,11 @@ while !GLFW.WindowShouldClose(window)
     MGL.glClearColor(0.5f0, 0.5f0, 0.5f0, 1.0f0)
     MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
 
+    MGL.glActiveTexture(MGL.GL_TEXTURE0)
+    MGL.glBindTexture(MGL.GL_TEXTURE_2D, texture_ref[])
+
     MGL.glUseProgram(shader_program)
+
     MGL.glBindVertexArray(VAO_ref[])
     MGL.glDrawElements(MGL.GL_TRIANGLES, 6, MGL.GL_UNSIGNED_INT, Ptr{Cvoid}(0))
 
