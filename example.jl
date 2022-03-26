@@ -148,7 +148,7 @@ while !GLFW.WindowShouldClose(window)
     MGL.glActiveTexture(MGL.GL_TEXTURE0)
     MGL.glBindTexture(MGL.GL_TEXTURE_2D, texture_ref[])
     data = rand(MGL.GLchar, width_texture * height_texture * channels_texture)
-    MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGB, width_texture, height_texture, 0, MGL.GL_RGB, MGL.GL_UNSIGNED_BYTE, data)
+    MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(width_texture), MGL.GLsizei(height_texture), MGL.GL_RGB, MGL.GL_UNSIGNED_BYTE, data)
 
     MGL.glUseProgram(shader_program)
 
