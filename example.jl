@@ -81,10 +81,10 @@ MGL.glDeleteShader(vertex_shader)
 MGL.glDeleteShader(fragment_shader)
 
 vertices = MGL.GLfloat[
- 0.5f0,  0.5f0, 0.0f0, 1.0f0, 1.0f0,  # top right
- 0.5f0, -0.5f0, 0.0f0, 1.0f0, 0.0f0,  # bottom right
--0.5f0, -0.5f0, 0.0f0, 0.0f0, 0.0f0,  # bottom left
--0.5f0,  0.5f0, 0.0f0, 0.0f0, 1.0f0,  # top left
+ 1.0f0,  1.0f0, 0.0f0, 1.0f0, 1.0f0,  # top right
+ 1.0f0, -1.0f0, 0.0f0, 1.0f0, 0.0f0,  # bottom right
+-1.0f0, -1.0f0, 0.0f0, 0.0f0, 0.0f0,  # bottom left
+-1.0f0,  1.0f0, 0.0f0, 0.0f0, 1.0f0,  # top left
 ]
 indices = MGL.GLuint[
 0, 1, 3,  # first Triangle
