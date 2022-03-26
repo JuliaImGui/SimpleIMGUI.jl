@@ -133,10 +133,8 @@ MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_WRAP_T, MGL.GL_REPEAT)
 MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MIN_FILTER, MGL.GL_NEAREST)
 MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MAG_FILTER, MGL.GL_NEAREST)
 
-width_texture = 10
-height_texture = 10
-data = rand(MGL.GLuint, width_texture * height_texture)
-MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, width_texture, height_texture, 0, MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, data)
+data = rand(MGL.GLuint, width_image * height_image)
+MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, width_image, height_image, 0, MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, data)
 
 while !GLFW.WindowShouldClose(window)
     process_input(window)
@@ -146,8 +144,8 @@ while !GLFW.WindowShouldClose(window)
 
     MGL.glActiveTexture(MGL.GL_TEXTURE0)
     MGL.glBindTexture(MGL.GL_TEXTURE_2D, texture_ref[])
-    data = rand(MGL.GLuint, width_texture * height_texture)
-    MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(width_texture), MGL.GLsizei(height_texture), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, data)
+    data = rand(MGL.GLuint, width_image * height_image)
+    MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(width_image), MGL.GLsizei(height_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, data)
 
     MGL.glUseProgram(shader_program)
 
