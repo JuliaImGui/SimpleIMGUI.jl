@@ -1,5 +1,6 @@
 import ModernGL as MGL
 import GLFW
+import SimpleDraw as SD
 
 function process_input(window)
     if GLFW.GetKey(window, GLFW.KEY_Q)
@@ -81,10 +82,10 @@ MGL.glDeleteShader(vertex_shader)
 MGL.glDeleteShader(fragment_shader)
 
 vertices = MGL.GLfloat[
- 1.0f0,  1.0f0, 0.0f0, 1.0f0, 1.0f0,  # top right
- 1.0f0, -1.0f0, 0.0f0, 1.0f0, 0.0f0,  # bottom right
--1.0f0, -1.0f0, 0.0f0, 0.0f0, 0.0f0,  # bottom left
--1.0f0,  1.0f0, 0.0f0, 0.0f0, 1.0f0,  # top left
+ 1.0f0,  1.0f0, 0.0f0, 0.0f0, 1.0f0,  # top right
+ 1.0f0, -1.0f0, 0.0f0, 1.0f0, 1.0f0,  # bottom right
+-1.0f0, -1.0f0, 0.0f0, 1.0f0, 0.0f0,  # bottom left
+-1.0f0,  1.0f0, 0.0f0, 0.0f0, 0.0f0,  # top left
 ]
 indices = MGL.GLuint[
 0, 1, 3,  # first Triangle
@@ -133,22 +134,24 @@ MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_WRAP_T, MGL.GL_REPEAT)
 MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MIN_FILTER, MGL.GL_NEAREST)
 MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MAG_FILTER, MGL.GL_NEAREST)
 
-width_texture = 10
-height_texture = 10
-channels_texture = 3
-data = rand(MGL.GLchar, width_texture * height_texture * channels_texture)
-MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGB, width_texture, height_texture, 0, MGL.GL_RGB, MGL.GL_UNSIGNED_BYTE, data)
+image = zeros(MGL.GLuint, height_image, width_image)
+background_color = 0x00c0c0c0
+text_color = 0x00000000
+SD.draw!(image, SD.Background(), background_color)
+SD.draw!(image, SD.TextLine(SD.Point(1, 1), "Hello world!", SD.TERMINUS_32_16), text_color)
+MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, height_image, width_image, 0, MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
+
+MGL.glClearColor(0.0f0, 0.0f0, 0.0f0, 1.0f0)
+MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
 
 while !GLFW.WindowShouldClose(window)
     process_input(window)
 
-    MGL.glClearColor(0.5f0, 0.5f0, 0.5f0, 1.0f0)
-    MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
-
+    SD.draw!(image, SD.Background(), background_color)
+    SD.draw!(image, SD.TextLine(SD.Point(1, 1), "Hello world!", SD.TERMINUS_32_16), text_color)
     MGL.glActiveTexture(MGL.GL_TEXTURE0)
     MGL.glBindTexture(MGL.GL_TEXTURE_2D, texture_ref[])
-    data = rand(MGL.GLchar, width_texture * height_texture * channels_texture)
-    MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(width_texture), MGL.GLsizei(height_texture), MGL.GL_RGB, MGL.GL_UNSIGNED_BYTE, data)
+    MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(height_image), MGL.GLsizei(width_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
 
     MGL.glUseProgram(shader_program)
 
