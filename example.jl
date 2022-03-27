@@ -225,8 +225,6 @@ function start()
         drawing_time_end = time_ns()
         push!(drawing_time_buffer, drawing_time_end - drawing_time_start)
 
-        MGL.glActiveTexture(MGL.GL_TEXTURE0)
-        MGL.glBindTexture(MGL.GL_TEXTURE_2D, texture_ref[])
         MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(height_image), MGL.GLsizei(width_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
 
         MGL.glUseProgram(shader_program)
