@@ -220,6 +220,7 @@ function start()
     push!(drawing_time_buffer, zero(UInt))
 
     MGL.glUseProgram(shader_program)
+    MGL.glBindVertexArray(VAO_ref[])
 
     while !GLFW.WindowShouldClose(window)
         process_input(window)
@@ -237,7 +238,6 @@ function start()
 
         update_texture(image)
 
-        MGL.glBindVertexArray(VAO_ref[])
         MGL.glDrawElements(MGL.GL_TRIANGLES, 6, MGL.GL_UNSIGNED_INT, Ptr{Cvoid}(0))
 
         GLFW.SwapBuffers(window)
