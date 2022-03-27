@@ -69,6 +69,20 @@ function setup_fragment_shader()
     return fragment_shader
 end
 
+function setup_shader_program(vertex_shader, fragment_shader)
+    shader_program = MGL.glCreateProgram()
+    MGL.glAttachShader(shader_program, vertex_shader)
+    MGL.glAttachShader(shader_program, fragment_shader)
+    MGL.glLinkProgram(shader_program)
+    shader_program_success_ref = Ref{MGL.GLint}(0)
+    MGL.glGetProgramiv(shader_program, MGL.GL_LINK_STATUS, shader_program_success_ref)
+    MGL.glDeleteShader(vertex_shader)
+    MGL.glDeleteShader(fragment_shader)
+    @assert shader_program_success_ref[] == 1 "Shader program setup failed"
+
+    return shader_program
+end
+
 function start()
     GLFW.WindowHint(GLFW.CONTEXT_VERSION_MAJOR, 3)
     GLFW.WindowHint(GLFW.CONTEXT_VERSION_MINOR, 3)
@@ -97,15 +111,7 @@ function start()
     fragment_shader = setup_fragment_shader()
 
     # shader program
-    shader_program = MGL.glCreateProgram()
-    MGL.glAttachShader(shader_program, vertex_shader)
-    MGL.glAttachShader(shader_program, fragment_shader)
-    MGL.glLinkProgram(shader_program)
-    shader_program_success_ref = Ref{MGL.GLint}(0)
-    MGL.glGetProgramiv(shader_program, MGL.GL_LINK_STATUS, shader_program_success_ref)
-    @show shader_program_success_ref[]
-    MGL.glDeleteShader(vertex_shader)
-    MGL.glDeleteShader(fragment_shader)
+    shader_program = setup_shader_program(vertex_shader, fragment_shader)
 
     vertices = MGL.GLfloat[
      1.0f0,  1.0f0, 0.0f0, 0.0f0, 1.0f0,  # top right
