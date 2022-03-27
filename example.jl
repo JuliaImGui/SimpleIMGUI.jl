@@ -46,6 +46,29 @@ function setup_vertex_shader()
     return vertex_shader
 end
 
+function setup_fragment_shader()
+    fragment_shader_source =
+    "#version 330 core
+    out vec4 FragColor;
+
+    in vec2 TexCoord;
+
+    uniform sampler2D texture1;
+
+    void main()
+    {
+        FragColor = texture(texture1, TexCoord);
+    }"
+    fragment_shader = MGL.glCreateShader(MGL.GL_FRAGMENT_SHADER)
+    MGL.glShaderSource(fragment_shader, 1, Ptr{MGL.GLchar}[pointer(fragment_shader_source)], C_NULL)
+    MGL.glCompileShader(fragment_shader)
+    fragment_shader_success_ref = Ref{MGL.GLint}(0)
+    MGL.glGetShaderiv(fragment_shader, MGL.GL_COMPILE_STATUS, fragment_shader_success_ref)
+    @assert fragment_shader_success_ref[] == 1 "Fragment shader setup failed"
+
+    return fragment_shader
+end
+
 function start()
     GLFW.WindowHint(GLFW.CONTEXT_VERSION_MAJOR, 3)
     GLFW.WindowHint(GLFW.CONTEXT_VERSION_MINOR, 3)
@@ -71,24 +94,7 @@ function start()
     vertex_shader = setup_vertex_shader()
 
     # fragment shader
-    fragment_shader_source =
-    "#version 330 core
-    out vec4 FragColor;
-
-    in vec2 TexCoord;
-
-    uniform sampler2D texture1;
-
-    void main()
-    {
-        FragColor = texture(texture1, TexCoord);
-    }"
-    fragment_shader = MGL.glCreateShader(MGL.GL_FRAGMENT_SHADER)
-    MGL.glShaderSource(fragment_shader, 1, Ptr{MGL.GLchar}[pointer(fragment_shader_source)], C_NULL)
-    MGL.glCompileShader(fragment_shader)
-    fragment_shader_success_ref = Ref{MGL.GLint}(0)
-    MGL.glGetShaderiv(fragment_shader, MGL.GL_COMPILE_STATUS, fragment_shader_success_ref)
-    @show fragment_shader_success_ref[]
+    fragment_shader = setup_fragment_shader()
 
     # shader program
     shader_program = MGL.glCreateProgram()
