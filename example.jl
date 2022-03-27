@@ -85,7 +85,6 @@ function start()
     @show fragment_shader_success_ref[]
 
     # shader program
-    fragment_shader_source =
     shader_program = MGL.glCreateProgram()
     MGL.glAttachShader(shader_program, vertex_shader)
     MGL.glAttachShader(shader_program, fragment_shader)
