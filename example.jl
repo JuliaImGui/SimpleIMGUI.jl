@@ -1,5 +1,6 @@
 import ModernGL as MGL
 import GLFW
+import SimpleDraw as SD
 
 function process_input(window)
     if GLFW.GetKey(window, GLFW.KEY_Q)
@@ -133,7 +134,10 @@ MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_WRAP_T, MGL.GL_REPEAT)
 MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MIN_FILTER, MGL.GL_NEAREST)
 MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MAG_FILTER, MGL.GL_NEAREST)
 
-data = rand(MGL.GLuint, width_image * height_image)
+image = zeros(MGL.GLuint, height_image, width_image)
+background_color = 0x00c0c0c0
+SD.draw!(image, SD.Background(), background_color)
+const data = permutedims(image, (2, 1))
 MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, width_image, height_image, 0, MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, data)
 
 while !GLFW.WindowShouldClose(window)
@@ -142,9 +146,10 @@ while !GLFW.WindowShouldClose(window)
     MGL.glClearColor(0.5f0, 0.5f0, 0.5f0, 1.0f0)
     MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
 
+    SD.draw!(image, SD.Background(), background_color)
+    permutedims!(data, image, (2, 1))
     MGL.glActiveTexture(MGL.GL_TEXTURE0)
     MGL.glBindTexture(MGL.GL_TEXTURE_2D, texture_ref[])
-    data = rand(MGL.GLuint, width_image * height_image)
     MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(width_image), MGL.GLsizei(height_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, data)
 
     MGL.glUseProgram(shader_program)
