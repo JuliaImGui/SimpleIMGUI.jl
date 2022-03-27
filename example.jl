@@ -163,6 +163,14 @@ function setup_window_hints()
     return nothing
 end
 
+function update_texture(image)
+    height_image, width_image = size(image)
+
+    MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(height_image), MGL.GLsizei(width_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
+
+    return nothing
+end
+
 function start()
     setup_window_hints()
 
@@ -225,7 +233,7 @@ function start()
         drawing_time_end = time_ns()
         push!(drawing_time_buffer, drawing_time_end - drawing_time_start)
 
-        MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(height_image), MGL.GLsizei(width_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
+        update_texture(image)
 
         MGL.glUseProgram(shader_program)
 
