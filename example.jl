@@ -148,6 +148,13 @@ function setup_texture(image)
     return texture_ref
 end
 
+function clear_display()
+    MGL.glClearColor(0.0f0, 0.0f0, 0.0f0, 1.0f0)
+    MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
+
+    return nothing
+end
+
 function start()
     GLFW.WindowHint(GLFW.CONTEXT_VERSION_MAJOR, 3)
     GLFW.WindowHint(GLFW.CONTEXT_VERSION_MINOR, 3)
@@ -187,8 +194,7 @@ function start()
     SD.draw!(image, SD.Background(), background_color)
     texture_ref = setup_texture(image)
 
-    MGL.glClearColor(0.0f0, 0.0f0, 0.0f0, 1.0f0)
-    MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
+    clear_display()
 
     lines = String[]
     time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
