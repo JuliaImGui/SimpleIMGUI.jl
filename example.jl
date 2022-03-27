@@ -155,10 +155,16 @@ function clear_display()
     return nothing
 end
 
-function start()
+function setup_window_hints()
     GLFW.WindowHint(GLFW.CONTEXT_VERSION_MAJOR, 3)
     GLFW.WindowHint(GLFW.CONTEXT_VERSION_MINOR, 3)
     GLFW.WindowHint(GLFW.OPENGL_PROFILE, GLFW.OPENGL_CORE_PROFILE)
+
+    return nothing
+end
+
+function start()
+    setup_window_hints()
 
     height_image = 720
     width_image = 1280
