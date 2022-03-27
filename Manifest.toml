@@ -136,6 +136,11 @@ uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
 [[deps.Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 
+[[deps.SimpleDraw]]
+git-tree-sha1 = "c010f60b702e5852f0e7d3071fb647e0955d3262"
+uuid = "d1acf6f4-8553-480e-80ae-3c883f0a995a"
+version = "0.3.0"
+
 [[deps.Sockets]]
 uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
 
