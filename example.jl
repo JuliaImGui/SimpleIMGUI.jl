@@ -1,4 +1,5 @@
 import ModernGL as MGL
+import DataStructures as DS
 import GLFW
 import SimpleDraw as SD
 
@@ -10,13 +11,26 @@ function process_input(window)
     return nothing
 end
 
+function draw_lines!(image, lines, color)
+    font = SD.TERMINUS_32_16
+    height_font = 32
+
+    for (i, text) in enumerate(lines)
+        position = SD.Point(1 + (i - 1) * height_font, 1)
+        SD.draw!(image, SD.TextLine(position, text, font), color)
+    end
+
+    return nothing
+end
+
 GLFW.WindowHint(GLFW.CONTEXT_VERSION_MAJOR, 3)
 GLFW.WindowHint(GLFW.CONTEXT_VERSION_MINOR, 3)
 GLFW.WindowHint(GLFW.OPENGL_PROFILE, GLFW.OPENGL_CORE_PROFILE)
 
-height_image = 600
-width_image = 800
+height_image = 720
+width_image = 1280
 window_name = "Example"
+sliding_window_size = 60
 
 window = GLFW.CreateWindow(width_image, height_image, window_name)
 
@@ -138,17 +152,34 @@ image = zeros(MGL.GLuint, height_image, width_image)
 background_color = 0x00c0c0c0
 text_color = 0x00000000
 SD.draw!(image, SD.Background(), background_color)
-SD.draw!(image, SD.TextLine(SD.Point(1, 1), "Hello world!", SD.TERMINUS_32_16), text_color)
 MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, height_image, width_image, 0, MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
 
 MGL.glClearColor(0.0f0, 0.0f0, 0.0f0, 1.0f0)
 MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
 
+lines = String[]
+time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+
+i = 0
+
+push!(time_stamp_buffer, time_ns())
+push!(drawing_time_buffer, zero(UInt))
+
 while !GLFW.WindowShouldClose(window)
     process_input(window)
 
+    empty!(lines)
+    push!(lines, "previous frame number: $(i)")
+    push!(lines, "average time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
+    push!(lines, "average drawing time spent per frame (averaged over previous $(length(drawing_time_buffer)) frames): $(round(sum(drawing_time_buffer) / (1e6 * length(drawing_time_buffer)), digits = 2)) ms")
+
+    drawing_time_start = time_ns()
     SD.draw!(image, SD.Background(), background_color)
-    SD.draw!(image, SD.TextLine(SD.Point(1, 1), "Hello world!", SD.TERMINUS_32_16), text_color)
+    draw_lines!(image, lines, text_color)
+    drawing_time_end = time_ns()
+    push!(drawing_time_buffer, drawing_time_end - drawing_time_start)
+
     MGL.glActiveTexture(MGL.GL_TEXTURE0)
     MGL.glBindTexture(MGL.GL_TEXTURE_2D, texture_ref[])
     MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(height_image), MGL.GLsizei(width_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
@@ -160,6 +191,10 @@ while !GLFW.WindowShouldClose(window)
 
     GLFW.SwapBuffers(window)
     GLFW.PollEvents()
+
+    global i = i + 1
+
+    push!(time_stamp_buffer, time_ns())
 end
 
 MGL.glDeleteVertexArrays(1, VAO_ref)
