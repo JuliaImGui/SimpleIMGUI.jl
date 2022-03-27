@@ -140,11 +140,11 @@ SD.draw!(image, SD.Background(), background_color)
 const data = permutedims(image, (2, 1))
 MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, width_image, height_image, 0, MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, data)
 
+MGL.glClearColor(0.0f0, 0.0f0, 0.0f0, 1.0f0)
+MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
+
 while !GLFW.WindowShouldClose(window)
     process_input(window)
-
-    MGL.glClearColor(0.5f0, 0.5f0, 0.5f0, 1.0f0)
-    MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
 
     SD.draw!(image, SD.Background(), background_color)
     permutedims!(data, image, (2, 1))
