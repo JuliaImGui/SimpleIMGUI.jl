@@ -159,10 +159,12 @@ MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
 
 lines = String[]
 time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
 
 i = 0
 
 push!(time_stamp_buffer, time_ns())
+push!(drawing_time_buffer, zero(UInt))
 
 while !GLFW.WindowShouldClose(window)
     process_input(window)
@@ -170,9 +172,14 @@ while !GLFW.WindowShouldClose(window)
     empty!(lines)
     push!(lines, "previous frame number: $(i)")
     push!(lines, "average time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
+    push!(lines, "average drawing time spent per frame (averaged over previous $(length(drawing_time_buffer)) frames): $(round(sum(drawing_time_buffer) / (1e6 * length(drawing_time_buffer)), digits = 2)) ms")
 
+    drawing_time_start = time_ns()
     SD.draw!(image, SD.Background(), background_color)
     draw_lines!(image, lines, text_color)
+    drawing_time_end = time_ns()
+    push!(drawing_time_buffer, drawing_time_end - drawing_time_start)
+
     MGL.glActiveTexture(MGL.GL_TEXTURE0)
     MGL.glBindTexture(MGL.GL_TEXTURE_2D, texture_ref[])
     MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(height_image), MGL.GLsizei(width_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
