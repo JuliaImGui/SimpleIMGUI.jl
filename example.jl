@@ -246,6 +246,8 @@ function start()
     MGL.glDeleteProgram(shader_program)
 
     GLFW.DestroyWindow(window)
+
+    return nothing
 end
 
 start()
