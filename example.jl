@@ -23,6 +23,29 @@ function draw_lines!(image, lines, color)
     return nothing
 end
 
+function setup_vertex_shader()
+    vertex_shader_source =
+    "#version 330 core
+    layout (location = 0) in vec3 aPos;
+    layout (location = 1) in vec2 aTexCoord;
+
+    out vec2 TexCoord;
+
+    void main()
+    {
+        gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+        TexCoord = vec2(aTexCoord.x, aTexCoord.y);
+    }"
+    vertex_shader = MGL.glCreateShader(MGL.GL_VERTEX_SHADER)
+    MGL.glShaderSource(vertex_shader, 1, Ptr{MGL.GLchar}[pointer(vertex_shader_source)], C_NULL)
+    MGL.glCompileShader(vertex_shader)
+    vertex_shader_success_ref = Ref{MGL.GLint}(0)
+    MGL.glGetShaderiv(vertex_shader, MGL.GL_COMPILE_STATUS, vertex_shader_success_ref)
+    @assert vertex_shader_success_ref[] == 1 "Vertex shader setup failed"
+
+    return vertex_shader
+end
+
 function start()
     GLFW.WindowHint(GLFW.CONTEXT_VERSION_MAJOR, 3)
     GLFW.WindowHint(GLFW.CONTEXT_VERSION_MINOR, 3)
@@ -45,24 +68,7 @@ function start()
     MGL.glViewport(0, 0, width_image, height_image)
 
     # vertex shader
-    vertex_shader_source =
-    "#version 330 core
-    layout (location = 0) in vec3 aPos;
-    layout (location = 1) in vec2 aTexCoord;
-
-    out vec2 TexCoord;
-
-    void main()
-    {
-        gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
-        TexCoord = vec2(aTexCoord.x, aTexCoord.y);
-    }"
-    vertex_shader = MGL.glCreateShader(MGL.GL_VERTEX_SHADER)
-    MGL.glShaderSource(vertex_shader, 1, Ptr{MGL.GLchar}[pointer(vertex_shader_source)], C_NULL)
-    MGL.glCompileShader(vertex_shader)
-    vertex_shader_success_ref = Ref{MGL.GLint}(0)
-    MGL.glGetShaderiv(vertex_shader, MGL.GL_COMPILE_STATUS, vertex_shader_success_ref)
-    @show vertex_shader_success_ref[]
+    vertex_shader = setup_vertex_shader()
 
     # fragment shader
     fragment_shader_source =
