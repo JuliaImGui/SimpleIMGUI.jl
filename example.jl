@@ -83,36 +83,7 @@ function setup_shader_program(vertex_shader, fragment_shader)
     return shader_program
 end
 
-function start()
-    GLFW.WindowHint(GLFW.CONTEXT_VERSION_MAJOR, 3)
-    GLFW.WindowHint(GLFW.CONTEXT_VERSION_MINOR, 3)
-    GLFW.WindowHint(GLFW.OPENGL_PROFILE, GLFW.OPENGL_CORE_PROFILE)
-
-    height_image = 720
-    width_image = 1280
-    window_name = "Example"
-    sliding_window_size = 60
-
-    window = GLFW.CreateWindow(width_image, height_image, window_name)
-
-    GLFW.MakeContextCurrent(window)
-
-    renderer = unsafe_string(MGL.glGetString(MGL.GL_RENDERER))
-    version = unsafe_string(MGL.glGetString(MGL.GL_VERSION))
-    @info "Renderer: $(renderer)"
-    @info "OpenGL version: $(version)"
-
-    MGL.glViewport(0, 0, width_image, height_image)
-
-    # vertex shader
-    vertex_shader = setup_vertex_shader()
-
-    # fragment shader
-    fragment_shader = setup_fragment_shader()
-
-    # shader program
-    shader_program = setup_shader_program(vertex_shader, fragment_shader)
-
+function setup_vao_vbo_ebo()
     vertices = MGL.GLfloat[
      1.0f0,  1.0f0, 0.0f0, 0.0f0, 1.0f0,  # top right
      1.0f0, -1.0f0, 0.0f0, 1.0f0, 1.0f0,  # bottom right
@@ -154,6 +125,12 @@ function start()
 
     MGL.glBindVertexArray(0)
 
+    return VAO_ref, VBO_ref, EBO_ref
+end
+
+function setup_texture(image)
+    height_image, width_image = size(image)
+
     texture_ref = Ref{MGL.GLuint}(0)
     MGL.glGenTextures(1, texture_ref)
     @show texture_ref[]
@@ -166,11 +143,49 @@ function start()
     MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MIN_FILTER, MGL.GL_NEAREST)
     MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MAG_FILTER, MGL.GL_NEAREST)
 
+    MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, height_image, width_image, 0, MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
+
+    return texture_ref
+end
+
+function start()
+    GLFW.WindowHint(GLFW.CONTEXT_VERSION_MAJOR, 3)
+    GLFW.WindowHint(GLFW.CONTEXT_VERSION_MINOR, 3)
+    GLFW.WindowHint(GLFW.OPENGL_PROFILE, GLFW.OPENGL_CORE_PROFILE)
+
+    height_image = 720
+    width_image = 1280
+    window_name = "Example"
+    sliding_window_size = 60
+
+    window = GLFW.CreateWindow(width_image, height_image, window_name)
+
+    GLFW.MakeContextCurrent(window)
+
+    renderer = unsafe_string(MGL.glGetString(MGL.GL_RENDERER))
+    version = unsafe_string(MGL.glGetString(MGL.GL_VERSION))
+    @info "Renderer: $(renderer)"
+    @info "OpenGL version: $(version)"
+
+    MGL.glViewport(0, 0, width_image, height_image)
+
+    # vertex shader
+    vertex_shader = setup_vertex_shader()
+
+    # fragment shader
+    fragment_shader = setup_fragment_shader()
+
+    # shader program
+    shader_program = setup_shader_program(vertex_shader, fragment_shader)
+
+    # VAO, VBO, EBO
+    VAO_ref, VBO_ref, EBO_ref = setup_vao_vbo_ebo()
+
     image = zeros(MGL.GLuint, height_image, width_image)
     background_color = 0x00c0c0c0
     text_color = 0x00000000
     SD.draw!(image, SD.Background(), background_color)
-    MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, height_image, width_image, 0, MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
+    texture_ref = setup_texture(image)
 
     MGL.glClearColor(0.0f0, 0.0f0, 0.0f0, 1.0f0)
     MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
