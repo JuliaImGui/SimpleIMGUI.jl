@@ -82,10 +82,10 @@ MGL.glDeleteShader(vertex_shader)
 MGL.glDeleteShader(fragment_shader)
 
 vertices = MGL.GLfloat[
- 1.0f0,  1.0f0, 0.0f0, 1.0f0, 1.0f0,  # top right
- 1.0f0, -1.0f0, 0.0f0, 1.0f0, 0.0f0,  # bottom right
--1.0f0, -1.0f0, 0.0f0, 0.0f0, 0.0f0,  # bottom left
--1.0f0,  1.0f0, 0.0f0, 0.0f0, 1.0f0,  # top left
+ 1.0f0,  1.0f0, 0.0f0, 0.0f0, 1.0f0,  # top right
+ 1.0f0, -1.0f0, 0.0f0, 1.0f0, 1.0f0,  # bottom right
+-1.0f0, -1.0f0, 0.0f0, 1.0f0, 0.0f0,  # bottom left
+-1.0f0,  1.0f0, 0.0f0, 0.0f0, 0.0f0,  # top left
 ]
 indices = MGL.GLuint[
 0, 1, 3,  # first Triangle
@@ -136,9 +136,10 @@ MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MAG_FILTER, MGL.GL_NEAREST
 
 image = zeros(MGL.GLuint, height_image, width_image)
 background_color = 0x00c0c0c0
+text_color = 0x00000000
 SD.draw!(image, SD.Background(), background_color)
-const data = permutedims(image, (2, 1))
-MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, width_image, height_image, 0, MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, data)
+SD.draw!(image, SD.TextLine(SD.Point(1, 1), "Hello world!", SD.TERMINUS_32_16), text_color)
+MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, height_image, width_image, 0, MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
 
 MGL.glClearColor(0.0f0, 0.0f0, 0.0f0, 1.0f0)
 MGL.glClear(MGL.GL_COLOR_BUFFER_BIT)
@@ -147,10 +148,10 @@ while !GLFW.WindowShouldClose(window)
     process_input(window)
 
     SD.draw!(image, SD.Background(), background_color)
-    permutedims!(data, image, (2, 1))
+    SD.draw!(image, SD.TextLine(SD.Point(1, 1), "Hello world!", SD.TERMINUS_32_16), text_color)
     MGL.glActiveTexture(MGL.GL_TEXTURE0)
     MGL.glBindTexture(MGL.GL_TEXTURE_2D, texture_ref[])
-    MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(width_image), MGL.GLsizei(height_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, data)
+    MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(height_image), MGL.GLsizei(width_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
 
     MGL.glUseProgram(shader_program)
 
