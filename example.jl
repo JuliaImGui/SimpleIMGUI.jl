@@ -5,9 +5,18 @@ import SimpleDraw as SD
 
 include("opengl_utils.jl")
 
-function process_input(window)
-    if GLFW.GetKey(window, GLFW.KEY_Q)
-        GLFW.SetWindowShouldClose(window, true)
+mutable struct Button
+    ended_down::Bool
+    half_transition_count::Int
+end
+
+function update_button!(button, action)
+    if action == GLFW.PRESS
+        button.ended_down = true
+        button.half_transition_count += 1
+    elseif action == GLFW.RELEASE
+        button.ended_down = false
+        button.half_transition_count += 1
     end
 
     return nothing
@@ -61,6 +70,47 @@ function start()
 
     clear_display()
 
+    key_up = Button(false, 0)
+    key_down = Button(false, 0)
+    key_left = Button(false, 0)
+    key_right = Button(false, 0)
+
+    function key_callback(window, key, scancode, action, mods)::Cvoid
+        if key == GLFW.KEY_Q && action == GLFW.PRESS
+            GLFW.SetWindowShouldClose(window, true)
+        elseif key == GLFW.KEY_UP
+            update_button!(key_up, action)
+        elseif key == GLFW.KEY_DOWN
+            update_button!(key_down, action)
+        elseif key == GLFW.KEY_LEFT
+            update_button!(key_left, action)
+        elseif key == GLFW.KEY_RIGHT
+            update_button!(key_right, action)
+        end
+
+        return nothing
+    end
+
+    GLFW.SetKeyCallback(window, key_callback)
+
+    mouse_left = Button(false, 0)
+    mouse_right = Button(false, 0)
+    mouse_middle = Button(false, 0)
+
+    function mouse_button_callback(window, button, action, mods)::Cvoid
+        if button == GLFW.MOUSE_BUTTON_LEFT
+            update_button!(mouse_left, action)
+        elseif button == GLFW.MOUSE_BUTTON_RIGHT
+            update_button!(mouse_right, action)
+        elseif button == GLFW.MOUSE_BUTTON_MIDDLE
+            update_button!(mouse_middle, action)
+        end
+
+        return nothing
+    end
+
+    GLFW.SetMouseButtonCallback(window, mouse_button_callback)
+
     i = 0
 
     time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
@@ -70,12 +120,19 @@ function start()
     push!(drawing_time_buffer, zero(UInt))
 
     while !GLFW.WindowShouldClose(window)
-        process_input(window)
+        # process_input(window)
 
         empty!(lines)
         push!(lines, "previous frame number: $(i)")
         push!(lines, "average time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
         push!(lines, "average drawing time spent per frame (averaged over previous $(length(drawing_time_buffer)) frames): $(round(sum(drawing_time_buffer) / (1e6 * length(drawing_time_buffer)), digits = 2)) ms")
+        push!(lines, "key_up: $(key_up)")
+        push!(lines, "key_down: $(key_down)")
+        push!(lines, "key_left: $(key_left)")
+        push!(lines, "key_right: $(key_right)")
+        push!(lines, "mouse_left: $(mouse_left)")
+        push!(lines, "mouse_right: $(mouse_right)")
+        push!(lines, "mouse_middle: $(mouse_middle)")
 
         drawing_time_start = time_ns()
         SD.draw!(image, SD.Background(), background_color)
@@ -86,6 +143,15 @@ function start()
         update_back_buffer(image)
 
         GLFW.SwapBuffers(window)
+
+        key_up.half_transition_count = 0
+        key_down.half_transition_count = 0
+        key_left.half_transition_count = 0
+        key_right.half_transition_count = 0
+        mouse_left.half_transition_count = 0
+        mouse_right.half_transition_count = 0
+        mouse_middle.half_transition_count = 0
+
         GLFW.PollEvents()
 
         i = i + 1
