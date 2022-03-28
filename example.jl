@@ -31,7 +31,7 @@ function start()
     window_name = "Example"
     background_color = 0x00c0c0c0
     text_color = 0x00000000
-    sliding_window_size = 60
+    sliding_window_size = 30
 
     image = zeros(MGL.GLuint, height_image, width_image)
     lines = String[]
