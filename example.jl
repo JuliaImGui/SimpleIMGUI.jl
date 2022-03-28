@@ -29,21 +29,15 @@ function start()
     height_image = 720
     width_image = 1280
     window_name = "Example"
+    background_color = 0x00c0c0c0
+    text_color = 0x00000000
     sliding_window_size = 60
 
     image = zeros(MGL.GLuint, height_image, width_image)
-    background_color = 0x00c0c0c0
-    text_color = 0x00000000
-    SD.draw!(image, SD.Background(), background_color)
-
     lines = String[]
-    time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
 
-    i = 0
-
-    push!(time_stamp_buffer, time_ns())
-    push!(drawing_time_buffer, zero(UInt))
+    SD.draw!(image, SD.Background(), background_color)
+    draw_lines!(image, lines, text_color)
 
     setup_window_hints()
 
@@ -66,6 +60,14 @@ function start()
     MGL.glBindVertexArray(VAO_ref[])
 
     clear_display()
+
+    i = 0
+
+    time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(time_stamp_buffer, time_ns())
+
+    drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(drawing_time_buffer, zero(UInt))
 
     while !GLFW.WindowShouldClose(window)
         process_input(window)
