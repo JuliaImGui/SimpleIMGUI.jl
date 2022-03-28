@@ -3,7 +3,7 @@ import DataStructures as DS
 import GLFW
 import SimpleDraw as SD
 
-include("glfw_utils.jl")
+include("opengl_utils.jl")
 
 function process_input(window)
     if GLFW.GetKey(window, GLFW.KEY_Q)
