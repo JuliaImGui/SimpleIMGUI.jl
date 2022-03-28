@@ -120,8 +120,6 @@ function start()
     push!(drawing_time_buffer, zero(UInt))
 
     while !GLFW.WindowShouldClose(window)
-        # process_input(window)
-
         empty!(lines)
         push!(lines, "previous frame number: $(i)")
         push!(lines, "average time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
