@@ -163,10 +163,11 @@ function setup_window_hints()
     return nothing
 end
 
-function update_texture(image)
+function update_back_buffer(image)
     height_image, width_image = size(image)
 
     MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(height_image), MGL.GLsizei(width_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
+    MGL.glDrawElements(MGL.GL_TRIANGLES, 6, MGL.GL_UNSIGNED_INT, Ptr{Cvoid}(0))
 
     return nothing
 end
@@ -236,9 +237,7 @@ function start()
         drawing_time_end = time_ns()
         push!(drawing_time_buffer, drawing_time_end - drawing_time_start)
 
-        update_texture(image)
-
-        MGL.glDrawElements(MGL.GL_TRIANGLES, 6, MGL.GL_UNSIGNED_INT, Ptr{Cvoid}(0))
+        update_back_buffer(image)
 
         GLFW.SwapBuffers(window)
         GLFW.PollEvents()
