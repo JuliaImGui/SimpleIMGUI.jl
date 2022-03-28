@@ -10,6 +10,11 @@ mutable struct Button
     half_transition_count::Int
 end
 
+mutable struct Cursor
+    i::Int
+    j::Int
+end
+
 function update_button!(button, action)
     if action == GLFW.PRESS
         button.ended_down = true
@@ -111,6 +116,17 @@ function start()
 
     GLFW.SetMouseButtonCallback(window, mouse_button_callback)
 
+    cursor = Cursor(0.0, 0.0)
+
+    function cursor_position_callback(window, x, y)::Cvoid
+        cursor.i = round(Int, y)
+        cursor.j = round(Int, x)
+
+        return nothing
+    end
+
+    GLFW.SetCursorPosCallback(window, cursor_position_callback)
+
     i = 0
 
     time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
@@ -131,6 +147,7 @@ function start()
         push!(lines, "mouse_left: $(mouse_left)")
         push!(lines, "mouse_right: $(mouse_right)")
         push!(lines, "mouse_middle: $(mouse_middle)")
+        push!(lines, "cursor: $(cursor)")
 
         drawing_time_start = time_ns()
         SD.draw!(image, SD.Background(), background_color)
