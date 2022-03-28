@@ -97,15 +97,12 @@ function setup_vao_vbo_ebo()
 
     VAO_ref = Ref{MGL.GLuint}(0)
     MGL.glGenVertexArrays(1, VAO_ref)
-    @show VAO_ref[]
 
     VBO_ref = Ref{MGL.GLuint}(0)
     MGL.glGenBuffers(1, VBO_ref)
-    @show VBO_ref[]
 
     EBO_ref = Ref{MGL.GLuint}(0)
     MGL.glGenBuffers(1, EBO_ref)
-    @show EBO_ref[]
 
     MGL.glBindVertexArray(VAO_ref[])
 
@@ -133,7 +130,6 @@ function setup_texture(image)
 
     texture_ref = Ref{MGL.GLuint}(0)
     MGL.glGenTextures(1, texture_ref)
-    @show texture_ref[]
     MGL.glActiveTexture(MGL.GL_TEXTURE0)
     MGL.glBindTexture(MGL.GL_TEXTURE_2D, texture_ref[])
 
@@ -173,43 +169,15 @@ function update_back_buffer(image)
 end
 
 function start()
-    setup_window_hints()
-
     height_image = 720
     width_image = 1280
     window_name = "Example"
     sliding_window_size = 60
 
-    window = GLFW.CreateWindow(width_image, height_image, window_name)
-
-    GLFW.MakeContextCurrent(window)
-
-    renderer = unsafe_string(MGL.glGetString(MGL.GL_RENDERER))
-    version = unsafe_string(MGL.glGetString(MGL.GL_VERSION))
-    @info "Renderer: $(renderer)"
-    @info "OpenGL version: $(version)"
-
-    MGL.glViewport(0, 0, width_image, height_image)
-
-    # vertex shader
-    vertex_shader = setup_vertex_shader()
-
-    # fragment shader
-    fragment_shader = setup_fragment_shader()
-
-    # shader program
-    shader_program = setup_shader_program(vertex_shader, fragment_shader)
-
-    # VAO, VBO, EBO
-    VAO_ref, VBO_ref, EBO_ref = setup_vao_vbo_ebo()
-
     image = zeros(MGL.GLuint, height_image, width_image)
     background_color = 0x00c0c0c0
     text_color = 0x00000000
     SD.draw!(image, SD.Background(), background_color)
-    texture_ref = setup_texture(image)
-
-    clear_display()
 
     lines = String[]
     time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
@@ -220,8 +188,27 @@ function start()
     push!(time_stamp_buffer, time_ns())
     push!(drawing_time_buffer, zero(UInt))
 
+    setup_window_hints()
+
+    window = GLFW.CreateWindow(width_image, height_image, window_name)
+    GLFW.MakeContextCurrent(window)
+    MGL.glViewport(0, 0, width_image, height_image)
+
+    @info "Renderer: $(unsafe_string(MGL.glGetString(MGL.GL_RENDERER)))"
+    @info "OpenGL version: $(unsafe_string(MGL.glGetString(MGL.GL_VERSION)))"
+
+    vertex_shader = setup_vertex_shader()
+    fragment_shader = setup_fragment_shader()
+    shader_program = setup_shader_program(vertex_shader, fragment_shader)
+
+    VAO_ref, VBO_ref, EBO_ref = setup_vao_vbo_ebo()
+
+    texture_ref = setup_texture(image)
+
     MGL.glUseProgram(shader_program)
     MGL.glBindVertexArray(VAO_ref[])
+
+    clear_display()
 
     while !GLFW.WindowShouldClose(window)
         process_input(window)
