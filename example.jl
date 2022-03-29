@@ -116,7 +116,7 @@ function start()
 
     GLFW.SetMouseButtonCallback(window, mouse_button_callback)
 
-    cursor = Cursor(0.0, 0.0)
+    cursor = Cursor(0, 0)
 
     function cursor_position_callback(window, x, y)::Cvoid
         cursor.i = round(Int, y)
