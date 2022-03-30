@@ -195,14 +195,14 @@ function start()
         button1_id = UIElementID(@__LINE__, @__FILE__)
         do_button_value1 = should_do_button!(ui_state, button1_id, button1_region)
         if do_button_value1
-            text_color == 0x00ff0000
+            text_color = 0x00ff0000
         end
 
         button2_region = SD.FilledRectangle(SD.Point(500, 400), 100, 100)
         button2_id = UIElementID(@__LINE__, @__FILE__)
         do_button_value2 = should_do_button!(ui_state, button2_id, button2_region)
         if do_button_value2
-            text_color == 0x0000ff00
+            text_color = 0x0000ff00
         end
 
         empty!(lines)
