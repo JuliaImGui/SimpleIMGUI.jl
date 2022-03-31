@@ -4,6 +4,7 @@ import GLFW
 import SimpleDraw as SD
 
 include("opengl_utils.jl")
+include("ui.jl")
 
 mutable struct Button
     ended_down::Bool
@@ -13,57 +14,6 @@ end
 mutable struct Cursor
     i::Int
     j::Int
-end
-
-struct UIElementID
-    line_number::Int
-    file_name::String
-end
-
-mutable struct UIState
-    hot_item::UIElementID
-    active_item::UIElementID
-    cursor::Cursor
-    mouse_left::Button
-end
-
-const UI_NULL = UIElementID(0, "")
-
-region_hit(shape::SD.FilledRectangle, cursor::Cursor) = (cursor.i >= shape.position.i) && (cursor.j >= shape.position.j) && (cursor.i <= shape.position.i + shape.height) && (cursor.j <= shape.position.j + shape.width)
-
-went_down(button) = (button.half_transition_count >= 2) || ((button.half_transition_count == 1) && button.ended_down)
-went_up(button) = (button.half_transition_count >= 2) || ((button.half_transition_count == 1) && !button.ended_down)
-
-function should_do_button!(ui_state, id, region)
-    return_value = false
-
-    if ui_state.active_item == UI_NULL
-        if region_hit(region, ui_state.cursor)
-            ui_state.hot_item = id
-        else
-            if ui_state.hot_item == id
-                ui_state.hot_item = UI_NULL
-            end
-        end
-    end
-
-    if ui_state.hot_item == id
-        if went_down(ui_state.mouse_left)
-            ui_state.active_item = id
-        end
-    end
-
-    if ui_state.active_item == id
-        if went_up(ui_state.mouse_left)
-            if region_hit(region, ui_state.cursor)
-                return_value = true
-            end
-
-            ui_state.active_item = UI_NULL
-        end
-    end
-
-    return return_value
 end
 
 function update_button!(button, action)
@@ -186,50 +136,51 @@ function start()
     drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(drawing_time_buffer, zero(UInt))
 
-    ui_state = UIState(UI_NULL, UI_NULL, cursor, mouse_left)
+    hot_widget = NULL_WIDGET_ID
+    active_widget = NULL_WIDGET_ID
 
     while !GLFW.WindowShouldClose(window)
-        # ui_state.hot_item = UI_NULL
+        drawing_time_start = time_ns()
+        SD.draw!(image, SD.Background(), background_color)
 
-        button1_region = SD.FilledRectangle(SD.Point(500, 200), 100, 100)
-        button1_id = UIElementID(@__LINE__, @__FILE__)
-        do_button_value1 = should_do_button!(ui_state, button1_id, button1_region)
-        if do_button_value1
-            text_color = 0x00ff0000
+        button1_shape = SD.FilledRectangle(SD.Point(600, 200), 50, 100)
+        button1_id = WidgetID(@__LINE__, @__FILE__)
+        hot_widget, active_widget, button1_value = widget(hot_widget, active_widget, button1_id, UI_BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
+        if button1_value
+            text_color = 0x00aa0000
         end
+        SD.draw!(image, button1_shape, 0x00aa0000)
 
-        button2_region = SD.FilledRectangle(SD.Point(500, 400), 100, 100)
-        button2_id = UIElementID(@__LINE__, @__FILE__)
-        do_button_value2 = should_do_button!(ui_state, button2_id, button2_region)
-        if do_button_value2
-            text_color = 0x0000ff00
+        button2_shape = SD.FilledRectangle(SD.Point(600, 400), 50, 100)
+        button2_id = WidgetID(@__LINE__, @__FILE__)
+        hot_widget, active_widget, button2_value = widget(hot_widget, active_widget, button2_id, UI_BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
+        if button2_value
+            text_color = 0x0000aa00
         end
+        SD.draw!(image, button2_shape, 0x0000aa00)
 
         empty!(lines)
         push!(lines, "previous frame number: $(i)")
         push!(lines, "average time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
         push!(lines, "average drawing time spent per frame (averaged over previous $(length(drawing_time_buffer)) frames): $(round(sum(drawing_time_buffer) / (1e6 * length(drawing_time_buffer)), digits = 2)) ms")
-        # push!(lines, "key_up: $(key_up)")
-        # push!(lines, "key_down: $(key_down)")
-        # push!(lines, "key_left: $(key_left)")
-        # push!(lines, "key_right: $(key_right)")
+        push!(lines, "key_up: $(key_up)")
+        push!(lines, "key_down: $(key_down)")
+        push!(lines, "key_left: $(key_left)")
+        push!(lines, "key_right: $(key_right)")
         push!(lines, "mouse_left: $(mouse_left)")
         push!(lines, "mouse_right: $(mouse_right)")
         push!(lines, "mouse_middle: $(mouse_middle)")
         push!(lines, "cursor: $(cursor)")
-        push!(lines, "do_button_value1: $(do_button_value1)")
-        push!(lines, "do_button_value2: $(do_button_value2)")
+        push!(lines, "button1_value: $(button1_value)")
+        push!(lines, "button2_value: $(button2_value)")
         push!(lines, "button1_id: $(button1_id)")
         push!(lines, "button2_id: $(button2_id)")
         push!(lines, "text_color: $(text_color)")
-        push!(lines, "hot_item: $(ui_state.hot_item)")
-        push!(lines, "active_item: $(ui_state.active_item)")
+        push!(lines, "hot_widget: $(hot_widget)")
+        push!(lines, "active_widget: $(active_widget)")
 
-        drawing_time_start = time_ns()
-        SD.draw!(image, SD.Background(), background_color)
         draw_lines!(image, lines, text_color)
-        SD.draw!(image, button1_region, 0x00000000)
-        SD.draw!(image, button2_region, 0x00000000)
+
         drawing_time_end = time_ns()
         push!(drawing_time_buffer, drawing_time_end - drawing_time_start)
 
