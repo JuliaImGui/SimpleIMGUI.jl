@@ -4,6 +4,7 @@ import GLFW
 import SimpleDraw as SD
 
 include("opengl_utils.jl")
+include("ui.jl")
 
 mutable struct Button
     ended_down::Bool
@@ -116,7 +117,7 @@ function start()
 
     GLFW.SetMouseButtonCallback(window, mouse_button_callback)
 
-    cursor = Cursor(0.0, 0.0)
+    cursor = Cursor(0, 0)
 
     function cursor_position_callback(window, x, y)::Cvoid
         cursor.i = round(Int, y)
@@ -135,7 +136,29 @@ function start()
     drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(drawing_time_buffer, zero(UInt))
 
+    hot_widget = NULL_WIDGET_ID
+    active_widget = NULL_WIDGET_ID
+
     while !GLFW.WindowShouldClose(window)
+        drawing_time_start = time_ns()
+        SD.draw!(image, SD.Background(), background_color)
+
+        button1_shape = SD.FilledRectangle(SD.Point(600, 200), 50, 100)
+        button1_id = WidgetID(@__LINE__, @__FILE__)
+        hot_widget, active_widget, button1_value = widget(hot_widget, active_widget, button1_id, UI_BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
+        if button1_value
+            text_color = 0x00aa0000
+        end
+        SD.draw!(image, button1_shape, 0x00aa0000)
+
+        button2_shape = SD.FilledRectangle(SD.Point(600, 400), 50, 100)
+        button2_id = WidgetID(@__LINE__, @__FILE__)
+        hot_widget, active_widget, button2_value = widget(hot_widget, active_widget, button2_id, UI_BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
+        if button2_value
+            text_color = 0x0000aa00
+        end
+        SD.draw!(image, button2_shape, 0x0000aa00)
+
         empty!(lines)
         push!(lines, "previous frame number: $(i)")
         push!(lines, "average time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
@@ -148,10 +171,16 @@ function start()
         push!(lines, "mouse_right: $(mouse_right)")
         push!(lines, "mouse_middle: $(mouse_middle)")
         push!(lines, "cursor: $(cursor)")
+        push!(lines, "button1_value: $(button1_value)")
+        push!(lines, "button2_value: $(button2_value)")
+        push!(lines, "button1_id: $(button1_id)")
+        push!(lines, "button2_id: $(button2_id)")
+        push!(lines, "text_color: $(repr(text_color))")
+        push!(lines, "hot_widget: $(hot_widget)")
+        push!(lines, "active_widget: $(active_widget)")
 
-        drawing_time_start = time_ns()
-        SD.draw!(image, SD.Background(), background_color)
         draw_lines!(image, lines, text_color)
+
         drawing_time_end = time_ns()
         push!(drawing_time_buffer, drawing_time_end - drawing_time_start)
 
