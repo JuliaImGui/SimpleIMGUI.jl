@@ -55,7 +55,7 @@ function should_do_button!(ui_state, id, region)
 
     if ui_state.active_item == id
         if went_up(ui_state.mouse_left)
-            if ui_state.hot_item == id
+            if region_hit(region, ui_state.cursor)
                 return_value = true
             end
 
