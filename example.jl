@@ -175,7 +175,7 @@ function start()
         push!(lines, "button2_value: $(button2_value)")
         push!(lines, "button1_id: $(button1_id)")
         push!(lines, "button2_id: $(button2_id)")
-        push!(lines, "text_color: $(text_color)")
+        push!(lines, "text_color: $(repr(text_color))")
         push!(lines, "hot_widget: $(hot_widget)")
         push!(lines, "active_widget: $(active_widget)")
 
