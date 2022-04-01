@@ -138,6 +138,7 @@ function start()
 
     hot_widget = NULL_WIDGET_ID
     active_widget = NULL_WIDGET_ID
+    slider_value = 1
 
     while !GLFW.WindowShouldClose(window)
         drawing_time_start = time_ns()
@@ -159,6 +160,16 @@ function start()
         end
         SD.draw!(image, button2_shape, 0x0000aa00)
 
+        slider_shape = SD.FilledRectangle(SD.Point(600, 600), 50, 100)
+        slider_id = WidgetID(@__LINE__, @__FILE__)
+        hot_widget, active_widget, slider_value = widget(hot_widget, active_widget, slider_id, UI_SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, slider_value)
+        # if slider_value
+            # text_color = 0x0000aa00
+        # end
+        SD.draw!(image, slider_shape, 0x00000000)
+        slider_value_shape = SD.FilledRectangle(SD.Point(600, 600), 50, slider_value)
+        SD.draw!(image, slider_value_shape, 0x000000aa)
+
         empty!(lines)
         push!(lines, "previous frame number: $(i)")
         push!(lines, "average time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
@@ -176,6 +187,7 @@ function start()
         push!(lines, "button1_id: $(button1_id)")
         push!(lines, "button2_id: $(button2_id)")
         push!(lines, "text_color: $(repr(text_color))")
+        push!(lines, "slider_value: $(slider_value)")
         push!(lines, "hot_widget: $(hot_widget)")
         push!(lines, "active_widget: $(active_widget)")
 
