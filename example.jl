@@ -173,9 +173,6 @@ function start()
         slider_shape = SD.FilledRectangle(SD.Point(600, 600), 50, 100)
         slider_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget, slider_value = widget(hot_widget, active_widget, slider_id, UI_SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, slider_value)
-        # if slider_value
-            # text_color = 0x0000aa00
-        # end
         SD.draw!(image, slider_shape, 0x00000000)
         slider_value_shape = SD.FilledRectangle(SD.Point(600, 600), 50, slider_value)
         SD.draw!(image, slider_value_shape, 0x000000aa)
