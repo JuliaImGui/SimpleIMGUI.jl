@@ -106,7 +106,6 @@ end
 function update_widget_value!(hot_widget, active_widget, widget, ::UITextInput, text_line, characters)
     if (active_widget == widget) && (hot_widget == widget)
         for character in characters
-            println(character)
             if isascii(character)
                 if isprint(character)
                     push!(text_line, character)
