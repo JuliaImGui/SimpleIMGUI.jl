@@ -80,6 +80,7 @@ function start()
     key_down = Button(false, 0)
     key_left = Button(false, 0)
     key_right = Button(false, 0)
+    characters = Char[]
 
     function key_callback(window, key, scancode, action, mods)::Cvoid
         if key == GLFW.KEY_Q && action == GLFW.PRESS
@@ -92,6 +93,8 @@ function start()
             update_button!(key_left, action)
         elseif key == GLFW.KEY_RIGHT
             update_button!(key_right, action)
+        elseif key == GLFW.KEY_BACKSPACE && (action == GLFW.PRESS || action == GLFW.REPEAT)
+            push!(characters, '\b')
         end
 
         return nothing
@@ -128,6 +131,12 @@ function start()
 
     GLFW.SetCursorPosCallback(window, cursor_position_callback)
 
+    function character_callback(window, unicode_codepoint)
+        return push!(characters, Char(unicode_codepoint))
+    end
+
+    GLFW.SetCharCallback(window, character_callback)
+
     i = 0
 
     time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
@@ -139,6 +148,7 @@ function start()
     hot_widget = NULL_WIDGET_ID
     active_widget = NULL_WIDGET_ID
     slider_value = 1
+    text_line = Char[]
 
     while !GLFW.WindowShouldClose(window)
         drawing_time_start = time_ns()
@@ -169,6 +179,13 @@ function start()
         SD.draw!(image, slider_shape, 0x00000000)
         slider_value_shape = SD.FilledRectangle(SD.Point(600, 600), 50, slider_value)
         SD.draw!(image, slider_value_shape, 0x000000aa)
+
+        text_input_shape = SD.FilledRectangle(SD.Point(600, 800), 50, 200)
+        text_input_id = WidgetID(@__LINE__, @__FILE__)
+        hot_widget, active_widget = widget!(hot_widget, active_widget, text_input_id, UI_TEXT_INPUT, SD.get_i_min(text_input_shape), SD.get_j_min(text_input_shape), SD.get_i_max(text_input_shape), SD.get_j_max(text_input_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, text_line, characters)
+        SD.draw!(image, text_input_shape, 0x00000000)
+        text_input_value_shape = SD.TextLine(SD.Point(600, 800), String(text_line), SD.TERMINUS_32_16)
+        SD.draw!(image, text_input_value_shape, 0x00aaaa00)
 
         empty!(lines)
         push!(lines, "previous frame number: $(i)")
@@ -207,6 +224,7 @@ function start()
         mouse_left.half_transition_count = 0
         mouse_right.half_transition_count = 0
         mouse_middle.half_transition_count = 0
+        empty!(characters)
 
         GLFW.PollEvents()
 
