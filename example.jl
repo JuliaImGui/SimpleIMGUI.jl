@@ -60,9 +60,6 @@ function start()
     GLFW.MakeContextCurrent(window)
     MGL.glViewport(0, 0, width_image, height_image)
 
-    @info "Renderer: $(unsafe_string(MGL.glGetString(MGL.GL_RENDERER)))"
-    @info "OpenGL version: $(unsafe_string(MGL.glGetString(MGL.GL_VERSION)))"
-
     vertex_shader = setup_vertex_shader()
     fragment_shader = setup_fragment_shader()
     shader_program = setup_shader_program(vertex_shader, fragment_shader)
