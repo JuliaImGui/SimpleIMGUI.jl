@@ -55,23 +55,8 @@ function start()
     draw_lines!(image, lines, text_color)
 
     setup_window_hints()
-
     window = GLFW.CreateWindow(width_image, height_image, window_name)
     GLFW.MakeContextCurrent(window)
-    MGL.glViewport(0, 0, width_image, height_image)
-
-    vertex_shader = setup_vertex_shader()
-    fragment_shader = setup_fragment_shader()
-    shader_program = setup_shader_program(vertex_shader, fragment_shader)
-
-    VAO_ref, VBO_ref, EBO_ref = setup_vao_vbo_ebo()
-
-    texture_ref = setup_texture(image)
-
-    MGL.glUseProgram(shader_program)
-    MGL.glBindVertexArray(VAO_ref[])
-
-    clear_display()
 
     key_up = Button(false, 0)
     key_down = Button(false, 0)
@@ -146,6 +131,21 @@ function start()
     active_widget = NULL_WIDGET_ID
     slider_value = 1
     text_line = Char[]
+
+    MGL.glViewport(0, 0, width_image, height_image)
+
+    vertex_shader = setup_vertex_shader()
+    fragment_shader = setup_fragment_shader()
+    shader_program = setup_shader_program(vertex_shader, fragment_shader)
+
+    VAO_ref, VBO_ref, EBO_ref = setup_vao_vbo_ebo()
+
+    texture_ref = setup_texture(image)
+
+    MGL.glUseProgram(shader_program)
+    MGL.glBindVertexArray(VAO_ref[])
+
+    clear_display()
 
     while !GLFW.WindowShouldClose(window)
         drawing_time_start = time_ns()
