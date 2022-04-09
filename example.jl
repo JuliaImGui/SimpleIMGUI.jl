@@ -151,35 +151,35 @@ function start()
         drawing_time_start = time_ns()
         SD.draw!(image, SD.Background(), background_color)
 
-        button1_shape = SD.FilledRectangle(SD.Point(577, 1), 32, 100)
+        button1_shape = SD.Rectangle(SD.Point(577, 1), 32, 100)
         button1_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget, button1_value = widget(hot_widget, active_widget, button1_id, UI_BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button1_value
             text_color = 0x00aa0000
         end
-        SD.draw!(image, button1_shape, 0x00aa0000)
+        SD.draw!(image, button1_shape, text_color)
 
-        button2_shape = SD.FilledRectangle(SD.Point(609, 1), 32, 100)
+        button2_shape = SD.Rectangle(SD.Point(609, 1), 32, 100)
         button2_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget, button2_value = widget(hot_widget, active_widget, button2_id, UI_BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button2_value
             text_color = 0x0000aa00
         end
-        SD.draw!(image, button2_shape, 0x0000aa00)
+        SD.draw!(image, button2_shape, text_color)
 
-        slider_shape = SD.FilledRectangle(SD.Point(641, 1), 32, 100)
+        slider_shape = SD.Rectangle(SD.Point(641, 1), 32, 100)
         slider_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget, slider_value = widget(hot_widget, active_widget, slider_id, UI_SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, slider_value)
-        SD.draw!(image, slider_shape, 0x00000000)
+        SD.draw!(image, slider_shape, text_color)
         slider_value_shape = SD.FilledRectangle(SD.Point(641, 1), 32, slider_value)
-        SD.draw!(image, slider_value_shape, 0x000000aa)
+        SD.draw!(image, slider_value_shape, text_color)
 
-        text_input_shape = SD.FilledRectangle(SD.Point(673, 1), 32, 200)
+        text_input_shape = SD.Rectangle(SD.Point(673, 1), 32, 200)
         text_input_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget = widget!(hot_widget, active_widget, text_input_id, UI_TEXT_INPUT, SD.get_i_min(text_input_shape), SD.get_j_min(text_input_shape), SD.get_i_max(text_input_shape), SD.get_j_max(text_input_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, text_line, characters)
-        SD.draw!(image, text_input_shape, 0x00000000)
+        SD.draw!(image, text_input_shape, text_color)
         text_input_value_shape = SD.TextLine(SD.Point(673, 1), String(text_line), SD.TERMINUS_32_16)
-        SD.draw!(image, text_input_value_shape, 0x00aaaa00)
+        SD.draw!(image, text_input_value_shape, text_color)
 
         empty!(lines)
         push!(lines, "previous frame number: $(i)")
