@@ -54,27 +54,22 @@ function start()
     SD.draw!(image, SD.Background(), background_color)
     draw_lines!(image, lines, text_color)
 
-    setup_window_hints()
+    i = 0
 
+    time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(time_stamp_buffer, time_ns())
+
+    drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(drawing_time_buffer, zero(UInt))
+
+    hot_widget = NULL_WIDGET_ID
+    active_widget = NULL_WIDGET_ID
+    slider_value = 1
+    text_line = collect("Text box")
+
+    setup_window_hints()
     window = GLFW.CreateWindow(width_image, height_image, window_name)
     GLFW.MakeContextCurrent(window)
-    MGL.glViewport(0, 0, width_image, height_image)
-
-    @info "Renderer: $(unsafe_string(MGL.glGetString(MGL.GL_RENDERER)))"
-    @info "OpenGL version: $(unsafe_string(MGL.glGetString(MGL.GL_VERSION)))"
-
-    vertex_shader = setup_vertex_shader()
-    fragment_shader = setup_fragment_shader()
-    shader_program = setup_shader_program(vertex_shader, fragment_shader)
-
-    VAO_ref, VBO_ref, EBO_ref = setup_vao_vbo_ebo()
-
-    texture_ref = setup_texture(image)
-
-    MGL.glUseProgram(shader_program)
-    MGL.glBindVertexArray(VAO_ref[])
-
-    clear_display()
 
     key_up = Button(false, 0)
     key_down = Button(false, 0)
@@ -137,55 +132,57 @@ function start()
 
     GLFW.SetCharCallback(window, character_callback)
 
-    i = 0
+    MGL.glViewport(0, 0, width_image, height_image)
 
-    time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(time_stamp_buffer, time_ns())
+    vertex_shader = setup_vertex_shader()
+    fragment_shader = setup_fragment_shader()
+    shader_program = setup_shader_program(vertex_shader, fragment_shader)
 
-    drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(drawing_time_buffer, zero(UInt))
+    VAO_ref, VBO_ref, EBO_ref = setup_vao_vbo_ebo()
 
-    hot_widget = NULL_WIDGET_ID
-    active_widget = NULL_WIDGET_ID
-    slider_value = 1
-    text_line = Char[]
+    texture_ref = setup_texture(image)
+
+    MGL.glUseProgram(shader_program)
+    MGL.glBindVertexArray(VAO_ref[])
+
+    clear_display()
 
     while !GLFW.WindowShouldClose(window)
         drawing_time_start = time_ns()
         SD.draw!(image, SD.Background(), background_color)
 
-        button1_shape = SD.FilledRectangle(SD.Point(600, 200), 50, 100)
+        button1_shape = SD.Rectangle(SD.Point(577, 1), 32, 200)
         button1_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget, button1_value = widget(hot_widget, active_widget, button1_id, UI_BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button1_value
             text_color = 0x00aa0000
         end
-        SD.draw!(image, button1_shape, 0x00aa0000)
+        SD.draw!(image, button1_shape, text_color)
+        SD.draw!(image, SD.TextLine(SD.Point(577, 1), "Button 1", SD.TERMINUS_32_16), text_color)
 
-        button2_shape = SD.FilledRectangle(SD.Point(600, 400), 50, 100)
+        button2_shape = SD.Rectangle(SD.Point(609, 1), 32, 200)
         button2_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget, button2_value = widget(hot_widget, active_widget, button2_id, UI_BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button2_value
-            text_color = 0x0000aa00
+            text_color = 0x00000000
         end
-        SD.draw!(image, button2_shape, 0x0000aa00)
+        SD.draw!(image, button2_shape, text_color)
+        SD.draw!(image, SD.TextLine(SD.Point(609, 1), "Button 2", SD.TERMINUS_32_16), text_color)
 
-        slider_shape = SD.FilledRectangle(SD.Point(600, 600), 50, 100)
+        slider_shape = SD.Rectangle(SD.Point(641, 1), 32, 200)
         slider_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget, slider_value = widget(hot_widget, active_widget, slider_id, UI_SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, slider_value)
-        # if slider_value
-            # text_color = 0x0000aa00
-        # end
-        SD.draw!(image, slider_shape, 0x00000000)
-        slider_value_shape = SD.FilledRectangle(SD.Point(600, 600), 50, slider_value)
-        SD.draw!(image, slider_value_shape, 0x000000aa)
+        SD.draw!(image, slider_shape, text_color)
+        slider_value_shape = SD.FilledRectangle(SD.Point(641, 1), 32, slider_value)
+        SD.draw!(image, slider_value_shape, text_color)
+        SD.draw!(image, SD.TextLine(SD.Point(641, 1), "Slider", SD.TERMINUS_32_16), 0x00ffffff)
 
-        text_input_shape = SD.FilledRectangle(SD.Point(600, 800), 50, 200)
+        text_input_shape = SD.Rectangle(SD.Point(673, 1), 32, 200)
         text_input_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget = widget!(hot_widget, active_widget, text_input_id, UI_TEXT_INPUT, SD.get_i_min(text_input_shape), SD.get_j_min(text_input_shape), SD.get_i_max(text_input_shape), SD.get_j_max(text_input_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, text_line, characters)
-        SD.draw!(image, text_input_shape, 0x00000000)
-        text_input_value_shape = SD.TextLine(SD.Point(600, 800), String(text_line), SD.TERMINUS_32_16)
-        SD.draw!(image, text_input_value_shape, 0x00aaaa00)
+        SD.draw!(image, text_input_shape, text_color)
+        text_input_value_shape = SD.TextLine(SD.Point(673, 1), String(text_line), SD.TERMINUS_32_16)
+        SD.draw!(image, text_input_value_shape, text_color)
 
         empty!(lines)
         push!(lines, "previous frame number: $(i)")
@@ -201,8 +198,6 @@ function start()
         push!(lines, "cursor: $(cursor)")
         push!(lines, "button1_value: $(button1_value)")
         push!(lines, "button2_value: $(button2_value)")
-        push!(lines, "button1_id: $(button1_id)")
-        push!(lines, "button2_id: $(button2_id)")
         push!(lines, "text_color: $(repr(text_color))")
         push!(lines, "slider_value: $(slider_value)")
         push!(lines, "hot_widget: $(hot_widget)")

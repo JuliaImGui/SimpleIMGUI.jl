@@ -94,7 +94,6 @@ function widget(hot_widget, active_widget, widget, widget_type::UISlider, i_min,
 
     active_widget = try_set_active_widget(hot_widget, active_widget, widget, mouse_over_slider && mouse_went_down)
 
-    # value = get_widget_value(hot_widget, active_widget, widget, widget_type, mouse_over_slider && mouse_went_up)
     value = get_widget_value(hot_widget, active_widget, widget, widget_type, clamp(j_mouse - j_min + one(j_min), one(j_min), j_max - j_min + one(j_min)), last_value)
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, widget, mouse_went_up)
@@ -107,7 +106,6 @@ end
 function update_widget_value!(hot_widget, active_widget, widget, ::UITextInput, text_line, characters)
     if (active_widget == widget) && (hot_widget == widget)
         for character in characters
-            println(character)
             if isascii(character)
                 if isprint(character)
                     push!(text_line, character)
