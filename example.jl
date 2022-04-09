@@ -65,7 +65,7 @@ function start()
     hot_widget = NULL_WIDGET_ID
     active_widget = NULL_WIDGET_ID
     slider_value = 1
-    text_line = Char[]
+    text_line = collect("Text box")
 
     setup_window_hints()
     window = GLFW.CreateWindow(width_image, height_image, window_name)
@@ -151,28 +151,31 @@ function start()
         drawing_time_start = time_ns()
         SD.draw!(image, SD.Background(), background_color)
 
-        button1_shape = SD.Rectangle(SD.Point(577, 1), 32, 100)
+        button1_shape = SD.Rectangle(SD.Point(577, 1), 32, 200)
         button1_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget, button1_value = widget(hot_widget, active_widget, button1_id, UI_BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button1_value
             text_color = 0x00aa0000
         end
         SD.draw!(image, button1_shape, text_color)
+        SD.draw!(image, SD.TextLine(SD.Point(577, 1), "Button 1", SD.TERMINUS_32_16), text_color)
 
-        button2_shape = SD.Rectangle(SD.Point(609, 1), 32, 100)
+        button2_shape = SD.Rectangle(SD.Point(609, 1), 32, 200)
         button2_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget, button2_value = widget(hot_widget, active_widget, button2_id, UI_BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button2_value
-            text_color = 0x0000aa00
+            text_color = 0x00000000
         end
         SD.draw!(image, button2_shape, text_color)
+        SD.draw!(image, SD.TextLine(SD.Point(609, 1), "Button 2", SD.TERMINUS_32_16), text_color)
 
-        slider_shape = SD.Rectangle(SD.Point(641, 1), 32, 100)
+        slider_shape = SD.Rectangle(SD.Point(641, 1), 32, 200)
         slider_id = WidgetID(@__LINE__, @__FILE__)
         hot_widget, active_widget, slider_value = widget(hot_widget, active_widget, slider_id, UI_SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, slider_value)
         SD.draw!(image, slider_shape, text_color)
         slider_value_shape = SD.FilledRectangle(SD.Point(641, 1), 32, slider_value)
         SD.draw!(image, slider_value_shape, text_color)
+        SD.draw!(image, SD.TextLine(SD.Point(641, 1), "Slider", SD.TERMINUS_32_16), 0x00ffffff)
 
         text_input_shape = SD.Rectangle(SD.Point(673, 1), 32, 200)
         text_input_id = WidgetID(@__LINE__, @__FILE__)
