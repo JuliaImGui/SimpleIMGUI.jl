@@ -78,7 +78,7 @@ function start()
     characters = Char[]
 
     function key_callback(window, key, scancode, action, mods)::Cvoid
-        if key == GLFW.KEY_Q && action == GLFW.PRESS
+        if key == GLFW.KEY_ESCAPE && action == GLFW.PRESS
             GLFW.SetWindowShouldClose(window, true)
         elseif key == GLFW.KEY_UP
             update_button!(key_up, action)
@@ -185,9 +185,10 @@ function start()
         SD.draw!(image, text_input_value_shape, text_color)
 
         empty!(lines)
+        push!(lines, "Press the escape key to quit")
         push!(lines, "previous frame number: $(i)")
-        push!(lines, "average time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
-        push!(lines, "average drawing time spent per frame (averaged over previous $(length(drawing_time_buffer)) frames): $(round(sum(drawing_time_buffer) / (1e6 * length(drawing_time_buffer)), digits = 2)) ms")
+        push!(lines, "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
+        push!(lines, "average compute time spent per frame (averaged over previous $(length(drawing_time_buffer)) frames): $(round(sum(drawing_time_buffer) / (1e6 * length(drawing_time_buffer)), digits = 2)) ms")
         push!(lines, "key_up: $(key_up)")
         push!(lines, "key_down: $(key_down)")
         push!(lines, "key_left: $(key_left)")
