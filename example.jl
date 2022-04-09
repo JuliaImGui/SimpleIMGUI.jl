@@ -54,6 +54,19 @@ function start()
     SD.draw!(image, SD.Background(), background_color)
     draw_lines!(image, lines, text_color)
 
+    i = 0
+
+    time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(time_stamp_buffer, time_ns())
+
+    drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(drawing_time_buffer, zero(UInt))
+
+    hot_widget = NULL_WIDGET_ID
+    active_widget = NULL_WIDGET_ID
+    slider_value = 1
+    text_line = Char[]
+
     setup_window_hints()
     window = GLFW.CreateWindow(width_image, height_image, window_name)
     GLFW.MakeContextCurrent(window)
@@ -118,19 +131,6 @@ function start()
     end
 
     GLFW.SetCharCallback(window, character_callback)
-
-    i = 0
-
-    time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(time_stamp_buffer, time_ns())
-
-    drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(drawing_time_buffer, zero(UInt))
-
-    hot_widget = NULL_WIDGET_ID
-    active_widget = NULL_WIDGET_ID
-    slider_value = 1
-    text_line = Char[]
 
     MGL.glViewport(0, 0, width_image, height_image)
 
