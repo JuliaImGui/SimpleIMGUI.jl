@@ -1,3 +1,5 @@
+module SimpleWidgets
+
 struct WidgetID
     line_number::Int
     file_name::String
@@ -137,4 +139,6 @@ function widget!(hot_widget, active_widget, widget, widget_type::UITextInput, i_
     hot_widget = try_reset_hot_widget(hot_widget, active_widget, widget, !mouse_over_widget)
 
     return hot_widget, active_widget
+end
+
 end
