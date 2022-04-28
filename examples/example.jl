@@ -114,8 +114,8 @@ function start()
     j_cursor = 0
 
     function cursor_position_callback(window, x, y)::Cvoid
-        i_cursor = round(Int, y)
-        j_cursor = round(Int, x)
+        i_cursor = round(Int, y, RoundDown) + 1
+        j_cursor = round(Int, x, RoundDown) + 1
 
         return nothing
     end
