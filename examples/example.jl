@@ -140,7 +140,7 @@ function start()
 
         button1_shape = SD.Rectangle(SD.Point(577, 1), 32, 200)
         button1_id = SW.WidgetID(@__LINE__, @__FILE__)
-        hot_widget, active_widget, button1_value = SW.widget(hot_widget, active_widget, button1_id, SW.UI_BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
+        hot_widget, active_widget, button1_value = SW.widget(hot_widget, active_widget, button1_id, SW.BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button1_value
             text_color = 0x00aa0000
         end
@@ -149,7 +149,7 @@ function start()
 
         button2_shape = SD.Rectangle(SD.Point(609, 1), 32, 200)
         button2_id = SW.WidgetID(@__LINE__, @__FILE__)
-        hot_widget, active_widget, button2_value = SW.widget(hot_widget, active_widget, button2_id, SW.UI_BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
+        hot_widget, active_widget, button2_value = SW.widget(hot_widget, active_widget, button2_id, SW.BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button2_value
             text_color = 0x00000000
         end

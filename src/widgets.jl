@@ -1,7 +1,7 @@
 abstract type AbstractWidget end
 
-struct UIButton <: AbstractWidget end
-const UI_BUTTON = UIButton()
+struct Button <: AbstractWidget end
+const BUTTON = Button()
 
 struct UISlider <: AbstractWidget end
 const UI_SLIDER = UISlider()
@@ -10,10 +10,10 @@ struct UITextInput <: AbstractWidget end
 const UI_TEXT_INPUT = UITextInput()
 
 #####
-##### UIButton
+##### Button
 #####
 
-function get_widget_value(hot_widget, active_widget, widget, ::UIButton, condition)
+function get_widget_value(hot_widget, active_widget, widget, ::Button, condition)
     if (active_widget == widget) && (hot_widget == widget) && condition
         return true
     else
@@ -21,7 +21,7 @@ function get_widget_value(hot_widget, active_widget, widget, ::UIButton, conditi
     end
 end
 
-function widget(hot_widget, active_widget, widget, widget_type::UIButton, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count)
+function widget(hot_widget, active_widget, widget, widget_type::Button, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count)
     mouse_over_button = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
