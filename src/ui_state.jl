@@ -7,12 +7,6 @@ end
 
 abstract type AbstractUIState end
 
-mutable struct UIState{WID} <: AbstractUIState
-    hot_widget::WID
-    active_widget::WID
-    null_widget::WID
-end
-
 const NULL_WIDGET_ID = WidgetID(0, "")
 
 function widget!(ui_state::AbstractUIState, args...; kwargs...)

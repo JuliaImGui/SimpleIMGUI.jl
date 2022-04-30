@@ -6,6 +6,12 @@ import SimpleWidgets as SW
 
 include("opengl_utils.jl")
 
+mutable struct UIState <: SW.AbstractUIState
+    hot_widget::SW.WidgetID
+    active_widget::SW.WidgetID
+    null_widget::SW.WidgetID
+end
+
 function update_button(button, action)
     if action == GLFW.PRESS
         return SW.press_button(button)
@@ -50,7 +56,7 @@ function start()
     drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(drawing_time_buffer, zero(UInt))
 
-    ui_state = SW.UIState(SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID)
+    ui_state = UIState(SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID)
     slider_value = 1
     text_line = collect("Text box")
 
