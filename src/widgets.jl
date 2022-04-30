@@ -21,22 +21,22 @@ function get_widget_value(hot_widget, active_widget, widget, ::Button, condition
     end
 end
 
-function widget(hot_widget, active_widget, widget, widget_type::Button, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count)
+function widget(hot_widget, active_widget, null_widget, widget, widget_type::Button, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count)
     mouse_over_button = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
 
-    hot_widget = try_set_hot_widget(hot_widget, active_widget, widget, mouse_over_button)
+    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, widget, mouse_over_button)
 
-    active_widget = try_set_active_widget(hot_widget, active_widget, widget, mouse_over_button && mouse_went_down)
+    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, widget, mouse_over_button && mouse_went_down)
 
     value = get_widget_value(hot_widget, active_widget, widget, widget_type, mouse_over_button && mouse_went_up)
 
-    active_widget = try_reset_active_widget(hot_widget, active_widget, widget, mouse_went_up)
+    active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, widget, mouse_went_up)
 
-    hot_widget = try_reset_hot_widget(hot_widget, active_widget, widget, !mouse_over_button)
+    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, widget, !mouse_over_button)
 
-    return hot_widget, active_widget, value
+    return hot_widget, active_widget, null_widget, value
 end
 
 #####
@@ -51,22 +51,22 @@ function get_widget_value(hot_widget, active_widget, widget, ::Slider, active_va
     end
 end
 
-function widget(hot_widget, active_widget, widget, widget_type::Slider, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, last_value)
+function widget(hot_widget, active_widget, null_widget, widget, widget_type::Slider, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, last_value)
     mouse_over_slider = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
 
-    hot_widget = try_set_hot_widget(hot_widget, active_widget, widget, mouse_over_slider)
+    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, widget, mouse_over_slider)
 
-    active_widget = try_set_active_widget(hot_widget, active_widget, widget, mouse_over_slider && mouse_went_down)
+    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, widget, mouse_over_slider && mouse_went_down)
 
     value = get_widget_value(hot_widget, active_widget, widget, widget_type, clamp(j_mouse - j_min + one(j_min), one(j_min), j_max - j_min + one(j_min)), last_value)
 
-    active_widget = try_reset_active_widget(hot_widget, active_widget, widget, mouse_went_up)
+    active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, widget, mouse_went_up)
 
-    hot_widget = try_reset_hot_widget(hot_widget, active_widget, widget, !mouse_over_slider)
+    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, widget, !mouse_over_slider)
 
-    return hot_widget, active_widget, value
+    return hot_widget, active_widget, null_widget, value
 end
 
 #####
@@ -91,20 +91,20 @@ function update_widget_value!(hot_widget, active_widget, widget, ::TextInput, te
     return nothing
 end
 
-function widget!(hot_widget, active_widget, widget, widget_type::TextInput, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text_line, characters)
+function widget!(hot_widget, active_widget, null_widget, widget, widget_type::TextInput, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text_line, characters)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
 
-    hot_widget = try_set_hot_widget(hot_widget, active_widget, widget, mouse_over_widget)
+    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, widget, mouse_over_widget)
 
-    active_widget = try_set_active_widget(hot_widget, active_widget, widget, mouse_over_widget && mouse_went_up)
+    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, widget, mouse_over_widget && mouse_went_up)
 
     update_widget_value!(hot_widget, active_widget, widget, widget_type, text_line, characters)
 
-    active_widget = try_reset_active_widget(hot_widget, active_widget, widget, !mouse_over_widget && mouse_went_up)
+    active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, widget, !mouse_over_widget && mouse_went_up)
 
-    hot_widget = try_reset_hot_widget(hot_widget, active_widget, widget, !mouse_over_widget)
+    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, widget, !mouse_over_widget)
 
-    return hot_widget, active_widget
+    return hot_widget, active_widget, null_widget
 end
