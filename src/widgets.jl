@@ -1,10 +1,3 @@
-struct WidgetID
-    line_number::Int
-    file_name::String
-end
-
-const NULL_WIDGET_ID = WidgetID(0, "")
-
 abstract type AbstractWidget end
 
 struct UIButton <: AbstractWidget end
@@ -16,40 +9,9 @@ const UI_SLIDER = UISlider()
 struct UITextInput <: AbstractWidget end
 const UI_TEXT_INPUT = UITextInput()
 
-went_down(ended_down, half_transition_count) = (half_transition_count >= 2) || ((half_transition_count == 1) && ended_down)
-went_up(ended_down, half_transition_count) = (half_transition_count >= 2) || ((half_transition_count == 1) && !ended_down)
-
-function try_set_hot_widget(hot_widget, active_widget, widget, condition)
-    if (active_widget == NULL_WIDGET_ID) && condition
-        return widget
-    else
-        return hot_widget
-    end
-end
-
-function try_set_active_widget(hot_widget, active_widget, widget, condition)
-    if (hot_widget == widget) && (active_widget == NULL_WIDGET_ID) && condition
-        return widget
-    else
-        return active_widget
-    end
-end
-
-function try_reset_hot_widget(hot_widget, active_widget, widget, condition)
-    if (hot_widget == widget) && (active_widget != widget) && condition
-        return NULL_WIDGET_ID
-    else
-        return hot_widget
-    end
-end
-
-function try_reset_active_widget(hot_widget, active_widget, widget, condition)
-    if (active_widget == widget) && (hot_widget == widget) && condition
-        return NULL_WIDGET_ID
-    else
-        return active_widget
-    end
-end
+#####
+##### UIButton
+#####
 
 function get_widget_value(hot_widget, active_widget, widget, ::UIButton, condition)
     if (active_widget == widget) && (hot_widget == widget) && condition
@@ -77,6 +39,10 @@ function widget(hot_widget, active_widget, widget, widget_type::UIButton, i_min,
     return hot_widget, active_widget, value
 end
 
+#####
+##### UISlider
+#####
+
 function get_widget_value(hot_widget, active_widget, widget, ::UISlider, active_value, last_value)
     if (active_widget == widget) && (hot_widget == widget)
         return active_value
@@ -102,6 +68,10 @@ function widget(hot_widget, active_widget, widget, widget_type::UISlider, i_min,
 
     return hot_widget, active_widget, value
 end
+
+#####
+##### UITextInput
+#####
 
 function update_widget_value!(hot_widget, active_widget, widget, ::UITextInput, text_line, characters)
     if (active_widget == widget) && (hot_widget == widget)
@@ -138,4 +108,3 @@ function widget!(hot_widget, active_widget, widget, widget_type::UITextInput, i_
 
     return hot_widget, active_widget
 end
-
