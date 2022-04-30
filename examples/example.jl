@@ -59,10 +59,10 @@ function start()
     window = GLFW.CreateWindow(width_image, height_image, window_name)
     GLFW.MakeContextCurrent(window)
 
-    key_up = SW.Button(false, 0)
-    key_down = SW.Button(false, 0)
-    key_left = SW.Button(false, 0)
-    key_right = SW.Button(false, 0)
+    key_up = SW.InputButton(false, 0)
+    key_down = SW.InputButton(false, 0)
+    key_left = SW.InputButton(false, 0)
+    key_right = SW.InputButton(false, 0)
     characters = Char[]
 
     function key_callback(window, key, scancode, action, mods)::Cvoid
@@ -85,9 +85,9 @@ function start()
 
     GLFW.SetKeyCallback(window, key_callback)
 
-    mouse_left = SW.Button(false, 0)
-    mouse_right = SW.Button(false, 0)
-    mouse_middle = SW.Button(false, 0)
+    mouse_left = SW.InputButton(false, 0)
+    mouse_right = SW.InputButton(false, 0)
+    mouse_middle = SW.InputButton(false, 0)
 
     function mouse_button_callback(window, button, action, mods)::Cvoid
         if button == GLFW.MOUSE_BUTTON_LEFT
