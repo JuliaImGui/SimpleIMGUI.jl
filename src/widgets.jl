@@ -6,8 +6,8 @@ const BUTTON = Button()
 struct Slider <: AbstractWidget end
 const SLIDER = Slider()
 
-struct UITextInput <: AbstractWidget end
-const UI_TEXT_INPUT = UITextInput()
+struct TextInput <: AbstractWidget end
+const TEXT_INPUT = TextInput()
 
 #####
 ##### Button
@@ -70,10 +70,10 @@ function widget(hot_widget, active_widget, widget, widget_type::Slider, i_min, j
 end
 
 #####
-##### UITextInput
+##### TextInput
 #####
 
-function update_widget_value!(hot_widget, active_widget, widget, ::UITextInput, text_line, characters)
+function update_widget_value!(hot_widget, active_widget, widget, ::TextInput, text_line, characters)
     if (active_widget == widget) && (hot_widget == widget)
         for character in characters
             if isascii(character)
@@ -91,7 +91,7 @@ function update_widget_value!(hot_widget, active_widget, widget, ::UITextInput, 
     return nothing
 end
 
-function widget!(hot_widget, active_widget, widget, widget_type::UITextInput, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text_line, characters)
+function widget!(hot_widget, active_widget, widget, widget_type::TextInput, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text_line, characters)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
