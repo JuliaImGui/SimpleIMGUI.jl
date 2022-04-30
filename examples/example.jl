@@ -6,27 +6,15 @@ import SimpleWidgets as SW
 
 include("opengl_utils.jl")
 
-struct Button
-    ended_down::Bool
-    half_transition_count::Int
-end
-
-struct Cursor
-    i::Int
-    j::Int
-end
-
 function update_button(button, action)
     if action == GLFW.PRESS
-        return Button(true, button.half_transition_count + one(button.half_transition_count))
+        return SW.press_button(button)
     elseif action == GLFW.RELEASE
-        return Button(false, button.half_transition_count + one(button.half_transition_count))
+        return SW.release_button(button)
     else
         return button
     end
 end
-
-reset(button) = Button(button.ended_down, zero(button.half_transition_count))
 
 function draw_lines!(image, lines, color)
     font = SD.TERMINUS_32_16
@@ -71,10 +59,10 @@ function start()
     window = GLFW.CreateWindow(width_image, height_image, window_name)
     GLFW.MakeContextCurrent(window)
 
-    key_up = Button(false, 0)
-    key_down = Button(false, 0)
-    key_left = Button(false, 0)
-    key_right = Button(false, 0)
+    key_up = SW.Button(false, 0)
+    key_down = SW.Button(false, 0)
+    key_left = SW.Button(false, 0)
+    key_right = SW.Button(false, 0)
     characters = Char[]
 
     function key_callback(window, key, scancode, action, mods)::Cvoid
@@ -97,9 +85,9 @@ function start()
 
     GLFW.SetKeyCallback(window, key_callback)
 
-    mouse_left = Button(false, 0)
-    mouse_right = Button(false, 0)
-    mouse_middle = Button(false, 0)
+    mouse_left = SW.Button(false, 0)
+    mouse_right = SW.Button(false, 0)
+    mouse_middle = SW.Button(false, 0)
 
     function mouse_button_callback(window, button, action, mods)::Cvoid
         if button == GLFW.MOUSE_BUTTON_LEFT
@@ -115,10 +103,10 @@ function start()
 
     GLFW.SetMouseButtonCallback(window, mouse_button_callback)
 
-    cursor = Cursor(1, 1)
+    cursor = SW.Cursor(1, 1)
 
     function cursor_position_callback(window, x, y)::Cvoid
-        cursor = Cursor(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
+        cursor = SW.Cursor(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
 
         return nothing
     end
@@ -212,13 +200,13 @@ function start()
 
         GLFW.SwapBuffers(window)
 
-        key_up = reset(key_up)
-        key_down = reset(key_down)
-        key_left = reset(key_left)
-        key_right = reset(key_right)
-        mouse_left = reset(mouse_left)
-        mouse_right = reset(mouse_right)
-        mouse_middle = reset(mouse_middle)
+        key_up = SW.reset(key_up)
+        key_down = SW.reset(key_down)
+        key_left = SW.reset(key_left)
+        key_right = SW.reset(key_right)
+        mouse_left = SW.reset(mouse_left)
+        mouse_right = SW.reset(mouse_right)
+        mouse_middle = SW.reset(mouse_middle)
         empty!(characters)
 
         GLFW.PollEvents()
