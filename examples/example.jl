@@ -6,22 +6,27 @@ import SimpleWidgets as SW
 
 include("opengl_utils.jl")
 
-mutable struct Button
+struct Button
     ended_down::Bool
     half_transition_count::Int
 end
 
-function update_button!(button, action)
-    if action == GLFW.PRESS
-        button.ended_down = true
-        button.half_transition_count += 1
-    elseif action == GLFW.RELEASE
-        button.ended_down = false
-        button.half_transition_count += 1
-    end
-
-    return nothing
+struct Cursor
+    i::Int
+    j::Int
 end
+
+function update_button(button, action)
+    if action == GLFW.PRESS
+        return Button(true, button.half_transition_count + one(button.half_transition_count))
+    elseif action == GLFW.RELEASE
+        return Button(false, button.half_transition_count + one(button.half_transition_count))
+    else
+        return button
+    end
+end
+
+reset(button) = Button(button.ended_down, zero(button.half_transition_count))
 
 function draw_lines!(image, lines, color)
     font = SD.TERMINUS_32_16
@@ -76,13 +81,13 @@ function start()
         if key == GLFW.KEY_ESCAPE && action == GLFW.PRESS
             GLFW.SetWindowShouldClose(window, true)
         elseif key == GLFW.KEY_UP
-            update_button!(key_up, action)
+            key_up = update_button(key_up, action)
         elseif key == GLFW.KEY_DOWN
-            update_button!(key_down, action)
+            key_down = update_button(key_down, action)
         elseif key == GLFW.KEY_LEFT
-            update_button!(key_left, action)
+            key_left = update_button(key_left, action)
         elseif key == GLFW.KEY_RIGHT
-            update_button!(key_right, action)
+            key_right = update_button(key_right, action)
         elseif key == GLFW.KEY_BACKSPACE && (action == GLFW.PRESS || action == GLFW.REPEAT)
             push!(characters, '\b')
         end
@@ -98,11 +103,11 @@ function start()
 
     function mouse_button_callback(window, button, action, mods)::Cvoid
         if button == GLFW.MOUSE_BUTTON_LEFT
-            update_button!(mouse_left, action)
+            mouse_left = update_button(mouse_left, action)
         elseif button == GLFW.MOUSE_BUTTON_RIGHT
-            update_button!(mouse_right, action)
+            mouse_right = update_button(mouse_right, action)
         elseif button == GLFW.MOUSE_BUTTON_MIDDLE
-            update_button!(mouse_middle, action)
+            mouse_middle = update_button(mouse_middle, action)
         end
 
         return nothing
@@ -110,12 +115,10 @@ function start()
 
     GLFW.SetMouseButtonCallback(window, mouse_button_callback)
 
-    i_cursor = 0
-    j_cursor = 0
+    cursor = Cursor(1, 1)
 
     function cursor_position_callback(window, x, y)::Cvoid
-        i_cursor = round(Int, y, RoundDown) + 1
-        j_cursor = round(Int, x, RoundDown) + 1
+        cursor = Cursor(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
 
         return nothing
     end
@@ -149,7 +152,7 @@ function start()
 
         button1_shape = SD.Rectangle(SD.Point(577, 1), 32, 200)
         button1_id = SW.WidgetID(@__LINE__, @__FILE__)
-        hot_widget, active_widget, button1_value = SW.widget(hot_widget, active_widget, button1_id, SW.UI_BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), i_cursor, j_cursor, mouse_left.ended_down, mouse_left.half_transition_count)
+        hot_widget, active_widget, button1_value = SW.widget(hot_widget, active_widget, button1_id, SW.UI_BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button1_value
             text_color = 0x00aa0000
         end
@@ -158,7 +161,7 @@ function start()
 
         button2_shape = SD.Rectangle(SD.Point(609, 1), 32, 200)
         button2_id = SW.WidgetID(@__LINE__, @__FILE__)
-        hot_widget, active_widget, button2_value = SW.widget(hot_widget, active_widget, button2_id, SW.UI_BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), i_cursor, j_cursor, mouse_left.ended_down, mouse_left.half_transition_count)
+        hot_widget, active_widget, button2_value = SW.widget(hot_widget, active_widget, button2_id, SW.UI_BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button2_value
             text_color = 0x00000000
         end
@@ -167,7 +170,7 @@ function start()
 
         slider_shape = SD.Rectangle(SD.Point(641, 1), 32, 200)
         slider_id = SW.WidgetID(@__LINE__, @__FILE__)
-        hot_widget, active_widget, slider_value = SW.widget(hot_widget, active_widget, slider_id, SW.UI_SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), i_cursor, j_cursor, mouse_left.ended_down, mouse_left.half_transition_count, slider_value)
+        hot_widget, active_widget, slider_value = SW.widget(hot_widget, active_widget, slider_id, SW.UI_SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, slider_value)
         SD.draw!(image, slider_shape, text_color)
         slider_value_shape = SD.FilledRectangle(SD.Point(641, 1), 32, slider_value)
         SD.draw!(image, slider_value_shape, text_color)
@@ -175,7 +178,7 @@ function start()
 
         text_input_shape = SD.Rectangle(SD.Point(673, 1), 32, 200)
         text_input_id = SW.WidgetID(@__LINE__, @__FILE__)
-        hot_widget, active_widget = SW.widget!(hot_widget, active_widget, text_input_id, SW.UI_TEXT_INPUT, SD.get_i_min(text_input_shape), SD.get_j_min(text_input_shape), SD.get_i_max(text_input_shape), SD.get_j_max(text_input_shape), i_cursor, j_cursor, mouse_left.ended_down, mouse_left.half_transition_count, text_line, characters)
+        hot_widget, active_widget = SW.widget!(hot_widget, active_widget, text_input_id, SW.UI_TEXT_INPUT, SD.get_i_min(text_input_shape), SD.get_j_min(text_input_shape), SD.get_i_max(text_input_shape), SD.get_j_max(text_input_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, text_line, characters)
         SD.draw!(image, text_input_shape, text_color)
         text_input_value_shape = SD.TextLine(SD.Point(673, 1), String(text_line), SD.TERMINUS_32_16)
         SD.draw!(image, text_input_value_shape, text_color)
@@ -192,7 +195,7 @@ function start()
         push!(lines, "mouse_left: $(mouse_left)")
         push!(lines, "mouse_right: $(mouse_right)")
         push!(lines, "mouse_middle: $(mouse_middle)")
-        push!(lines, "(i_cursor, j_cursor): ($(i_cursor), $(j_cursor))")
+        push!(lines, "cursor: $(cursor)")
         push!(lines, "button1_value: $(button1_value)")
         push!(lines, "button2_value: $(button2_value)")
         push!(lines, "text_color: $(repr(text_color))")
@@ -209,13 +212,13 @@ function start()
 
         GLFW.SwapBuffers(window)
 
-        key_up.half_transition_count = 0
-        key_down.half_transition_count = 0
-        key_left.half_transition_count = 0
-        key_right.half_transition_count = 0
-        mouse_left.half_transition_count = 0
-        mouse_right.half_transition_count = 0
-        mouse_middle.half_transition_count = 0
+        key_up = reset(key_up)
+        key_down = reset(key_down)
+        key_left = reset(key_left)
+        key_right = reset(key_right)
+        mouse_left = reset(mouse_left)
+        mouse_right = reset(mouse_right)
+        mouse_middle = reset(mouse_middle)
         empty!(characters)
 
         GLFW.PollEvents()
