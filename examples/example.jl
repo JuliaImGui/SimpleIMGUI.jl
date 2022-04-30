@@ -6,22 +6,22 @@ import SimpleWidgets as SW
 
 include("opengl_utils.jl")
 
-mutable struct Button
+struct Button
     ended_down::Bool
     half_transition_count::Int
 end
 
-function update_button!(button, action)
+function update_button(button, action)
     if action == GLFW.PRESS
-        button.ended_down = true
-        button.half_transition_count += 1
+        return Button(true, button.half_transition_count + one(button.half_transition_count))
     elseif action == GLFW.RELEASE
-        button.ended_down = false
-        button.half_transition_count += 1
+        return Button(false, button.half_transition_count + one(button.half_transition_count))
+    else
+        return button
     end
-
-    return nothing
 end
+
+reset(button) = Button(button.ended_down, zero(button.half_transition_count))
 
 function draw_lines!(image, lines, color)
     font = SD.TERMINUS_32_16
@@ -76,13 +76,13 @@ function start()
         if key == GLFW.KEY_ESCAPE && action == GLFW.PRESS
             GLFW.SetWindowShouldClose(window, true)
         elseif key == GLFW.KEY_UP
-            update_button!(key_up, action)
+            key_up = update_button(key_up, action)
         elseif key == GLFW.KEY_DOWN
-            update_button!(key_down, action)
+            key_down = update_button(key_down, action)
         elseif key == GLFW.KEY_LEFT
-            update_button!(key_left, action)
+            key_left = update_button(key_left, action)
         elseif key == GLFW.KEY_RIGHT
-            update_button!(key_right, action)
+            key_right = update_button(key_right, action)
         elseif key == GLFW.KEY_BACKSPACE && (action == GLFW.PRESS || action == GLFW.REPEAT)
             push!(characters, '\b')
         end
@@ -98,11 +98,11 @@ function start()
 
     function mouse_button_callback(window, button, action, mods)::Cvoid
         if button == GLFW.MOUSE_BUTTON_LEFT
-            update_button!(mouse_left, action)
+            mouse_left = update_button(mouse_left, action)
         elseif button == GLFW.MOUSE_BUTTON_RIGHT
-            update_button!(mouse_right, action)
+            mouse_right = update_button(mouse_right, action)
         elseif button == GLFW.MOUSE_BUTTON_MIDDLE
-            update_button!(mouse_middle, action)
+            mouse_middle = update_button(mouse_middle, action)
         end
 
         return nothing
@@ -209,13 +209,13 @@ function start()
 
         GLFW.SwapBuffers(window)
 
-        key_up.half_transition_count = 0
-        key_down.half_transition_count = 0
-        key_left.half_transition_count = 0
-        key_right.half_transition_count = 0
-        mouse_left.half_transition_count = 0
-        mouse_right.half_transition_count = 0
-        mouse_middle.half_transition_count = 0
+        key_up = reset(key_up)
+        key_down = reset(key_down)
+        key_left = reset(key_left)
+        key_right = reset(key_right)
+        mouse_left = reset(mouse_left)
+        mouse_right = reset(mouse_right)
+        mouse_middle = reset(mouse_middle)
         empty!(characters)
 
         GLFW.PollEvents()
