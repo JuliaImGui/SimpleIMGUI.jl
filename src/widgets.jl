@@ -39,6 +39,8 @@ function widget(hot_widget, active_widget, null_widget, widget, widget_type::But
     return hot_widget, active_widget, null_widget, value
 end
 
+widget!!(hot_widget, active_widget, null_widget, widg, widget_type::Button, args...; kwargs...) = widget(hot_widget, active_widget, null_widget, widg, widget_type, args...; kwargs...)
+
 #####
 ##### Slider
 #####
@@ -68,6 +70,8 @@ function widget(hot_widget, active_widget, null_widget, widget, widget_type::Sli
 
     return hot_widget, active_widget, null_widget, value
 end
+
+widget!!(hot_widget, active_widget, null_widget, widg, widget_type::Slider, args...; kwargs...) = widget(hot_widget, active_widget, null_widget, widg, widget_type, args...; kwargs...)
 
 #####
 ##### TextInput
@@ -108,3 +112,5 @@ function widget!(hot_widget, active_widget, null_widget, widget, widget_type::Te
 
     return hot_widget, active_widget, null_widget
 end
+
+widget!!(hot_widget, active_widget, null_widget, widg, widget_type::TextInput, args...; kwargs...) = (widget!(hot_widget, active_widget, null_widget, widg, widget_type, args...; kwargs...)..., nothing)
