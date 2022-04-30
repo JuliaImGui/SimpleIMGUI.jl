@@ -1,19 +1,19 @@
 abstract type AbstractWidget end
 
-struct UIButton <: AbstractWidget end
-const UI_BUTTON = UIButton()
+struct Button <: AbstractWidget end
+const BUTTON = Button()
 
-struct UISlider <: AbstractWidget end
-const UI_SLIDER = UISlider()
+struct Slider <: AbstractWidget end
+const SLIDER = Slider()
 
-struct UITextInput <: AbstractWidget end
-const UI_TEXT_INPUT = UITextInput()
+struct TextInput <: AbstractWidget end
+const TEXT_INPUT = TextInput()
 
 #####
-##### UIButton
+##### Button
 #####
 
-function get_widget_value(hot_widget, active_widget, widget, ::UIButton, condition)
+function get_widget_value(hot_widget, active_widget, widget, ::Button, condition)
     if (active_widget == widget) && (hot_widget == widget) && condition
         return true
     else
@@ -21,7 +21,7 @@ function get_widget_value(hot_widget, active_widget, widget, ::UIButton, conditi
     end
 end
 
-function widget(hot_widget, active_widget, widget, widget_type::UIButton, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count)
+function widget(hot_widget, active_widget, widget, widget_type::Button, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count)
     mouse_over_button = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
@@ -40,10 +40,10 @@ function widget(hot_widget, active_widget, widget, widget_type::UIButton, i_min,
 end
 
 #####
-##### UISlider
+##### Slider
 #####
 
-function get_widget_value(hot_widget, active_widget, widget, ::UISlider, active_value, last_value)
+function get_widget_value(hot_widget, active_widget, widget, ::Slider, active_value, last_value)
     if (active_widget == widget) && (hot_widget == widget)
         return active_value
     else
@@ -51,7 +51,7 @@ function get_widget_value(hot_widget, active_widget, widget, ::UISlider, active_
     end
 end
 
-function widget(hot_widget, active_widget, widget, widget_type::UISlider, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, last_value)
+function widget(hot_widget, active_widget, widget, widget_type::Slider, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, last_value)
     mouse_over_slider = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
@@ -70,10 +70,10 @@ function widget(hot_widget, active_widget, widget, widget_type::UISlider, i_min,
 end
 
 #####
-##### UITextInput
+##### TextInput
 #####
 
-function update_widget_value!(hot_widget, active_widget, widget, ::UITextInput, text_line, characters)
+function update_widget_value!(hot_widget, active_widget, widget, ::TextInput, text_line, characters)
     if (active_widget == widget) && (hot_widget == widget)
         for character in characters
             if isascii(character)
@@ -91,7 +91,7 @@ function update_widget_value!(hot_widget, active_widget, widget, ::UITextInput, 
     return nothing
 end
 
-function widget!(hot_widget, active_widget, widget, widget_type::UITextInput, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text_line, characters)
+function widget!(hot_widget, active_widget, widget, widget_type::TextInput, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text_line, characters)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)

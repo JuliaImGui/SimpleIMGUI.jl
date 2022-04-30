@@ -59,10 +59,10 @@ function start()
     window = GLFW.CreateWindow(width_image, height_image, window_name)
     GLFW.MakeContextCurrent(window)
 
-    key_up = SW.Button(false, 0)
-    key_down = SW.Button(false, 0)
-    key_left = SW.Button(false, 0)
-    key_right = SW.Button(false, 0)
+    key_up = SW.InputButton(false, 0)
+    key_down = SW.InputButton(false, 0)
+    key_left = SW.InputButton(false, 0)
+    key_right = SW.InputButton(false, 0)
     characters = Char[]
 
     function key_callback(window, key, scancode, action, mods)::Cvoid
@@ -85,9 +85,9 @@ function start()
 
     GLFW.SetKeyCallback(window, key_callback)
 
-    mouse_left = SW.Button(false, 0)
-    mouse_right = SW.Button(false, 0)
-    mouse_middle = SW.Button(false, 0)
+    mouse_left = SW.InputButton(false, 0)
+    mouse_right = SW.InputButton(false, 0)
+    mouse_middle = SW.InputButton(false, 0)
 
     function mouse_button_callback(window, button, action, mods)::Cvoid
         if button == GLFW.MOUSE_BUTTON_LEFT
@@ -140,7 +140,7 @@ function start()
 
         button1_shape = SD.Rectangle(SD.Point(577, 1), 32, 200)
         button1_id = SW.WidgetID(@__LINE__, @__FILE__)
-        hot_widget, active_widget, button1_value = SW.widget(hot_widget, active_widget, button1_id, SW.UI_BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
+        hot_widget, active_widget, button1_value = SW.widget(hot_widget, active_widget, button1_id, SW.BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button1_value
             text_color = 0x00aa0000
         end
@@ -149,7 +149,7 @@ function start()
 
         button2_shape = SD.Rectangle(SD.Point(609, 1), 32, 200)
         button2_id = SW.WidgetID(@__LINE__, @__FILE__)
-        hot_widget, active_widget, button2_value = SW.widget(hot_widget, active_widget, button2_id, SW.UI_BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
+        hot_widget, active_widget, button2_value = SW.widget(hot_widget, active_widget, button2_id, SW.BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count)
         if button2_value
             text_color = 0x00000000
         end
@@ -158,7 +158,7 @@ function start()
 
         slider_shape = SD.Rectangle(SD.Point(641, 1), 32, 200)
         slider_id = SW.WidgetID(@__LINE__, @__FILE__)
-        hot_widget, active_widget, slider_value = SW.widget(hot_widget, active_widget, slider_id, SW.UI_SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, slider_value)
+        hot_widget, active_widget, slider_value = SW.widget(hot_widget, active_widget, slider_id, SW.SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, slider_value)
         SD.draw!(image, slider_shape, text_color)
         slider_value_shape = SD.FilledRectangle(SD.Point(641, 1), 32, slider_value)
         SD.draw!(image, slider_value_shape, text_color)
@@ -166,7 +166,7 @@ function start()
 
         text_input_shape = SD.Rectangle(SD.Point(673, 1), 32, 200)
         text_input_id = SW.WidgetID(@__LINE__, @__FILE__)
-        hot_widget, active_widget = SW.widget!(hot_widget, active_widget, text_input_id, SW.UI_TEXT_INPUT, SD.get_i_min(text_input_shape), SD.get_j_min(text_input_shape), SD.get_i_max(text_input_shape), SD.get_j_max(text_input_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, text_line, characters)
+        hot_widget, active_widget = SW.widget!(hot_widget, active_widget, text_input_id, SW.TEXT_INPUT, SD.get_i_min(text_input_shape), SD.get_j_min(text_input_shape), SD.get_i_max(text_input_shape), SD.get_j_max(text_input_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, text_line, characters)
         SD.draw!(image, text_input_shape, text_color)
         text_input_value_shape = SD.TextLine(SD.Point(673, 1), String(text_line), SD.TERMINUS_32_16)
         SD.draw!(image, text_input_value_shape, text_color)
