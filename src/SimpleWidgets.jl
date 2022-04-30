@@ -1,5 +1,7 @@
 module SimpleWidgets
 
+include("input.jl")
+
 struct WidgetID
     line_number::Int
     file_name::String
