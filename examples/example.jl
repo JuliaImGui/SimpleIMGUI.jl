@@ -158,7 +158,7 @@ function start()
 
         slider_shape = SD.Rectangle(SD.Point(641, 1), 32, 200)
         slider_id = SW.WidgetID(@__LINE__, @__FILE__)
-        hot_widget, active_widget, slider_value = SW.widget(hot_widget, active_widget, slider_id, SW.UI_SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, slider_value)
+        hot_widget, active_widget, slider_value = SW.widget(hot_widget, active_widget, slider_id, SW.SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), cursor.i, cursor.j, mouse_left.ended_down, mouse_left.half_transition_count, slider_value)
         SD.draw!(image, slider_shape, text_color)
         slider_value_shape = SD.FilledRectangle(SD.Point(641, 1), 32, slider_value)
         SD.draw!(image, slider_value_shape, text_color)
