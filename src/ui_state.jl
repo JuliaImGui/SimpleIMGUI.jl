@@ -1,10 +1,3 @@
-struct WidgetID
-    line_number::Int
-    file_name::String
-end
-
-const NULL_WIDGET_ID = WidgetID(0, "")
-
 went_down(ended_down, half_transition_count) = (half_transition_count >= 2) || ((half_transition_count == 1) && ended_down)
 went_up(ended_down, half_transition_count) = (half_transition_count >= 2) || ((half_transition_count == 1) && !ended_down)
 
