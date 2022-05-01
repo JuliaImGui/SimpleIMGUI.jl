@@ -39,9 +39,9 @@ function do_widget(hot_widget, active_widget, null_widget, widget, widget_type::
     return hot_widget, active_widget, null_widget, value
 end
 
-do_widget(hot_widget, active_widget, null_widget, widg, widget_type::Button, bounding_box::BoundingBox, cursor::Cursor, input_button::InputButton) = do_widget(hot_widget, active_widget, null_widget, widg, widget_type::Button, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count)
+do_widget(hot_widget, active_widget, null_widget, widget, widget_type::Button, bounding_box::BoundingBox, cursor::Cursor, input_button::InputButton) = do_widget(hot_widget, active_widget, null_widget, widget, widget_type::Button, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count)
 
-do_widget!!(hot_widget, active_widget, null_widget, widg, widget_type::Button, args...; kwargs...) = do_widget(hot_widget, active_widget, null_widget, widg, widget_type, args...; kwargs...)
+do_widget!!(hot_widget, active_widget, null_widget, widget, widget_type::Button, args...; kwargs...) = do_widget(hot_widget, active_widget, null_widget, widget, widget_type, args...; kwargs...)
 
 #####
 ##### Slider
@@ -73,9 +73,9 @@ function do_widget(hot_widget, active_widget, null_widget, widget, widget_type::
     return hot_widget, active_widget, null_widget, value
 end
 
-do_widget(hot_widget, active_widget, null_widget, widg, widget_type::Slider, bounding_box::BoundingBox, cursor::Cursor, input_button::InputButton, last_value) = do_widget(hot_widget, active_widget, null_widget, widg, widget_type::Slider, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count, last_value)
+do_widget(hot_widget, active_widget, null_widget, widget, widget_type::Slider, bounding_box::BoundingBox, cursor::Cursor, input_button::InputButton, last_value) = do_widget(hot_widget, active_widget, null_widget, widget, widget_type::Slider, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count, last_value)
 
-do_widget!!(hot_widget, active_widget, null_widget, widg, widget_type::Slider, args...; kwargs...) = do_widget(hot_widget, active_widget, null_widget, widg, widget_type, args...; kwargs...)
+do_widget!!(hot_widget, active_widget, null_widget, widget, widget_type::Slider, args...; kwargs...) = do_widget(hot_widget, active_widget, null_widget, widget, widget_type, args...; kwargs...)
 
 #####
 ##### TextInput
@@ -117,6 +117,6 @@ function do_widget!(hot_widget, active_widget, null_widget, widget, widget_type:
     return hot_widget, active_widget, null_widget
 end
 
-do_widget!(hot_widget, active_widget, null_widget, widg, widget_type::TextInput, bounding_box::BoundingBox, cursor::Cursor, input_button::InputButton, text_line, characters) = do_widget!(hot_widget, active_widget, null_widget, widg, widget_type::TextInput, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count, text_line, characters)
+do_widget!(hot_widget, active_widget, null_widget, widget, widget_type::TextInput, bounding_box::BoundingBox, cursor::Cursor, input_button::InputButton, text_line, characters) = do_widget!(hot_widget, active_widget, null_widget, widget, widget_type::TextInput, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count, text_line, characters)
 
-do_widget!!(hot_widget, active_widget, null_widget, widg, widget_type::TextInput, args...; kwargs...) = (do_widget!(hot_widget, active_widget, null_widget, widg, widget_type, args...; kwargs...)..., nothing)
+do_widget!!(hot_widget, active_widget, null_widget, widget, widget_type::TextInput, args...; kwargs...) = (do_widget!(hot_widget, active_widget, null_widget, widget, widget_type, args...; kwargs...)..., nothing)
