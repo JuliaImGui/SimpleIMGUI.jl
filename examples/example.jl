@@ -143,7 +143,7 @@ function start()
         return nothing
     end
 
-    function character_callback(window, unicode_codepoint)
+    function character_callback(window, unicode_codepoint)::Cvoid
         push!(user_input_state.characters, Char(unicode_codepoint))
 
         return nothing
