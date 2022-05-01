@@ -171,8 +171,9 @@ function start()
         if button1_value
             text_color = 0x00aa0000
         end
-        SD.draw!(image, convert(SD.Rectangle{Int}, button1_bounding_box), text_color)
-        SD.draw!(image, SD.TextLine(SD.Point(577, 1), "Button 1", SD.TERMINUS_32_16), text_color)
+        button1_rectangle = convert(SD.Rectangle{Int}, button1_bounding_box)
+        SD.draw!(image, button1_rectangle, text_color)
+        SD.draw!(image, SD.TextLine(button1_rectangle.position, "Button 1", SD.TERMINUS_32_16), text_color)
 
         button2 = SW.WidgetID(@__LINE__, @__FILE__)
         button2_bounding_box = SW.BoundingBox(609, 1, 640, 200)
@@ -180,21 +181,24 @@ function start()
         if button2_value
             text_color = 0x00000000
         end
-        SD.draw!(image, convert(SD.Rectangle{Int}, button2_bounding_box), text_color)
-        SD.draw!(image, SD.TextLine(SD.Point(609, 1), "Button 2", SD.TERMINUS_32_16), text_color)
+        button2_rectangle = convert(SD.Rectangle{Int}, button2_bounding_box)
+        SD.draw!(image, button2_rectangle, text_color)
+        SD.draw!(image, SD.TextLine(button2_rectangle.position, "Button 2", SD.TERMINUS_32_16), text_color)
 
         slider = SW.WidgetID(@__LINE__, @__FILE__)
         slider_bounding_box = SW.BoundingBox(641, 1, 672, 200)
         slider_value = SW.do_widget!(user_interaction_state, slider, SW.SLIDER, slider_bounding_box, user_input_state.cursor, user_input_state.mouse_left, slider_value)
-        SD.draw!(image, convert(SD.Rectangle{Int}, slider_bounding_box), text_color)
-        SD.draw!(image, SD.FilledRectangle(SD.Point(641, 1), 32, slider_value), text_color)
-        SD.draw!(image, SD.TextLine(SD.Point(641, 1), "Slider", SD.TERMINUS_32_16), 0x00ffffff)
+        slider_rectangle = convert(SD.Rectangle{Int}, slider_bounding_box)
+        SD.draw!(image, slider_rectangle, text_color)
+        SD.draw!(image, SD.FilledRectangle(slider_rectangle.position, slider_rectangle.height, slider_value), text_color)
+        SD.draw!(image, SD.TextLine(slider_rectangle.position, "Slider", SD.TERMINUS_32_16), 0x00ffffff)
 
         text_input = SW.WidgetID(@__LINE__, @__FILE__)
         text_input_bounding_box = SW.BoundingBox(673, 1, 704, 200)
         SW.do_widget!(user_interaction_state, text_input, SW.TEXT_INPUT, text_input_bounding_box, user_input_state.cursor, user_input_state.mouse_left, text_line, user_input_state.characters)
-        SD.draw!(image, convert(SD.Rectangle{Int}, text_input_bounding_box), text_color)
-        SD.draw!(image, SD.TextLine(SD.Point(673, 1), String(text_line), SD.TERMINUS_32_16), text_color)
+        text_input_rectangle = convert(SD.Rectangle{Int}, text_input_bounding_box)
+        SD.draw!(image, text_input_rectangle, text_color)
+        SD.draw!(image, SD.TextLine(text_input_rectangle.position, String(text_line), SD.TERMINUS_32_16), text_color)
 
         empty!(lines)
         push!(lines, "Press the escape key to quit")
