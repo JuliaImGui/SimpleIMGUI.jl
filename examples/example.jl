@@ -107,6 +107,12 @@ function start()
     window = GLFW.CreateWindow(width_image, height_image, window_name)
     GLFW.MakeContextCurrent(window)
 
+    function cursor_position_callback(window, x, y)::Cvoid
+        user_input_state.cursor = SW.Cursor(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
+
+        return nothing
+    end
+
     function key_callback(window, key, scancode, action, mods)::Cvoid
         if key == GLFW.KEY_ESCAPE
             user_input_state.key_escape = update_button(user_input_state.key_escape, action)
@@ -125,8 +131,6 @@ function start()
         return nothing
     end
 
-    GLFW.SetKeyCallback(window, key_callback)
-
     function mouse_button_callback(window, button, action, mods)::Cvoid
         if button == GLFW.MOUSE_BUTTON_LEFT
             user_input_state.mouse_left = update_button(user_input_state.mouse_left, action)
@@ -139,22 +143,15 @@ function start()
         return nothing
     end
 
-    GLFW.SetMouseButtonCallback(window, mouse_button_callback)
-
-    function cursor_position_callback(window, x, y)::Cvoid
-        user_input_state.cursor = SW.Cursor(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
-
-        return nothing
-    end
-
-    GLFW.SetCursorPosCallback(window, cursor_position_callback)
-
     function character_callback(window, unicode_codepoint)
         push!(user_input_state.characters, Char(unicode_codepoint))
 
         return nothing
     end
 
+    GLFW.SetCursorPosCallback(window, cursor_position_callback)
+    GLFW.SetKeyCallback(window, key_callback)
+    GLFW.SetMouseButtonCallback(window, mouse_button_callback)
     GLFW.SetCharCallback(window, character_callback)
 
     MGL.glViewport(0, 0, width_image, height_image)
