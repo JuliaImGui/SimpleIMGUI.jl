@@ -46,6 +46,8 @@ function draw_lines!(image, lines, color)
     return nothing
 end
 
+Base.convert(::Type{SD.Rectangle{I}}, x::SW.BoundingBox) where {I} = SD.Rectangle(SD.Point(convert(I, x.i_min), convert(I, x.j_min)), convert(I, x.i_max - x.i_min + one(x.i_min)), convert(I, x.j_max - x.j_min + one(x.j_min)))
+
 function start()
     height_image = 720
     width_image = 1280
@@ -156,35 +158,39 @@ function start()
         drawing_time_start = time_ns()
         SD.draw!(image, SD.Background(), background_color)
 
-        button1_shape = SD.Rectangle(SD.Point(577, 1), 32, 200)
+        button1_bounding_box = SW.BoundingBox(577, 1, 608, 200)
         button1_id = SW.WidgetID(@__LINE__, @__FILE__)
-        button1_value = SW.widget!(ui_state, button1_id, SW.BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), user_input_state.cursor, user_input_state.mouse_left)
+        button1_value = SW.widget!(ui_state, button1_id, SW.BUTTON, button1_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
         if button1_value
             text_color = 0x00aa0000
         end
+        button1_shape = convert(SD.Rectangle{Int}, button1_bounding_box)
         SD.draw!(image, button1_shape, text_color)
         SD.draw!(image, SD.TextLine(SD.Point(577, 1), "Button 1", SD.TERMINUS_32_16), text_color)
 
-        button2_shape = SD.Rectangle(SD.Point(609, 1), 32, 200)
+        button2_bounding_box = SW.BoundingBox(609, 1, 640, 200)
         button2_id = SW.WidgetID(@__LINE__, @__FILE__)
-        button2_value = SW.widget!(ui_state, button2_id, SW.BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), user_input_state.cursor, user_input_state.mouse_left)
+        button2_value = SW.widget!(ui_state, button2_id, SW.BUTTON, button2_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
         if button2_value
             text_color = 0x00000000
         end
+        button2_shape = convert(SD.Rectangle{Int}, button2_bounding_box)
         SD.draw!(image, button2_shape, text_color)
         SD.draw!(image, SD.TextLine(SD.Point(609, 1), "Button 2", SD.TERMINUS_32_16), text_color)
 
-        slider_shape = SD.Rectangle(SD.Point(641, 1), 32, 200)
+        slider_bounding_box = SW.BoundingBox(641, 1, 672, 200)
         slider_id = SW.WidgetID(@__LINE__, @__FILE__)
-        slider_value = SW.widget!(ui_state, slider_id, SW.SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), user_input_state.cursor, user_input_state.mouse_left, slider_value)
+        slider_value = SW.widget!(ui_state, slider_id, SW.SLIDER, slider_bounding_box, user_input_state.cursor, user_input_state.mouse_left, slider_value)
+        slider_shape = convert(SD.Rectangle{Int}, slider_bounding_box)
         SD.draw!(image, slider_shape, text_color)
         slider_value_shape = SD.FilledRectangle(SD.Point(641, 1), 32, slider_value)
         SD.draw!(image, slider_value_shape, text_color)
         SD.draw!(image, SD.TextLine(SD.Point(641, 1), "Slider", SD.TERMINUS_32_16), 0x00ffffff)
 
-        text_input_shape = SD.Rectangle(SD.Point(673, 1), 32, 200)
+        text_input_bounding_box = SW.BoundingBox(673, 1, 704, 200)
         text_input_id = SW.WidgetID(@__LINE__, @__FILE__)
-        SW.widget!(ui_state, text_input_id, SW.TEXT_INPUT, SD.get_i_min(text_input_shape), SD.get_j_min(text_input_shape), SD.get_i_max(text_input_shape), SD.get_j_max(text_input_shape), user_input_state.cursor, user_input_state.mouse_left, text_line, user_input_state.characters)
+        SW.widget!(ui_state, text_input_id, SW.TEXT_INPUT, text_input_bounding_box, user_input_state.cursor, user_input_state.mouse_left, text_line, user_input_state.characters)
+        text_input_shape = convert(SD.Rectangle{Int}, text_input_bounding_box)
         SD.draw!(image, text_input_shape, text_color)
         text_input_value_shape = SD.TextLine(SD.Point(673, 1), String(text_line), SD.TERMINUS_32_16)
         SD.draw!(image, text_input_value_shape, text_color)
