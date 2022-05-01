@@ -164,8 +164,7 @@ function start()
         if button1_value
             text_color = 0x00aa0000
         end
-        button1_shape = convert(SD.Rectangle{Int}, button1_bounding_box)
-        SD.draw!(image, button1_shape, text_color)
+        SD.draw!(image, convert(SD.Rectangle{Int}, button1_bounding_box), text_color)
         SD.draw!(image, SD.TextLine(SD.Point(577, 1), "Button 1", SD.TERMINUS_32_16), text_color)
 
         button2_bounding_box = SW.BoundingBox(609, 1, 640, 200)
@@ -174,26 +173,21 @@ function start()
         if button2_value
             text_color = 0x00000000
         end
-        button2_shape = convert(SD.Rectangle{Int}, button2_bounding_box)
-        SD.draw!(image, button2_shape, text_color)
+        SD.draw!(image, convert(SD.Rectangle{Int}, button2_bounding_box), text_color)
         SD.draw!(image, SD.TextLine(SD.Point(609, 1), "Button 2", SD.TERMINUS_32_16), text_color)
 
         slider_bounding_box = SW.BoundingBox(641, 1, 672, 200)
         slider = SW.WidgetID(@__LINE__, @__FILE__)
         slider_value = SW.do_widget!(user_interaction_state, slider, SW.SLIDER, slider_bounding_box, user_input_state.cursor, user_input_state.mouse_left, slider_value)
-        slider_shape = convert(SD.Rectangle{Int}, slider_bounding_box)
-        SD.draw!(image, slider_shape, text_color)
-        slider_value_shape = SD.FilledRectangle(SD.Point(641, 1), 32, slider_value)
-        SD.draw!(image, slider_value_shape, text_color)
+        SD.draw!(image, convert(SD.Rectangle{Int}, slider_bounding_box), text_color)
+        SD.draw!(image, SD.FilledRectangle(SD.Point(641, 1), 32, slider_value), text_color)
         SD.draw!(image, SD.TextLine(SD.Point(641, 1), "Slider", SD.TERMINUS_32_16), 0x00ffffff)
 
         text_input_bounding_box = SW.BoundingBox(673, 1, 704, 200)
         text_input = SW.WidgetID(@__LINE__, @__FILE__)
         SW.do_widget!(user_interaction_state, text_input, SW.TEXT_INPUT, text_input_bounding_box, user_input_state.cursor, user_input_state.mouse_left, text_line, user_input_state.characters)
-        text_input_shape = convert(SD.Rectangle{Int}, text_input_bounding_box)
-        SD.draw!(image, text_input_shape, text_color)
-        text_input_value_shape = SD.TextLine(SD.Point(673, 1), String(text_line), SD.TERMINUS_32_16)
-        SD.draw!(image, text_input_value_shape, text_color)
+        SD.draw!(image, convert(SD.Rectangle{Int}, text_input_bounding_box), text_color)
+        SD.draw!(image, SD.TextLine(SD.Point(673, 1), String(text_line), SD.TERMINUS_32_16), text_color)
 
         empty!(lines)
         push!(lines, "Press the escape key to quit")
@@ -232,7 +226,6 @@ function start()
         user_input_state.mouse_right = SW.reset(user_input_state.mouse_right)
         user_input_state.mouse_middle = SW.reset(user_input_state.mouse_middle)
         empty!(user_input_state.characters)
-
 
         GLFW.PollEvents()
 
