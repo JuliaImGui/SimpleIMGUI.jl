@@ -25,6 +25,20 @@ mutable struct UserInputState
     characters::Vector{Char}
 end
 
+function reset!(user_input_state::UserInputState)
+    user_input_state.key_escape = SW.reset(user_input_state.key_escape)
+    user_input_state.key_up = SW.reset(user_input_state.key_up)
+    user_input_state.key_down = SW.reset(user_input_state.key_down)
+    user_input_state.key_left = SW.reset(user_input_state.key_left)
+    user_input_state.key_right = SW.reset(user_input_state.key_right)
+    user_input_state.mouse_left = SW.reset(user_input_state.mouse_left)
+    user_input_state.mouse_right = SW.reset(user_input_state.mouse_right)
+    user_input_state.mouse_middle = SW.reset(user_input_state.mouse_middle)
+    empty!(user_input_state.characters)
+
+    return nothing
+end
+
 function update_button(button, action)
     if action == GLFW.PRESS
         return SW.press_button(button)
@@ -229,15 +243,7 @@ function start()
 
         GLFW.SwapBuffers(window)
 
-        user_input_state.key_escape = SW.reset(user_input_state.key_escape)
-        user_input_state.key_up = SW.reset(user_input_state.key_up)
-        user_input_state.key_down = SW.reset(user_input_state.key_down)
-        user_input_state.key_left = SW.reset(user_input_state.key_left)
-        user_input_state.key_right = SW.reset(user_input_state.key_right)
-        user_input_state.mouse_left = SW.reset(user_input_state.mouse_left)
-        user_input_state.mouse_right = SW.reset(user_input_state.mouse_right)
-        user_input_state.mouse_middle = SW.reset(user_input_state.mouse_middle)
-        empty!(user_input_state.characters)
+        reset!(user_input_state)
 
         GLFW.PollEvents()
 
