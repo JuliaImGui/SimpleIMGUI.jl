@@ -198,7 +198,7 @@ function start()
         SW.do_widget!(user_interaction_state, text_input, SW.TEXT_INPUT, text_input_bounding_box, user_input_state.cursor, user_input_state.mouse_left, text_line, user_input_state.characters)
         text_input_rectangle = convert(SD.Rectangle{Int}, text_input_bounding_box)
         SD.draw!(image, text_input_rectangle, text_color)
-        SD.draw!(image, SD.TextLine(text_input_rectangle.position, String(text_line), SD.TERMINUS_32_16), text_color)
+        SD.draw!(image, SD.TextLine(text_input_rectangle.position, text_line, SD.TERMINUS_32_16), text_color)
 
         empty!(lines)
         push!(lines, "Press the escape key to quit")
