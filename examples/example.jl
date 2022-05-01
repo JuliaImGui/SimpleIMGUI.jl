@@ -158,7 +158,7 @@ function start()
 
         button1_shape = SD.Rectangle(SD.Point(577, 1), 32, 200)
         button1_id = SW.WidgetID(@__LINE__, @__FILE__)
-        button1_value = SW.widget!(ui_state, button1_id, SW.BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), user_input_state.cursor.i, user_input_state.cursor.j, user_input_state.mouse_left.ended_down, user_input_state.mouse_left.half_transition_count)
+        button1_value = SW.widget!(ui_state, button1_id, SW.BUTTON, SD.get_i_min(button1_shape), SD.get_j_min(button1_shape), SD.get_i_max(button1_shape), SD.get_j_max(button1_shape), user_input_state.cursor, user_input_state.mouse_left)
         if button1_value
             text_color = 0x00aa0000
         end
@@ -167,7 +167,7 @@ function start()
 
         button2_shape = SD.Rectangle(SD.Point(609, 1), 32, 200)
         button2_id = SW.WidgetID(@__LINE__, @__FILE__)
-        button2_value = SW.widget!(ui_state, button2_id, SW.BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), user_input_state.cursor.i, user_input_state.cursor.j, user_input_state.mouse_left.ended_down, user_input_state.mouse_left.half_transition_count)
+        button2_value = SW.widget!(ui_state, button2_id, SW.BUTTON, SD.get_i_min(button2_shape), SD.get_j_min(button2_shape), SD.get_i_max(button2_shape), SD.get_j_max(button2_shape), user_input_state.cursor, user_input_state.mouse_left)
         if button2_value
             text_color = 0x00000000
         end
@@ -176,7 +176,7 @@ function start()
 
         slider_shape = SD.Rectangle(SD.Point(641, 1), 32, 200)
         slider_id = SW.WidgetID(@__LINE__, @__FILE__)
-        slider_value = SW.widget!(ui_state, slider_id, SW.SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), user_input_state.cursor.i, user_input_state.cursor.j, user_input_state.mouse_left.ended_down, user_input_state.mouse_left.half_transition_count, slider_value)
+        slider_value = SW.widget!(ui_state, slider_id, SW.SLIDER, SD.get_i_min(slider_shape), SD.get_j_min(slider_shape), SD.get_i_max(slider_shape), SD.get_j_max(slider_shape), user_input_state.cursor, user_input_state.mouse_left, slider_value)
         SD.draw!(image, slider_shape, text_color)
         slider_value_shape = SD.FilledRectangle(SD.Point(641, 1), 32, slider_value)
         SD.draw!(image, slider_value_shape, text_color)
@@ -184,7 +184,7 @@ function start()
 
         text_input_shape = SD.Rectangle(SD.Point(673, 1), 32, 200)
         text_input_id = SW.WidgetID(@__LINE__, @__FILE__)
-        SW.widget!(ui_state, text_input_id, SW.TEXT_INPUT, SD.get_i_min(text_input_shape), SD.get_j_min(text_input_shape), SD.get_i_max(text_input_shape), SD.get_j_max(text_input_shape), user_input_state.cursor.i, user_input_state.cursor.j, user_input_state.mouse_left.ended_down, user_input_state.mouse_left.half_transition_count, text_line, user_input_state.characters)
+        SW.widget!(ui_state, text_input_id, SW.TEXT_INPUT, SD.get_i_min(text_input_shape), SD.get_j_min(text_input_shape), SD.get_i_max(text_input_shape), SD.get_j_max(text_input_shape), user_input_state.cursor, user_input_state.mouse_left, text_line, user_input_state.characters)
         SD.draw!(image, text_input_shape, text_color)
         text_input_value_shape = SD.TextLine(SD.Point(673, 1), String(text_line), SD.TERMINUS_32_16)
         SD.draw!(image, text_input_value_shape, text_color)
