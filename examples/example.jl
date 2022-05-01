@@ -14,6 +14,7 @@ end
 
 mutable struct UserInputState
     cursor::SW.Cursor
+    key_escape::SW.InputButton
     key_up::SW.InputButton
     key_down::SW.InputButton
     key_left::SW.InputButton
@@ -22,6 +23,20 @@ mutable struct UserInputState
     mouse_right::SW.InputButton
     mouse_middle::SW.InputButton
     characters::Vector{Char}
+end
+
+function reset!(user_input_state::UserInputState)
+    user_input_state.key_escape = SW.reset(user_input_state.key_escape)
+    user_input_state.key_up = SW.reset(user_input_state.key_up)
+    user_input_state.key_down = SW.reset(user_input_state.key_down)
+    user_input_state.key_left = SW.reset(user_input_state.key_left)
+    user_input_state.key_right = SW.reset(user_input_state.key_right)
+    user_input_state.mouse_left = SW.reset(user_input_state.mouse_left)
+    user_input_state.mouse_right = SW.reset(user_input_state.mouse_right)
+    user_input_state.mouse_middle = SW.reset(user_input_state.mouse_middle)
+    empty!(user_input_state.characters)
+
+    return nothing
 end
 
 function update_button(button, action)
@@ -67,13 +82,14 @@ function start()
     time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(time_stamp_buffer, time_ns())
 
-    drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(drawing_time_buffer, zero(UInt))
+    compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(compute_time_buffer, zero(UInt))
 
     user_interaction_state = UserInteractionState(SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID)
 
     user_input_state = UserInputState(
                                       SW.Cursor(1, 1),
+                                      SW.InputButton(false, 0),
                                       SW.InputButton(false, 0),
                                       SW.InputButton(false, 0),
                                       SW.InputButton(false, 0),
@@ -91,9 +107,15 @@ function start()
     window = GLFW.CreateWindow(width_image, height_image, window_name)
     GLFW.MakeContextCurrent(window)
 
+    function cursor_position_callback(window, x, y)::Cvoid
+        user_input_state.cursor = SW.Cursor(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
+
+        return nothing
+    end
+
     function key_callback(window, key, scancode, action, mods)::Cvoid
-        if key == GLFW.KEY_ESCAPE && action == GLFW.PRESS
-            GLFW.SetWindowShouldClose(window, true)
+        if key == GLFW.KEY_ESCAPE
+            user_input_state.key_escape = update_button(user_input_state.key_escape, action)
         elseif key == GLFW.KEY_UP
             user_input_state.key_up = update_button(user_input_state.key_up, action)
         elseif key == GLFW.KEY_DOWN
@@ -109,8 +131,6 @@ function start()
         return nothing
     end
 
-    GLFW.SetKeyCallback(window, key_callback)
-
     function mouse_button_callback(window, button, action, mods)::Cvoid
         if button == GLFW.MOUSE_BUTTON_LEFT
             user_input_state.mouse_left = update_button(user_input_state.mouse_left, action)
@@ -123,20 +143,15 @@ function start()
         return nothing
     end
 
-    GLFW.SetMouseButtonCallback(window, mouse_button_callback)
-
-    function cursor_position_callback(window, x, y)::Cvoid
-        user_input_state.cursor = SW.Cursor(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
+    function character_callback(window, unicode_codepoint)::Cvoid
+        push!(user_input_state.characters, Char(unicode_codepoint))
 
         return nothing
     end
 
     GLFW.SetCursorPosCallback(window, cursor_position_callback)
-
-    function character_callback(window, unicode_codepoint)
-        return push!(user_input_state.characters, Char(unicode_codepoint))
-    end
-
+    GLFW.SetKeyCallback(window, key_callback)
+    GLFW.SetMouseButtonCallback(window, mouse_button_callback)
     GLFW.SetCharCallback(window, character_callback)
 
     MGL.glViewport(0, 0, width_image, height_image)
@@ -155,84 +170,79 @@ function start()
     clear_display()
 
     while !GLFW.WindowShouldClose(window)
-        drawing_time_start = time_ns()
+        if SW.went_down(user_input_state.key_escape.ended_down, user_input_state.key_escape.half_transition_count)
+            GLFW.SetWindowShouldClose(window, true)
+            break
+        end
+
+        compute_time_start = time_ns()
+
         SD.draw!(image, SD.Background(), background_color)
 
+        button1 = SW.WidgetID(@__LINE__, @__FILE__)
         button1_bounding_box = SW.BoundingBox(577, 1, 608, 200)
-        button1_id = SW.WidgetID(@__LINE__, @__FILE__)
-        button1_value = SW.do_widget!(user_interaction_state, button1_id, SW.BUTTON, button1_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
+        button1_value = SW.do_widget!(user_interaction_state, button1, SW.BUTTON, button1_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
         if button1_value
             text_color = 0x00aa0000
         end
-        button1_shape = convert(SD.Rectangle{Int}, button1_bounding_box)
-        SD.draw!(image, button1_shape, text_color)
-        SD.draw!(image, SD.TextLine(SD.Point(577, 1), "Button 1", SD.TERMINUS_32_16), text_color)
+        button1_rectangle = convert(SD.Rectangle{Int}, button1_bounding_box)
+        SD.draw!(image, button1_rectangle, text_color)
+        SD.draw!(image, SD.TextLine(button1_rectangle.position, "Button 1", SD.TERMINUS_32_16), text_color)
 
+        button2 = SW.WidgetID(@__LINE__, @__FILE__)
         button2_bounding_box = SW.BoundingBox(609, 1, 640, 200)
-        button2_id = SW.WidgetID(@__LINE__, @__FILE__)
-        button2_value = SW.do_widget!(user_interaction_state, button2_id, SW.BUTTON, button2_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
+        button2_value = SW.do_widget!(user_interaction_state, button2, SW.BUTTON, button2_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
         if button2_value
             text_color = 0x00000000
         end
-        button2_shape = convert(SD.Rectangle{Int}, button2_bounding_box)
-        SD.draw!(image, button2_shape, text_color)
-        SD.draw!(image, SD.TextLine(SD.Point(609, 1), "Button 2", SD.TERMINUS_32_16), text_color)
+        button2_rectangle = convert(SD.Rectangle{Int}, button2_bounding_box)
+        SD.draw!(image, button2_rectangle, text_color)
+        SD.draw!(image, SD.TextLine(button2_rectangle.position, "Button 2", SD.TERMINUS_32_16), text_color)
 
+        slider = SW.WidgetID(@__LINE__, @__FILE__)
         slider_bounding_box = SW.BoundingBox(641, 1, 672, 200)
-        slider_id = SW.WidgetID(@__LINE__, @__FILE__)
-        slider_value = SW.do_widget!(user_interaction_state, slider_id, SW.SLIDER, slider_bounding_box, user_input_state.cursor, user_input_state.mouse_left, slider_value)
-        slider_shape = convert(SD.Rectangle{Int}, slider_bounding_box)
-        SD.draw!(image, slider_shape, text_color)
-        slider_value_shape = SD.FilledRectangle(SD.Point(641, 1), 32, slider_value)
-        SD.draw!(image, slider_value_shape, text_color)
-        SD.draw!(image, SD.TextLine(SD.Point(641, 1), "Slider", SD.TERMINUS_32_16), 0x00ffffff)
+        slider_value = SW.do_widget!(user_interaction_state, slider, SW.SLIDER, slider_bounding_box, user_input_state.cursor, user_input_state.mouse_left, slider_value)
+        slider_rectangle = convert(SD.Rectangle{Int}, slider_bounding_box)
+        SD.draw!(image, slider_rectangle, text_color)
+        SD.draw!(image, SD.FilledRectangle(slider_rectangle.position, slider_rectangle.height, slider_value), text_color)
+        SD.draw!(image, SD.TextLine(slider_rectangle.position, "Slider", SD.TERMINUS_32_16), 0x00ffffff)
 
+        text_input = SW.WidgetID(@__LINE__, @__FILE__)
         text_input_bounding_box = SW.BoundingBox(673, 1, 704, 200)
-        text_input_id = SW.WidgetID(@__LINE__, @__FILE__)
-        SW.do_widget!(user_interaction_state, text_input_id, SW.TEXT_INPUT, text_input_bounding_box, user_input_state.cursor, user_input_state.mouse_left, text_line, user_input_state.characters)
-        text_input_shape = convert(SD.Rectangle{Int}, text_input_bounding_box)
-        SD.draw!(image, text_input_shape, text_color)
-        text_input_value_shape = SD.TextLine(SD.Point(673, 1), String(text_line), SD.TERMINUS_32_16)
-        SD.draw!(image, text_input_value_shape, text_color)
+        SW.do_widget!(user_interaction_state, text_input, SW.TEXT_INPUT, text_input_bounding_box, user_input_state.cursor, user_input_state.mouse_left, text_line, user_input_state.characters)
+        text_input_rectangle = convert(SD.Rectangle{Int}, text_input_bounding_box)
+        SD.draw!(image, text_input_rectangle, text_color)
+        SD.draw!(image, SD.TextLine(text_input_rectangle.position, text_line, SD.TERMINUS_32_16), text_color)
 
         empty!(lines)
         push!(lines, "Press the escape key to quit")
         push!(lines, "previous frame number: $(i)")
         push!(lines, "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
-        push!(lines, "average compute time spent per frame (averaged over previous $(length(drawing_time_buffer)) frames): $(round(sum(drawing_time_buffer) / (1e6 * length(drawing_time_buffer)), digits = 2)) ms")
-        push!(lines, "user_input_state.key_up: $(user_input_state.key_up)")
-        push!(lines, "user_input_state.key_down: $(user_input_state.key_down)")
-        push!(lines, "user_input_state.key_left: $(user_input_state.key_left)")
-        push!(lines, "user_input_state.key_right: $(user_input_state.key_right)")
-        push!(lines, "user_input_state.mouse_left: $(user_input_state.mouse_left)")
-        push!(lines, "user_input_state.mouse_right: $(user_input_state.mouse_right)")
-        push!(lines, "user_input_state.mouse_middle: $(user_input_state.mouse_middle)")
-        push!(lines, "user_input_state.cursor: $(user_input_state.cursor)")
+        push!(lines, "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms")
+        push!(lines, "cursor: $(user_input_state.cursor)")
+        push!(lines, "key_up: $(user_input_state.key_up)")
+        push!(lines, "key_down: $(user_input_state.key_down)")
+        push!(lines, "key_left: $(user_input_state.key_left)")
+        push!(lines, "key_right: $(user_input_state.key_right)")
+        push!(lines, "mouse_left: $(user_input_state.mouse_left)")
+        push!(lines, "mouse_right: $(user_input_state.mouse_right)")
+        push!(lines, "mouse_middle: $(user_input_state.mouse_middle)")
+        push!(lines, "hot_widget: $(user_interaction_state.hot_widget)")
+        push!(lines, "active_widget: $(user_interaction_state.active_widget)")
         push!(lines, "button1_value: $(button1_value)")
         push!(lines, "button2_value: $(button2_value)")
-        push!(lines, "text_color: $(repr(text_color))")
         push!(lines, "slider_value: $(slider_value)")
-        push!(lines, "user_interaction_state.hot_widget: $(user_interaction_state.hot_widget)")
-        push!(lines, "user_interaction_state.active_widget: $(user_interaction_state.active_widget)")
-
+        push!(lines, "text_input_value: $(String(text_line))")
         draw_lines!(image, lines, text_color)
 
-        drawing_time_end = time_ns()
-        push!(drawing_time_buffer, drawing_time_end - drawing_time_start)
+        compute_time_end = time_ns()
+        push!(compute_time_buffer, compute_time_end - compute_time_start)
 
         update_back_buffer(image)
 
         GLFW.SwapBuffers(window)
 
-        user_input_state.key_up = SW.reset(user_input_state.key_up)
-        user_input_state.key_down = SW.reset(user_input_state.key_down)
-        user_input_state.key_left = SW.reset(user_input_state.key_left)
-        user_input_state.key_right = SW.reset(user_input_state.key_right)
-        user_input_state.mouse_left = SW.reset(user_input_state.mouse_left)
-        user_input_state.mouse_right = SW.reset(user_input_state.mouse_right)
-        user_input_state.mouse_middle = SW.reset(user_input_state.mouse_middle)
-        empty!(user_input_state.characters)
-
+        reset!(user_input_state)
 
         GLFW.PollEvents()
 
