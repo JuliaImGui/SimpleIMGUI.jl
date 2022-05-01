@@ -39,6 +39,8 @@ function widget(hot_widget, active_widget, null_widget, widget, widget_type::But
     return hot_widget, active_widget, null_widget, value
 end
 
+widget(hot_widget, active_widget, null_widget, widg, widget_type::Button, i_min, j_min, i_max, j_max, cursor::Cursor, input_button::InputButton) = widget(hot_widget, active_widget, null_widget, widg, widget_type::Button, i_min, j_min, i_max, j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count)
+
 widget!!(hot_widget, active_widget, null_widget, widg, widget_type::Button, args...; kwargs...) = widget(hot_widget, active_widget, null_widget, widg, widget_type, args...; kwargs...)
 
 #####
@@ -70,6 +72,8 @@ function widget(hot_widget, active_widget, null_widget, widget, widget_type::Sli
 
     return hot_widget, active_widget, null_widget, value
 end
+
+widget(hot_widget, active_widget, null_widget, widg, widget_type::Slider, i_min, j_min, i_max, j_max, cursor::Cursor, input_button::InputButton, last_value) = widget(hot_widget, active_widget, null_widget, widg, widget_type::Slider, i_min, j_min, i_max, j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count, last_value)
 
 widget!!(hot_widget, active_widget, null_widget, widg, widget_type::Slider, args...; kwargs...) = widget(hot_widget, active_widget, null_widget, widg, widget_type, args...; kwargs...)
 
@@ -112,5 +116,7 @@ function widget!(hot_widget, active_widget, null_widget, widget, widget_type::Te
 
     return hot_widget, active_widget, null_widget
 end
+
+widget!(hot_widget, active_widget, null_widget, widg, widget_type::TextInput, i_min, j_min, i_max, j_max, cursor::Cursor, input_button::InputButton, text_line, characters) = widget!(hot_widget, active_widget, null_widget, widg, widget_type::TextInput, i_min, j_min, i_max, j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count, text_line, characters)
 
 widget!!(hot_widget, active_widget, null_widget, widg, widget_type::TextInput, args...; kwargs...) = (widget!(hot_widget, active_widget, null_widget, widg, widget_type, args...; kwargs...)..., nothing)
