@@ -150,7 +150,9 @@ function start()
     GLFW.SetCursorPosCallback(window, cursor_position_callback)
 
     function character_callback(window, unicode_codepoint)
-        return push!(user_input_state.characters, Char(unicode_codepoint))
+        push!(user_input_state.characters, Char(unicode_codepoint))
+
+        return nothing
     end
 
     GLFW.SetCharCallback(window, character_callback)
