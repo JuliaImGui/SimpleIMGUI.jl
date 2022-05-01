@@ -14,6 +14,7 @@ end
 
 mutable struct UserInputState
     cursor::SW.Cursor
+    key_escape::SW.InputButton
     key_up::SW.InputButton
     key_down::SW.InputButton
     key_left::SW.InputButton
@@ -81,6 +82,7 @@ function start()
                                       SW.InputButton(false, 0),
                                       SW.InputButton(false, 0),
                                       SW.InputButton(false, 0),
+                                      SW.InputButton(false, 0),
                                       Char[],
                                      )
 
@@ -92,8 +94,8 @@ function start()
     GLFW.MakeContextCurrent(window)
 
     function key_callback(window, key, scancode, action, mods)::Cvoid
-        if key == GLFW.KEY_ESCAPE && action == GLFW.PRESS
-            GLFW.SetWindowShouldClose(window, true)
+        if key == GLFW.KEY_ESCAPE
+            user_input_state.key_escape = update_button(user_input_state.key_escape, action)
         elseif key == GLFW.KEY_UP
             user_input_state.key_up = update_button(user_input_state.key_up, action)
         elseif key == GLFW.KEY_DOWN
@@ -155,6 +157,11 @@ function start()
     clear_display()
 
     while !GLFW.WindowShouldClose(window)
+        if SW.went_down(user_input_state.key_escape.ended_down, user_input_state.key_escape.half_transition_count)
+            GLFW.SetWindowShouldClose(window, true)
+            break
+        end
+
         drawing_time_start = time_ns()
         SD.draw!(image, SD.Background(), background_color)
 
