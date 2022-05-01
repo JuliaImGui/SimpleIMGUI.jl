@@ -229,6 +229,7 @@ function start()
 
         GLFW.SwapBuffers(window)
 
+        user_input_state.key_escape = SW.reset(user_input_state.key_escape)
         user_input_state.key_up = SW.reset(user_input_state.key_up)
         user_input_state.key_down = SW.reset(user_input_state.key_down)
         user_input_state.key_left = SW.reset(user_input_state.key_left)
