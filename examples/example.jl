@@ -82,8 +82,8 @@ function start()
     time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(time_stamp_buffer, time_ns())
 
-    drawing_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(drawing_time_buffer, zero(UInt))
+    compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(compute_time_buffer, zero(UInt))
 
     user_interaction_state = UserInteractionState(SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID)
 
@@ -176,7 +176,8 @@ function start()
             break
         end
 
-        drawing_time_start = time_ns()
+        compute_time_start = time_ns()
+
         SD.draw!(image, SD.Background(), background_color)
 
         button1 = SW.WidgetID(@__LINE__, @__FILE__)
@@ -218,7 +219,7 @@ function start()
         push!(lines, "Press the escape key to quit")
         push!(lines, "previous frame number: $(i)")
         push!(lines, "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
-        push!(lines, "average compute time spent per frame (averaged over previous $(length(drawing_time_buffer)) frames): $(round(sum(drawing_time_buffer) / (1e6 * length(drawing_time_buffer)), digits = 2)) ms")
+        push!(lines, "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms")
         push!(lines, "cursor: $(user_input_state.cursor)")
         push!(lines, "key_up: $(user_input_state.key_up)")
         push!(lines, "key_down: $(user_input_state.key_down)")
@@ -233,11 +234,10 @@ function start()
         push!(lines, "button2_value: $(button2_value)")
         push!(lines, "slider_value: $(slider_value)")
         push!(lines, "text_input_value: $(String(text_line))")
-
         draw_lines!(image, lines, text_color)
 
-        drawing_time_end = time_ns()
-        push!(drawing_time_buffer, drawing_time_end - drawing_time_start)
+        compute_time_end = time_ns()
+        push!(compute_time_buffer, compute_time_end - compute_time_start)
 
         update_back_buffer(image)
 
