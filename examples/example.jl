@@ -160,7 +160,7 @@ function start()
 
         button1_bounding_box = SW.BoundingBox(577, 1, 608, 200)
         button1_id = SW.WidgetID(@__LINE__, @__FILE__)
-        button1_value = SW.widget!(ui_state, button1_id, SW.BUTTON, button1_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
+        button1_value = SW.do_widget!(ui_state, button1_id, SW.BUTTON, button1_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
         if button1_value
             text_color = 0x00aa0000
         end
@@ -170,7 +170,7 @@ function start()
 
         button2_bounding_box = SW.BoundingBox(609, 1, 640, 200)
         button2_id = SW.WidgetID(@__LINE__, @__FILE__)
-        button2_value = SW.widget!(ui_state, button2_id, SW.BUTTON, button2_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
+        button2_value = SW.do_widget!(ui_state, button2_id, SW.BUTTON, button2_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
         if button2_value
             text_color = 0x00000000
         end
@@ -180,7 +180,7 @@ function start()
 
         slider_bounding_box = SW.BoundingBox(641, 1, 672, 200)
         slider_id = SW.WidgetID(@__LINE__, @__FILE__)
-        slider_value = SW.widget!(ui_state, slider_id, SW.SLIDER, slider_bounding_box, user_input_state.cursor, user_input_state.mouse_left, slider_value)
+        slider_value = SW.do_widget!(ui_state, slider_id, SW.SLIDER, slider_bounding_box, user_input_state.cursor, user_input_state.mouse_left, slider_value)
         slider_shape = convert(SD.Rectangle{Int}, slider_bounding_box)
         SD.draw!(image, slider_shape, text_color)
         slider_value_shape = SD.FilledRectangle(SD.Point(641, 1), 32, slider_value)
@@ -189,7 +189,7 @@ function start()
 
         text_input_bounding_box = SW.BoundingBox(673, 1, 704, 200)
         text_input_id = SW.WidgetID(@__LINE__, @__FILE__)
-        SW.widget!(ui_state, text_input_id, SW.TEXT_INPUT, text_input_bounding_box, user_input_state.cursor, user_input_state.mouse_left, text_line, user_input_state.characters)
+        SW.do_widget!(ui_state, text_input_id, SW.TEXT_INPUT, text_input_bounding_box, user_input_state.cursor, user_input_state.mouse_left, text_line, user_input_state.characters)
         text_input_shape = convert(SD.Rectangle{Int}, text_input_bounding_box)
         SD.draw!(image, text_input_shape, text_color)
         text_input_value_shape = SD.TextLine(SD.Point(673, 1), String(text_line), SD.TERMINUS_32_16)
