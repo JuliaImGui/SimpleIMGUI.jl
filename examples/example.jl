@@ -170,7 +170,7 @@ function start()
     clear_display()
 
     while !GLFW.WindowShouldClose(window)
-        if SW.went_down(user_input_state.key_escape.ended_down, user_input_state.key_escape.half_transition_count)
+        if SW.went_down(user_input_state.key_escape)
             GLFW.SetWindowShouldClose(window, true)
             break
         end
