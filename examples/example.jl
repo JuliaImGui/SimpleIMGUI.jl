@@ -177,10 +177,12 @@ function start()
 
         compute_time_start = time_ns()
 
+        layout = SW.BoxLayout(SW.BoundingBox(577, 1, 576, 0))
+
         SD.draw!(image, SD.Background(), background_color)
 
         button1 = SW.WidgetID(@__LINE__, @__FILE__)
-        button1_bounding_box = SW.BoundingBox(577, 1, 608, 200)
+        layout, button1_bounding_box = SW.add_widget(layout, SW.VERTICAL, 32, 200)
         button1_value = SW.do_widget!(user_interaction_state, button1, SW.BUTTON, button1_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
         if button1_value
             text_color = 0x00aa0000
@@ -190,7 +192,7 @@ function start()
         SD.draw!(image, SD.TextLine(button1_rectangle.position, "Button 1", font), text_color)
 
         button2 = SW.WidgetID(@__LINE__, @__FILE__)
-        button2_bounding_box = SW.BoundingBox(609, 1, 640, 200)
+        layout, button2_bounding_box = SW.add_widget(layout, SW.VERTICAL, 32, 200)
         button2_value = SW.do_widget!(user_interaction_state, button2, SW.BUTTON, button2_bounding_box, user_input_state.cursor, user_input_state.mouse_left)
         if button2_value
             text_color = 0x00000000
@@ -200,7 +202,7 @@ function start()
         SD.draw!(image, SD.TextLine(button2_rectangle.position, "Button 2", font), text_color)
 
         slider = SW.WidgetID(@__LINE__, @__FILE__)
-        slider_bounding_box = SW.BoundingBox(641, 1, 672, 200)
+        layout, slider_bounding_box = SW.add_widget(layout, SW.VERTICAL, 32, 200)
         slider_value = SW.do_widget!(user_interaction_state, slider, SW.SLIDER, slider_bounding_box, user_input_state.cursor, user_input_state.mouse_left, slider_value)
         slider_rectangle = convert(SD.Rectangle{Int}, slider_bounding_box)
         SD.draw!(image, slider_rectangle, text_color)
@@ -208,7 +210,7 @@ function start()
         SD.draw!(image, SD.TextLine(slider_rectangle.position, "Slider", font), 0x00ffffff)
 
         text_input = SW.WidgetID(@__LINE__, @__FILE__)
-        text_input_bounding_box = SW.BoundingBox(673, 1, 704, 200)
+        layout, text_input_bounding_box = SW.add_widget(layout, SW.VERTICAL, 32, 200)
         SW.do_widget!(user_interaction_state, text_input, SW.TEXT_INPUT, text_input_bounding_box, user_input_state.cursor, user_input_state.mouse_left, text_line, user_input_state.characters)
         text_input_rectangle = convert(SD.Rectangle{Int}, text_input_bounding_box)
         SD.draw!(image, text_input_rectangle, text_color)
