@@ -49,17 +49,6 @@ function update_button(button, action)
     end
 end
 
-function draw_lines!(image, lines, color, font)
-    height_font = SD.get_height(font)
-
-    for (i, text) in enumerate(lines)
-        position = SD.Point(1 + (i - 1) * height_font, 1)
-        SD.draw!(image, SD.TextLine(position, text, font), color)
-    end
-
-    return nothing
-end
-
 Base.convert(::Type{SD.Rectangle{I}}, x::SW.BoundingBox) where {I} = SD.Rectangle(SD.Point(convert(I, x.i_min), convert(I, x.j_min)), convert(I, x.i_max - x.i_min + one(x.i_min)), convert(I, x.j_max - x.j_min + one(x.j_min)))
 
 function start()
@@ -72,10 +61,8 @@ function start()
     font = SD.TERMINUS_32_16
 
     image = zeros(MGL.GLuint, height_image, width_image)
-    lines = String[]
 
     SD.draw!(image, SD.Background(), background_color)
-    draw_lines!(image, lines, text_color, font)
 
     i = 0
 
@@ -177,7 +164,7 @@ function start()
 
         compute_time_start = time_ns()
 
-        layout = SW.BoxLayout(SW.BoundingBox(577, 1, 576, 0))
+        layout = SW.BoxLayout(SW.BoundingBox(1, 1, 0, 0))
 
         SD.draw!(image, SD.Background(), background_color)
 
@@ -216,26 +203,75 @@ function start()
         SD.draw!(image, text_input_rectangle, text_color)
         SD.draw!(image, SD.TextLine(text_input_rectangle.position, text_line, font), text_color)
 
-        empty!(lines)
-        push!(lines, "Press the escape key to quit")
-        push!(lines, "previous frame number: $(i)")
-        push!(lines, "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
-        push!(lines, "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms")
-        push!(lines, "cursor: $(user_input_state.cursor)")
-        push!(lines, "key_up: $(user_input_state.key_up)")
-        push!(lines, "key_down: $(user_input_state.key_down)")
-        push!(lines, "key_left: $(user_input_state.key_left)")
-        push!(lines, "key_right: $(user_input_state.key_right)")
-        push!(lines, "mouse_left: $(user_input_state.mouse_left)")
-        push!(lines, "mouse_right: $(user_input_state.mouse_right)")
-        push!(lines, "mouse_middle: $(user_input_state.mouse_middle)")
-        push!(lines, "hot_widget: $(user_interaction_state.hot_widget)")
-        push!(lines, "active_widget: $(user_interaction_state.active_widget)")
-        push!(lines, "button1_value: $(button1_value)")
-        push!(lines, "button2_value: $(button2_value)")
-        push!(lines, "slider_value: $(slider_value)")
-        push!(lines, "text_input_value: $(String(text_line))")
-        draw_lines!(image, lines, text_color, font)
+        text = "Press the escape key to quit"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "previous frame number: $(i)"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "cursor: $(user_input_state.cursor)"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "mouse_left: $(user_input_state.mouse_left)"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "mouse_right: $(user_input_state.mouse_right)"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "mouse_middle: $(user_input_state.mouse_middle)"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "hot_widget: $(user_interaction_state.hot_widget)"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "active_widget: $(user_interaction_state.active_widget)"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "button1_value: $(button1_value)"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "button2_value: $(button2_value)"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "slider_value: $(slider_value)"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+
+        text = "text_input_value: $(String(text_line))"
+        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
+        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
+        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
 
         compute_time_end = time_ns()
         push!(compute_time_buffer, compute_time_end - compute_time_start)
