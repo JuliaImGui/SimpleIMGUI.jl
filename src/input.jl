@@ -8,11 +8,6 @@ struct Point
     j::Int
 end
 
-struct Cursor
-    i::Int
-    j::Int
-end
-
 struct BoundingBox
     i_min::Int
     j_min::Int
