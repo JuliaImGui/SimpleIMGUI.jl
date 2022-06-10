@@ -1,12 +1,12 @@
-abstract type AbstractWidget end
+abstract type AbstractWidgetType end
 
-struct Button <: AbstractWidget end
+struct Button <: AbstractWidgetType end
 const BUTTON = Button()
 
-struct Slider <: AbstractWidget end
+struct Slider <: AbstractWidgetType end
 const SLIDER = Slider()
 
-struct TextInput <: AbstractWidget end
+struct TextInput <: AbstractWidgetType end
 const TEXT_INPUT = TextInput()
 
 #####
