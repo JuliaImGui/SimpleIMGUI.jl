@@ -7,12 +7,6 @@ import SimpleWidgets as SW
 include("opengl_utils.jl")
 include("widget_utils.jl")
 
-mutable struct UserInteractionState <: SW.AbstractUserInteractionState
-    hot_widget::SW.WidgetID
-    active_widget::SW.WidgetID
-    null_widget::SW.WidgetID
-end
-
 mutable struct UserInputState
     cursor::SW.Point
     key_escape::SW.InputButton
