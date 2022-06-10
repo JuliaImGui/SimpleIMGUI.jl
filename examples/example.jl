@@ -163,10 +163,10 @@ function start()
         SD.draw!(image, SD.Background(), background_color)
 
         layout, button1 = SW.do_widget!(
+                                SW.BUTTON,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
-                                SW.BUTTON,
                                 SW.WidgetID(@__LINE__, @__FILE__),
                                 layout,
                                 SW.VERTICAL,
@@ -178,10 +178,10 @@ function start()
                                )
 
         layout, button2 = SW.do_widget!(
+                                SW.BUTTON,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
-                                SW.BUTTON,
                                 SW.WidgetID(@__LINE__, @__FILE__),
                                 layout,
                                 SW.VERTICAL,
@@ -193,10 +193,10 @@ function start()
                                )
 
         layout, slider = SW.do_widget!(
+                                SW.SLIDER,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
-                                SW.SLIDER,
                                 SW.WidgetID(@__LINE__, @__FILE__),
                                 slider,
                                 layout,
@@ -210,10 +210,10 @@ function start()
                                )
 
         layout, _ = SW.do_widget!(
+                                SW.TEXT_INPUT,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
-                                SW.TEXT_INPUT,
                                 SW.WidgetID(@__LINE__, @__FILE__),
                                 text_input,
                                 layout,
