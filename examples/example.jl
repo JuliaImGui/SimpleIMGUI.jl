@@ -7,7 +7,7 @@ import SimpleWidgets as SW
 include("opengl_utils.jl")
 include("widget_utils.jl")
 
-mutable struct UserInteractionState <: SW.AbstractUIState
+mutable struct UserInteractionState <: SW.AbstractUserInteractionState
     hot_widget::SW.WidgetID
     active_widget::SW.WidgetID
     null_widget::SW.WidgetID
@@ -72,7 +72,7 @@ function start()
     compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(compute_time_buffer, zero(UInt))
 
-    user_interaction_state = UserInteractionState(SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID)
+    user_interaction_state = SW.UserInteractionState(SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID)
 
     user_input_state = UserInputState(
                                       SW.Point(1, 1),
