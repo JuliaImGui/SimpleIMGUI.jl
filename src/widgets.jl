@@ -317,7 +317,7 @@ function do_widget!(
 end
 
 #####
-##### TextInput
+##### TextDisplay
 #####
 
 function do_widget!(
