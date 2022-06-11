@@ -174,25 +174,25 @@ do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, ar
 ##### TextInput
 #####
 
-function get_widget_value!(::TextInput, hot_widget, active_widget, widget, text_line, characters)
+function get_widget_value!(::TextInput, hot_widget, active_widget, widget, text, characters)
     if (active_widget == widget) && (hot_widget == widget)
         for character in characters
             if isascii(character)
                 if isprint(character)
-                    push!(text_line, character)
+                    push!(text, character)
                 elseif character == '\b'
-                    if length(text_line) > 0
-                        pop!(text_line)
+                    if length(text) > 0
+                        pop!(text)
                     end
                 end
             end
         end
     end
 
-    return text_line
+    return text
 end
 
-function do_widget!(widget_type::TextInput, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text_line, characters)
+function do_widget!(widget_type::TextInput, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text, characters)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
@@ -201,7 +201,7 @@ function do_widget!(widget_type::TextInput, hot_widget, active_widget, null_widg
 
     active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, widget, mouse_over_widget && mouse_went_up)
 
-    value = get_widget_value!(widget_type, hot_widget, active_widget, widget, text_line, characters)
+    value = get_widget_value!(widget_type, hot_widget, active_widget, widget, text, characters)
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, widget, !mouse_over_widget && mouse_went_up)
 
@@ -219,7 +219,7 @@ function do_widget!(
         bounding_box::SD.Rectangle,
         cursor::SD.Point,
         input_button::InputButton,
-        text_line,
+        text,
         characters
     )
 
@@ -237,7 +237,7 @@ function do_widget!(
                      cursor.j,
                      input_button.ended_down,
                      input_button.half_transition_count,
-                     text_line,
+                     text,
                      characters,
                     )
 end

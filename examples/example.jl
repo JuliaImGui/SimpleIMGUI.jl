@@ -54,8 +54,8 @@ function start()
                                       Char[],
                                      )
 
-    slider = 1
-    text_input = collect("Text box")
+    slider_value = 1
+    text_input_value = collect("Text box")
 
     setup_window_hints()
     window = GLFW.CreateWindow(width_image, height_image, window_name)
@@ -135,7 +135,7 @@ function start()
 
         SD.draw!(image, SD.Background(), background_color)
 
-        layout, button1 = SW.do_widget!(
+        layout, button1_value = SW.do_widget!(
                                 SW.BUTTON,
                                 image,
                                 user_interaction_state,
@@ -150,7 +150,7 @@ function start()
                                 text_color,
                                )
 
-        layout, button2 = SW.do_widget!(
+        layout, button2_value = SW.do_widget!(
                                 SW.BUTTON,
                                 image,
                                 user_interaction_state,
@@ -165,13 +165,13 @@ function start()
                                 text_color,
                                )
 
-        layout, slider = SW.do_widget!(
+        layout, slider_value = SW.do_widget!(
                                 SW.SLIDER,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
                                 SW.WidgetID(@__LINE__, @__FILE__),
-                                slider,
+                                slider_value,
                                 layout,
                                 SW.VERTICAL,
                                 SD.get_height(font),
@@ -182,13 +182,13 @@ function start()
                                 slider_color,
                                )
 
-        layout, text_input = SW.do_widget!(
+        layout, text_input_value = SW.do_widget!(
                                 SW.TEXT_INPUT,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
                                 SW.WidgetID(@__LINE__, @__FILE__),
-                                text_input,
+                                text_input_value,
                                 layout,
                                 SW.VERTICAL,
                                 SD.get_height(font),
@@ -327,7 +327,7 @@ function start()
                                 text_color,
                                )
 
-        text = "button1: $(button1)"
+        text = "button1_value: $(button1_value)"
         layout, _ = SW.do_widget!(
                                 SW.TEXT_DISPLAY,
                                 image,
@@ -340,7 +340,7 @@ function start()
                                 text_color,
                                )
 
-        text = "button2: $(button2)"
+        text = "button2_value: $(button2_value)"
         layout, _ = SW.do_widget!(
                                 SW.TEXT_DISPLAY,
                                 image,
@@ -353,7 +353,7 @@ function start()
                                 text_color,
                                )
 
-        text = "slider: $(slider)"
+        text = "slider_value: $(slider_value)"
         layout, _ = SW.do_widget!(
                                 SW.TEXT_DISPLAY,
                                 image,
@@ -366,7 +366,7 @@ function start()
                                 text_color,
                                )
 
-        text = "text_input: $(text_input)"
+        text = "text_input_value: $(text_input_value)"
         layout, _ = SW.do_widget!(
                                 SW.TEXT_DISPLAY,
                                 image,
