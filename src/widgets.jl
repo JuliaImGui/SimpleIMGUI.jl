@@ -108,6 +108,29 @@ end
 
 do_widget!!(widget_type::Button, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
+function do_widget!(
+        widget_type::Button,
+        image,
+        user_interaction_state,
+        user_input_state,
+        widget,
+        layout::BoxLayout,
+        orientation::Vertical,
+        height_widget,
+        width_widget,
+        text,
+        font,
+        color
+    )
+
+    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left)
+    SD.draw!(image, bounding_box, color)
+    SD.draw!(image, SD.TextLine(bounding_box.position, text, font), color)
+
+    return layout, value
+end
+
 #####
 ##### Slider
 #####
@@ -169,6 +192,32 @@ function do_widget(
 end
 
 do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
+
+function do_widget!(
+        widget_type::Slider,
+        image,
+        user_interaction_state,
+        user_input_state,
+        widget,
+        value,
+        layout::BoxLayout,
+        orientation::Vertical,
+        height_widget,
+        width_widget,
+        text,
+        font,
+        text_color,
+        slider_color
+    )
+
+    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value)
+    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, value), slider_color)
+    SD.draw!(image, bounding_box, text_color)
+    SD.draw!(image, SD.TextLine(bounding_box.position, text, font), text_color)
+
+    return layout, value
+end
 
 #####
 ##### TextInput
@@ -243,3 +292,49 @@ function do_widget!(
 end
 
 do_widget!!(widget_type::TextInput, args...; kwargs...) = do_widget!(widget_type, args...; kwargs...)
+
+function do_widget!(
+        widget_type::TextInput,
+        image,
+        user_interaction_state,
+        user_input_state,
+        widget,
+        value,
+        layout::BoxLayout,
+        orientation::Vertical,
+        height_widget,
+        width_widget,
+        font,
+        color,
+    )
+
+    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value, user_input_state.characters)
+    SD.draw!(image, bounding_box, color)
+    SD.draw!(image, SD.TextLine(bounding_box.position, value, font), color)
+
+    return layout, value
+end
+
+#####
+##### TextInput
+#####
+
+function do_widget!(
+        widget_type::TextDisplay,
+        image,
+        text,
+        layout::BoxLayout,
+        orientation::Vertical,
+        height_widget,
+        width_widget,
+        font,
+        color,
+    )
+
+    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    SD.draw!(image, bounding_box, color)
+    SD.draw!(image, SD.TextLine(bounding_box.position, text, font), color)
+
+    return layout, text
+end

@@ -5,7 +5,6 @@ import SimpleDraw as SD
 import SimpleWidgets as SW
 
 include("opengl_utils.jl")
-include("widget_utils.jl")
 
 function update_button(button, action)
     if action == GLFW.PRESS
