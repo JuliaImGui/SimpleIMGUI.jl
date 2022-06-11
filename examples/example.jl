@@ -42,7 +42,7 @@ function start()
     user_interaction_state = SW.UserInteractionState(SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID)
 
     user_input_state = SW.UserInputState(
-                                      SW.Point(1, 1),
+                                      SD.Point(1, 1),
                                       SW.InputButton(false, 0),
                                       SW.InputButton(false, 0),
                                       SW.InputButton(false, 0),
@@ -62,7 +62,7 @@ function start()
     GLFW.MakeContextCurrent(window)
 
     function cursor_position_callback(window, x, y)::Cvoid
-        user_input_state.cursor = SW.Point(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
+        user_input_state.cursor = SD.Point(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
 
         return nothing
     end

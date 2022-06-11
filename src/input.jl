@@ -3,11 +3,6 @@ struct InputButton
     half_transition_count::Int
 end
 
-struct Point
-    i::Int
-    j::Int
-end
-
 struct BoundingBox
     i_min::Int
     j_min::Int
@@ -18,7 +13,7 @@ end
 abstract type AbstractUserInputState end
 
 mutable struct UserInputState <: AbstractUserInputState
-    cursor::Point
+    cursor::SD.Point
     key_escape::InputButton
     key_up::InputButton
     key_down::InputButton
@@ -30,7 +25,7 @@ mutable struct UserInputState <: AbstractUserInputState
     characters::Vector{Char}
 end
 
-BoundingBox(point::Point, height, width) = BoundingBox(point.i, point.j, point.i + height - one(height), point.j + width - one(width))
+BoundingBox(point::SD.Point, height, width) = BoundingBox(point.i, point.j, point.i + height - one(height), point.j + width - one(width))
 
 went_down(ended_down, half_transition_count) = (half_transition_count >= 2) || ((half_transition_count == 1) && ended_down)
 went_up(ended_down, half_transition_count) = (half_transition_count >= 2) || ((half_transition_count == 1) && !ended_down)

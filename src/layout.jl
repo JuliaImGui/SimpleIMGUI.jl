@@ -16,9 +16,9 @@ update_layout(layout::BoxLayout, ::Vertical, height, width) = BoxLayout(Bounding
 
 update_layout(layout::BoxLayout, ::Horizontal, height, width) = BoxLayout(BoundingBox(layout.bounding_box.i_min, layout.bounding_box.j_min, max(layout.bounding_box.i_max, layout.bounding_box.i_min + height - one(height)), layout.bounding_box.j_max + width))
 
-get_widget_position(layout::BoxLayout, ::Vertical) = Point(layout.bounding_box.i_max + one(layout.bounding_box.i_max), layout.bounding_box.j_min)
+get_widget_position(layout::BoxLayout, ::Vertical) = SD.Point(layout.bounding_box.i_max + one(layout.bounding_box.i_max), layout.bounding_box.j_min)
 
-get_widget_position(layout::BoxLayout, ::Horizontal) = Point(layout.bounding_box.i_min, layout.bounding_box.j_max + one(layout.bounding_box.j_max))
+get_widget_position(layout::BoxLayout, ::Horizontal) = SD.Point(layout.bounding_box.i_min, layout.bounding_box.j_max + one(layout.bounding_box.j_max))
 
 function get_widget_bounding_box(layout::BoxLayout, direction::AbstractDirection, height, width)
     widget_position = get_widget_position(layout, direction)
