@@ -1,4 +1,4 @@
-module SimpleWidgets
+module SimpleIMGUI
 
 import SimpleDraw as SD
 

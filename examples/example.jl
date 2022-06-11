@@ -2,15 +2,15 @@ import ModernGL as MGL
 import DataStructures as DS
 import GLFW
 import SimpleDraw as SD
-import SimpleWidgets as SW
+import SimpleIMGUI as SI
 
 include("opengl_utils.jl")
 
 function update_button(button, action)
     if action == GLFW.PRESS
-        return SW.press_button(button)
+        return SI.press_button(button)
     elseif action == GLFW.RELEASE
-        return SW.release_button(button)
+        return SI.release_button(button)
     else
         return button
     end
@@ -38,18 +38,18 @@ function start()
     compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(compute_time_buffer, zero(UInt))
 
-    user_interaction_state = SW.UserInteractionState(SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID, SW.NULL_WIDGET_ID)
+    user_interaction_state = SI.UserInteractionState(SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID)
 
-    user_input_state = SW.UserInputState(
+    user_input_state = SI.UserInputState(
                                       SD.Point(1, 1),
-                                      SW.InputButton(false, 0),
-                                      SW.InputButton(false, 0),
-                                      SW.InputButton(false, 0),
-                                      SW.InputButton(false, 0),
-                                      SW.InputButton(false, 0),
-                                      SW.InputButton(false, 0),
-                                      SW.InputButton(false, 0),
-                                      SW.InputButton(false, 0),
+                                      SI.InputButton(false, 0),
+                                      SI.InputButton(false, 0),
+                                      SI.InputButton(false, 0),
+                                      SI.InputButton(false, 0),
+                                      SI.InputButton(false, 0),
+                                      SI.InputButton(false, 0),
+                                      SI.InputButton(false, 0),
+                                      SI.InputButton(false, 0),
                                       Char[],
                                      )
 
@@ -123,25 +123,25 @@ function start()
     clear_display()
 
     while !GLFW.WindowShouldClose(window)
-        if SW.went_down(user_input_state.key_escape)
+        if SI.went_down(user_input_state.key_escape)
             GLFW.SetWindowShouldClose(window, true)
             break
         end
 
         compute_time_start = time_ns()
 
-        layout = SW.BoxLayout(SD.Rectangle(SD.Point(1, 1), 0, 0))
+        layout = SI.BoxLayout(SD.Rectangle(SD.Point(1, 1), 0, 0))
 
         SD.draw!(image, SD.Background(), background_color)
 
-        layout, button1_value = SW.do_widget!(
-                                SW.BUTTON,
+        layout, button1_value = SI.do_widget!(
+                                SI.BUTTON,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
-                                SW.WidgetID(@__LINE__, @__FILE__),
+                                SI.WidgetID(@__LINE__, @__FILE__),
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 200,
                                 "Button 1",
@@ -149,14 +149,14 @@ function start()
                                 text_color,
                                )
 
-        layout, button2_value = SW.do_widget!(
-                                SW.BUTTON,
+        layout, button2_value = SI.do_widget!(
+                                SI.BUTTON,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
-                                SW.WidgetID(@__LINE__, @__FILE__),
+                                SI.WidgetID(@__LINE__, @__FILE__),
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 200,
                                 "Button 2",
@@ -164,15 +164,15 @@ function start()
                                 text_color,
                                )
 
-        layout, slider_value = SW.do_widget!(
-                                SW.SLIDER,
+        layout, slider_value = SI.do_widget!(
+                                SI.SLIDER,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
-                                SW.WidgetID(@__LINE__, @__FILE__),
+                                SI.WidgetID(@__LINE__, @__FILE__),
                                 slider_value,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 200,
                                 "Slider",
@@ -181,15 +181,15 @@ function start()
                                 slider_color,
                                )
 
-        layout, text_input_value = SW.do_widget!(
-                                SW.TEXT_INPUT,
+        layout, text_input_value = SI.do_widget!(
+                                SI.TEXT_INPUT,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
-                                SW.WidgetID(@__LINE__, @__FILE__),
+                                SI.WidgetID(@__LINE__, @__FILE__),
                                 text_input_value,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 200,
                                 font,
@@ -197,12 +197,12 @@ function start()
                                )
 
         text = "Press the escape key to quit"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -210,12 +210,12 @@ function start()
                                )
 
         text = "previous frame number: $(i)"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -223,12 +223,12 @@ function start()
                                )
 
         text = "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -236,12 +236,12 @@ function start()
                                )
 
         text = "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -249,12 +249,12 @@ function start()
                                )
 
         text = "cursor: $(user_input_state.cursor)"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -262,12 +262,12 @@ function start()
                                )
 
         text = "mouse_left: $(user_input_state.mouse_left)"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -275,12 +275,12 @@ function start()
                                )
 
         text = "mouse_right: $(user_input_state.mouse_right)"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -288,12 +288,12 @@ function start()
                                )
 
         text = "mouse_middle: $(user_input_state.mouse_middle)"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -301,12 +301,12 @@ function start()
                                )
 
         text = "hot_widget: $(user_interaction_state.hot_widget)"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -314,12 +314,12 @@ function start()
                                )
 
         text = "active_widget: $(user_interaction_state.active_widget)"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -327,12 +327,12 @@ function start()
                                )
 
         text = "button1_value: $(button1_value)"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -340,12 +340,12 @@ function start()
                                )
 
         text = "button2_value: $(button2_value)"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -353,12 +353,12 @@ function start()
                                )
 
         text = "slider_value: $(slider_value)"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -366,12 +366,12 @@ function start()
                                )
 
         text = "text_input_value: $(text_input_value)"
-        layout, _ = SW.do_widget!(
-                                SW.TEXT_DISPLAY,
+        layout, _ = SI.do_widget!(
+                                SI.TEXT_DISPLAY,
                                 image,
                                 text,
                                 layout,
-                                SW.VERTICAL,
+                                SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 font,
@@ -385,7 +385,7 @@ function start()
 
         GLFW.SwapBuffers(window)
 
-        SW.reset!(user_input_state)
+        SI.reset!(user_input_state)
 
         GLFW.PollEvents()
 

@@ -185,7 +185,7 @@ git-tree-sha1 = "0fe04590acbc1a3de2c0556a946d04e20c9f4c2a"
 uuid = "d1acf6f4-8553-480e-80ae-3c883f0a995a"
 version = "0.4.0"
 
-[[deps.SimpleWidgets]]
+[[deps.SimpleIMGUI]]
 deps = ["SimpleDraw"]
 path = ".."
 uuid = "37c0dfa8-367e-4f81-95ac-b6bdb4b61673"

@@ -1,4 +1,4 @@
-name = "SimpleWidgets"
+name = "SimpleIMGUI"
 uuid = "37c0dfa8-367e-4f81-95ac-b6bdb4b61673"
 authors = ["Siddharth Bhatia <sidb60200@gmail.com> and contributors"]
 version = "0.1.0"

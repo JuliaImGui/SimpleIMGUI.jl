@@ -1,6 +1,6 @@
-using SimpleWidgets
+using SimpleIMGUI
 using Test
 
-@testset "SimpleWidgets.jl" begin
+@testset "SimpleIMGUI.jl" begin
     # Write your tests here.
 end
