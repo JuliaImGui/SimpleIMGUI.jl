@@ -78,7 +78,33 @@ function do_widget(widget_type::Button, hot_widget, active_widget, null_widget, 
     return hot_widget, active_widget, null_widget, value
 end
 
-do_widget(widget_type::Button, hot_widget, active_widget, null_widget, widget, bounding_box::BoundingBox, cursor::SD.Point, input_button::InputButton) = do_widget(widget_type, hot_widget, active_widget, null_widget, widget, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count)
+function do_widget(
+        widget_type::Button,
+        hot_widget,
+        active_widget,
+        null_widget,
+        widget,
+        bounding_box::SD.Rectangle,
+        cursor::SD.Point,
+        input_button::InputButton
+    )
+
+    return do_widget(
+                     widget_type,
+                     hot_widget,
+                     active_widget,
+                     null_widget,
+                     widget,
+                     SD.get_i_min(bounding_box),
+                     SD.get_j_min(bounding_box),
+                     SD.get_i_max(bounding_box),
+                     SD.get_j_max(bounding_box),
+                     cursor.i,
+                     cursor.j,
+                     input_button.ended_down,
+                     input_button.half_transition_count,
+                    )
+end
 
 do_widget!!(widget_type::Button, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
@@ -112,7 +138,35 @@ function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, 
     return hot_widget, active_widget, null_widget, value
 end
 
-do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, widget, bounding_box::BoundingBox, cursor::SD.Point, input_button::InputButton, last_value) = do_widget(widget_type, hot_widget, active_widget, null_widget, widget, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count, last_value)
+function do_widget(
+        widget_type::Slider,
+        hot_widget,
+        active_widget,
+        null_widget,
+        widget,
+        bounding_box::SD.Rectangle,
+        cursor::SD.Point,
+        input_button::InputButton,
+        last_value
+    )
+
+    return do_widget(
+                     widget_type,
+                     hot_widget,
+                     active_widget,
+                     null_widget,
+                     widget,
+                     SD.get_i_min(bounding_box),
+                     SD.get_j_min(bounding_box),
+                     SD.get_i_max(bounding_box),
+                     SD.get_j_max(bounding_box),
+                     cursor.i,
+                     cursor.j,
+                     input_button.ended_down,
+                     input_button.half_transition_count,
+                     last_value,
+                    )
+end
 
 do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
@@ -156,6 +210,36 @@ function do_widget!(widget_type::TextInput, hot_widget, active_widget, null_widg
     return hot_widget, active_widget, null_widget, value
 end
 
-do_widget!(widget_type::TextInput, hot_widget, active_widget, null_widget, widget, bounding_box::BoundingBox, cursor::SD.Point, input_button::InputButton, text_line, characters) = do_widget!(widget_type, hot_widget, active_widget, null_widget, widget, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count, text_line, characters)
+function do_widget!(
+        widget_type::TextInput,
+        hot_widget,
+        active_widget,
+        null_widget,
+        widget,
+        bounding_box::SD.Rectangle,
+        cursor::SD.Point,
+        input_button::InputButton,
+        text_line,
+        characters
+    )
+
+    return do_widget!(
+                     widget_type,
+                     hot_widget,
+                     active_widget,
+                     null_widget,
+                     widget,
+                     SD.get_i_min(bounding_box),
+                     SD.get_j_min(bounding_box),
+                     SD.get_i_max(bounding_box),
+                     SD.get_j_max(bounding_box),
+                     cursor.i,
+                     cursor.j,
+                     input_button.ended_down,
+                     input_button.half_transition_count,
+                     text_line,
+                     characters,
+                    )
+end
 
 do_widget!!(widget_type::TextInput, args...; kwargs...) = do_widget!(widget_type, args...; kwargs...)

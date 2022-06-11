@@ -131,7 +131,7 @@ function start()
 
         compute_time_start = time_ns()
 
-        layout = SW.BoxLayout(SW.BoundingBox(1, 1, 0, 0))
+        layout = SW.BoxLayout(SD.Rectangle(SD.Point(1, 1), 0, 0))
 
         SD.draw!(image, SD.Background(), background_color)
 

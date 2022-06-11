@@ -3,13 +3,6 @@ struct InputButton
     half_transition_count::Int
 end
 
-struct BoundingBox
-    i_min::Int
-    j_min::Int
-    i_max::Int
-    j_max::Int
-end
-
 abstract type AbstractUserInputState end
 
 mutable struct UserInputState <: AbstractUserInputState
@@ -25,8 +18,6 @@ mutable struct UserInputState <: AbstractUserInputState
     characters::Vector{Char}
 end
 
-BoundingBox(point::SD.Point, height, width) = BoundingBox(point.i, point.j, point.i + height - one(height), point.j + width - one(width))
-
 went_down(ended_down, half_transition_count) = (half_transition_count >= 2) || ((half_transition_count == 1) && ended_down)
 went_up(ended_down, half_transition_count) = (half_transition_count >= 2) || ((half_transition_count == 1) && !ended_down)
 
@@ -36,8 +27,6 @@ went_up(input_button) = went_up(input_button.ended_down, input_button.half_trans
 press_button(button) = InputButton(true, button.half_transition_count + one(button.half_transition_count))
 release_button(button) = InputButton(false, button.half_transition_count + one(button.half_transition_count))
 reset(button) = InputButton(button.ended_down, zero(button.half_transition_count))
-
-is_inside(bounding_box, cursor) = (bounding_box.i_min <= cursor.i <= bounding_box.i_max) && (bounding_box.j_min <= cursor.j <= bounding_box.j_max)
 
 function reset!(user_input_state::UserInputState)
     user_input_state.key_escape = reset(user_input_state.key_escape)
