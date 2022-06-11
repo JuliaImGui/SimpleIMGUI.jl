@@ -17,6 +17,9 @@ end
 
 BoundingBox(point::Point, height, width) = BoundingBox(point.i, point.j, point.i + height - one(height), point.j + width - one(width))
 
+went_down(ended_down, half_transition_count) = (half_transition_count >= 2) || ((half_transition_count == 1) && ended_down)
+went_up(ended_down, half_transition_count) = (half_transition_count >= 2) || ((half_transition_count == 1) && !ended_down)
+
 went_down(input_button) = went_down(input_button.ended_down, input_button.half_transition_count)
 went_up(input_button) = went_up(input_button.ended_down, input_button.half_transition_count)
 
