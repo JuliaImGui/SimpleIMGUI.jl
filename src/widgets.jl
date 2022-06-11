@@ -1,19 +1,58 @@
-abstract type AbstractWidget end
+abstract type AbstractWidgetType end
 
-struct Button <: AbstractWidget end
+struct Button <: AbstractWidgetType end
 const BUTTON = Button()
 
-struct Slider <: AbstractWidget end
+struct Slider <: AbstractWidgetType end
 const SLIDER = Slider()
 
-struct TextInput <: AbstractWidget end
+struct TextInput <: AbstractWidgetType end
 const TEXT_INPUT = TextInput()
+
+struct TextDisplay <: AbstractWidgetType end
+const TEXT_DISPLAY = TextDisplay()
+
+#####
+##### utils
+#####
+
+function try_set_hot_widget(hot_widget, active_widget, null_widget, widget, condition)
+    if (active_widget == null_widget) && condition
+        return widget
+    else
+        return hot_widget
+    end
+end
+
+function try_set_active_widget(hot_widget, active_widget, null_widget, widget, condition)
+    if (hot_widget == widget) && (active_widget == null_widget) && condition
+        return widget
+    else
+        return active_widget
+    end
+end
+
+function try_reset_hot_widget(hot_widget, active_widget, null_widget, widget, condition)
+    if (hot_widget == widget) && (active_widget != widget) && condition
+        return null_widget
+    else
+        return hot_widget
+    end
+end
+
+function try_reset_active_widget(hot_widget, active_widget, null_widget, widget, condition)
+    if (active_widget == widget) && (hot_widget == widget) && condition
+        return null_widget
+    else
+        return active_widget
+    end
+end
 
 #####
 ##### Button
 #####
 
-function get_widget_value(hot_widget, active_widget, widget, ::Button, condition)
+function get_widget_value(::Button, hot_widget, active_widget, widget, condition)
     if (active_widget == widget) && (hot_widget == widget) && condition
         return true
     else
@@ -21,7 +60,7 @@ function get_widget_value(hot_widget, active_widget, widget, ::Button, condition
     end
 end
 
-function do_widget(hot_widget, active_widget, null_widget, widget, widget_type::Button, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count)
+function do_widget(widget_type::Button, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count)
     mouse_over_button = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
@@ -30,7 +69,7 @@ function do_widget(hot_widget, active_widget, null_widget, widget, widget_type::
 
     active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, widget, mouse_over_button && mouse_went_down)
 
-    value = get_widget_value(hot_widget, active_widget, widget, widget_type, mouse_over_button && mouse_went_up)
+    value = get_widget_value(widget_type, hot_widget, active_widget, widget, mouse_over_button && mouse_went_up)
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, widget, mouse_went_up)
 
@@ -39,15 +78,64 @@ function do_widget(hot_widget, active_widget, null_widget, widget, widget_type::
     return hot_widget, active_widget, null_widget, value
 end
 
-do_widget(hot_widget, active_widget, null_widget, widget, widget_type::Button, bounding_box::BoundingBox, cursor::Point, input_button::InputButton) = do_widget(hot_widget, active_widget, null_widget, widget, widget_type::Button, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count)
+function do_widget(
+        widget_type::Button,
+        hot_widget,
+        active_widget,
+        null_widget,
+        widget,
+        bounding_box::SD.Rectangle,
+        cursor::SD.Point,
+        input_button::InputButton
+    )
 
-do_widget!!(hot_widget, active_widget, null_widget, widget, widget_type::Button, args...; kwargs...) = do_widget(hot_widget, active_widget, null_widget, widget, widget_type, args...; kwargs...)
+    return do_widget(
+                     widget_type,
+                     hot_widget,
+                     active_widget,
+                     null_widget,
+                     widget,
+                     SD.get_i_min(bounding_box),
+                     SD.get_j_min(bounding_box),
+                     SD.get_i_max(bounding_box),
+                     SD.get_j_max(bounding_box),
+                     cursor.i,
+                     cursor.j,
+                     input_button.ended_down,
+                     input_button.half_transition_count,
+                    )
+end
+
+do_widget!!(widget_type::Button, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
+
+function do_widget!(
+        widget_type::Button,
+        image,
+        user_interaction_state,
+        user_input_state,
+        widget,
+        layout::BoxLayout,
+        orientation::Vertical,
+        height_widget,
+        width_widget,
+        text,
+        font,
+        color
+    )
+
+    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left)
+    SD.draw!(image, bounding_box, color)
+    SD.draw!(image, SD.TextLine(bounding_box.position, text, font), color)
+
+    return layout, value
+end
 
 #####
 ##### Slider
 #####
 
-function get_widget_value(hot_widget, active_widget, widget, ::Slider, active_value, last_value)
+function get_widget_value(::Slider, hot_widget, active_widget, widget, active_value, last_value)
     if (active_widget == widget) && (hot_widget == widget)
         return active_value
     else
@@ -55,7 +143,7 @@ function get_widget_value(hot_widget, active_widget, widget, ::Slider, active_va
     end
 end
 
-function do_widget(hot_widget, active_widget, null_widget, widget, widget_type::Slider, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, last_value)
+function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, last_value)
     mouse_over_slider = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
@@ -64,7 +152,7 @@ function do_widget(hot_widget, active_widget, null_widget, widget, widget_type::
 
     active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, widget, mouse_over_slider && mouse_went_down)
 
-    value = get_widget_value(hot_widget, active_widget, widget, widget_type, clamp(j_mouse - j_min + one(j_min), one(j_min), j_max - j_min + one(j_min)), last_value)
+    value = get_widget_value(widget_type, hot_widget, active_widget, widget, clamp(j_mouse - j_min + one(j_min), one(j_min), j_max - j_min + one(j_min)), last_value)
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, widget, mouse_went_up)
 
@@ -73,33 +161,87 @@ function do_widget(hot_widget, active_widget, null_widget, widget, widget_type::
     return hot_widget, active_widget, null_widget, value
 end
 
-do_widget(hot_widget, active_widget, null_widget, widget, widget_type::Slider, bounding_box::BoundingBox, cursor::Point, input_button::InputButton, last_value) = do_widget(hot_widget, active_widget, null_widget, widget, widget_type::Slider, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count, last_value)
+function do_widget(
+        widget_type::Slider,
+        hot_widget,
+        active_widget,
+        null_widget,
+        widget,
+        bounding_box::SD.Rectangle,
+        cursor::SD.Point,
+        input_button::InputButton,
+        last_value
+    )
 
-do_widget!!(hot_widget, active_widget, null_widget, widget, widget_type::Slider, args...; kwargs...) = do_widget(hot_widget, active_widget, null_widget, widget, widget_type, args...; kwargs...)
+    return do_widget(
+                     widget_type,
+                     hot_widget,
+                     active_widget,
+                     null_widget,
+                     widget,
+                     SD.get_i_min(bounding_box),
+                     SD.get_j_min(bounding_box),
+                     SD.get_i_max(bounding_box),
+                     SD.get_j_max(bounding_box),
+                     cursor.i,
+                     cursor.j,
+                     input_button.ended_down,
+                     input_button.half_transition_count,
+                     last_value,
+                    )
+end
+
+do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
+
+function do_widget!(
+        widget_type::Slider,
+        image,
+        user_interaction_state,
+        user_input_state,
+        widget,
+        value,
+        layout::BoxLayout,
+        orientation::Vertical,
+        height_widget,
+        width_widget,
+        text,
+        font,
+        text_color,
+        slider_color
+    )
+
+    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value)
+    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, value), slider_color)
+    SD.draw!(image, bounding_box, text_color)
+    SD.draw!(image, SD.TextLine(bounding_box.position, text, font), text_color)
+
+    return layout, value
+end
 
 #####
 ##### TextInput
 #####
 
-function update_widget_value!(hot_widget, active_widget, widget, ::TextInput, text_line, characters)
+function get_widget_value!(::TextInput, hot_widget, active_widget, widget, text, characters)
     if (active_widget == widget) && (hot_widget == widget)
         for character in characters
             if isascii(character)
                 if isprint(character)
-                    push!(text_line, character)
+                    push!(text, character)
                 elseif character == '\b'
-                    if length(text_line) > 0
-                        pop!(text_line)
+                    if length(text) > 0
+                        pop!(text)
                     end
                 end
             end
         end
     end
 
-    return nothing
+    return text
 end
 
-function do_widget!(hot_widget, active_widget, null_widget, widget, widget_type::TextInput, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text_line, characters)
+function do_widget!(widget_type::TextInput, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text, characters)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
@@ -108,15 +250,91 @@ function do_widget!(hot_widget, active_widget, null_widget, widget, widget_type:
 
     active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, widget, mouse_over_widget && mouse_went_up)
 
-    update_widget_value!(hot_widget, active_widget, widget, widget_type, text_line, characters)
+    value = get_widget_value!(widget_type, hot_widget, active_widget, widget, text, characters)
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, widget, !mouse_over_widget && mouse_went_up)
 
     hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, widget, !mouse_over_widget)
 
-    return hot_widget, active_widget, null_widget
+    return hot_widget, active_widget, null_widget, value
 end
 
-do_widget!(hot_widget, active_widget, null_widget, widget, widget_type::TextInput, bounding_box::BoundingBox, cursor::Point, input_button::InputButton, text_line, characters) = do_widget!(hot_widget, active_widget, null_widget, widget, widget_type::TextInput, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count, text_line, characters)
+function do_widget!(
+        widget_type::TextInput,
+        hot_widget,
+        active_widget,
+        null_widget,
+        widget,
+        bounding_box::SD.Rectangle,
+        cursor::SD.Point,
+        input_button::InputButton,
+        text,
+        characters
+    )
 
-do_widget!!(hot_widget, active_widget, null_widget, widget, widget_type::TextInput, args...; kwargs...) = (do_widget!(hot_widget, active_widget, null_widget, widget, widget_type, args...; kwargs...)..., nothing)
+    return do_widget!(
+                     widget_type,
+                     hot_widget,
+                     active_widget,
+                     null_widget,
+                     widget,
+                     SD.get_i_min(bounding_box),
+                     SD.get_j_min(bounding_box),
+                     SD.get_i_max(bounding_box),
+                     SD.get_j_max(bounding_box),
+                     cursor.i,
+                     cursor.j,
+                     input_button.ended_down,
+                     input_button.half_transition_count,
+                     text,
+                     characters,
+                    )
+end
+
+do_widget!!(widget_type::TextInput, args...; kwargs...) = do_widget!(widget_type, args...; kwargs...)
+
+function do_widget!(
+        widget_type::TextInput,
+        image,
+        user_interaction_state,
+        user_input_state,
+        widget,
+        value,
+        layout::BoxLayout,
+        orientation::Vertical,
+        height_widget,
+        width_widget,
+        font,
+        color,
+    )
+
+    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value, user_input_state.characters)
+    SD.draw!(image, bounding_box, color)
+    SD.draw!(image, SD.TextLine(bounding_box.position, value, font), color)
+
+    return layout, value
+end
+
+#####
+##### TextDisplay
+#####
+
+function do_widget!(
+        widget_type::TextDisplay,
+        image,
+        text,
+        layout::BoxLayout,
+        orientation::Vertical,
+        height_widget,
+        width_widget,
+        font,
+        color,
+    )
+
+    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    SD.draw!(image, bounding_box, color)
+    SD.draw!(image, SD.TextLine(bounding_box.position, text, font), color)
+
+    return layout, text
+end

@@ -1,9 +1,10 @@
 module SimpleWidgets
 
+import SimpleDraw as SD
+
 include("input.jl")
 include("layout.jl")
-include("utils.jl")
 include("widgets.jl")
-include("ui_state.jl")
+include("user_interaction.jl")
 
 end
