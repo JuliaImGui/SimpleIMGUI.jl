@@ -209,7 +209,7 @@ function start()
                                 slider_color,
                                )
 
-        layout, _ = SW.do_widget!(
+        layout, text_input = SW.do_widget!(
                                 SW.TEXT_INPUT,
                                 image,
                                 user_interaction_state,

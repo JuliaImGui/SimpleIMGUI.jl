@@ -81,7 +81,7 @@ do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, ar
 ##### TextInput
 #####
 
-function update_widget_value!(::TextInput, hot_widget, active_widget, widget, text_line, characters)
+function get_widget_value!(::TextInput, hot_widget, active_widget, widget, text_line, characters)
     if (active_widget == widget) && (hot_widget == widget)
         for character in characters
             if isascii(character)
@@ -96,7 +96,7 @@ function update_widget_value!(::TextInput, hot_widget, active_widget, widget, te
         end
     end
 
-    return nothing
+    return text_line
 end
 
 function do_widget!(widget_type::TextInput, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text_line, characters)
@@ -108,15 +108,15 @@ function do_widget!(widget_type::TextInput, hot_widget, active_widget, null_widg
 
     active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, widget, mouse_over_widget && mouse_went_up)
 
-    update_widget_value!(widget_type, hot_widget, active_widget, widget, text_line, characters)
+    value = get_widget_value!(widget_type, hot_widget, active_widget, widget, text_line, characters)
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, widget, !mouse_over_widget && mouse_went_up)
 
     hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, widget, !mouse_over_widget)
 
-    return hot_widget, active_widget, null_widget
+    return hot_widget, active_widget, null_widget, value
 end
 
 do_widget!(widget_type::TextInput, hot_widget, active_widget, null_widget, widget, bounding_box::BoundingBox, cursor::Point, input_button::InputButton, text_line, characters) = do_widget!(widget_type, hot_widget, active_widget, null_widget, widget, bounding_box.i_min, bounding_box.j_min, bounding_box.i_max, bounding_box.j_max, cursor.i, cursor.j, input_button.ended_down, input_button.half_transition_count, text_line, characters)
 
-do_widget!!(widget_type::TextInput, args...; kwargs...) = (do_widget!(widget_type, args...; kwargs...)..., nothing)
+do_widget!!(widget_type::TextInput, args...; kwargs...) = do_widget!(widget_type, args...; kwargs...)

@@ -70,7 +70,7 @@ function SW.do_widget!(
     )
 
     layout, bounding_box = SW.add_widget(layout, orientation, height_widget, width_widget)
-    SW.do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value, user_input_state.characters)
+    value = SW.do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value, user_input_state.characters)
     rectangle = convert(SD.Rectangle{Int}, bounding_box)
     SD.draw!(image, rectangle, color)
     SD.draw!(image, SD.TextLine(rectangle.position, value, font), color)
