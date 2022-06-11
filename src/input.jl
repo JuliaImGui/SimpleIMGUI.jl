@@ -24,9 +24,9 @@ went_up(ended_down, half_transition_count) = (half_transition_count >= 2) || ((h
 went_down(input_button) = went_down(input_button.ended_down, input_button.half_transition_count)
 went_up(input_button) = went_up(input_button.ended_down, input_button.half_transition_count)
 
-press_button(button) = InputButton(true, button.half_transition_count + one(button.half_transition_count))
-release_button(button) = InputButton(false, button.half_transition_count + one(button.half_transition_count))
-reset(button) = InputButton(button.ended_down, zero(button.half_transition_count))
+press_button(input_button) = InputButton(true, input_button.half_transition_count + one(input_button.half_transition_count))
+release_button(input_button) = InputButton(false, input_button.half_transition_count + one(input_button.half_transition_count))
+reset(input_button) = InputButton(input_button.ended_down, zero(input_button.half_transition_count))
 
 function reset!(user_input_state::UserInputState)
     user_input_state.key_escape = reset(user_input_state.key_escape)
