@@ -3,11 +3,15 @@ uuid = "37c0dfa8-367e-4f81-95ac-b6bdb4b61673"
 authors = ["Siddharth Bhatia <sidb60200@gmail.com> and contributors"]
 version = "0.1.0"
 
-[extras]
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+[deps]
+SimpleDraw = "d1acf6f4-8553-480e-80ae-3c883f0a995a"
 
 [compat]
 julia = "1"
+SimpleDraw = "0.4"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
 test = ["Test"]
