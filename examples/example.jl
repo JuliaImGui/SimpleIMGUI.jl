@@ -225,74 +225,186 @@ function start()
                                )
 
         text = "Press the escape key to quit"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "previous frame number: $(i)"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "cursor: $(user_input_state.cursor)"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "mouse_left: $(user_input_state.mouse_left)"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "mouse_right: $(user_input_state.mouse_right)"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "mouse_middle: $(user_input_state.mouse_middle)"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "hot_widget: $(user_interaction_state.hot_widget)"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "active_widget: $(user_interaction_state.active_widget)"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "button1: $(button1)"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "button2: $(button2)"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "slider: $(slider)"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         text = "text_input: $(text_input)"
-        layout, text_bounding_box = SW.add_widget(layout, SW.VERTICAL, SD.get_height(font), length(text))
-        text_rectangle = convert(SD.Rectangle{Int}, text_bounding_box)
-        SD.draw!(image, SD.TextLine(text_rectangle.position, text, font), text_color)
+        layout, _ = SW.do_widget!(
+                                SW.TEXT_DISPLAY,
+                                image,
+                                text,
+                                layout,
+                                SW.VERTICAL,
+                                SD.get_height(font),
+                                length(text) * SD.get_width(font),
+                                font,
+                                text_color,
+                               )
 
         compute_time_end = time_ns()
         push!(compute_time_buffer, compute_time_end - compute_time_start)

@@ -77,3 +77,23 @@ function SW.do_widget!(
 
     return layout, value
 end
+
+function SW.do_widget!(
+        widget_type::SW.TextDisplay,
+        image,
+        text,
+        layout::SW.BoxLayout,
+        orientation::SW.Vertical,
+        height_widget,
+        width_widget,
+        font,
+        color,
+    )
+
+    layout, bounding_box = SW.add_widget(layout, orientation, height_widget, width_widget)
+    rectangle = convert(SD.Rectangle{Int}, bounding_box)
+    SD.draw!(image, rectangle, color)
+    SD.draw!(image, SD.TextLine(rectangle.position, text, font), color)
+
+    return layout, text
+end

@@ -9,6 +9,9 @@ const SLIDER = Slider()
 struct TextInput <: AbstractWidgetType end
 const TEXT_INPUT = TextInput()
 
+struct TextDisplay <: AbstractWidgetType end
+const TEXT_DISPLAY = TextDisplay()
+
 #####
 ##### Button
 #####
