@@ -17,7 +17,7 @@ const TEXT_DISPLAY = TextDisplay()
 #####
 
 function try_set_hot_widget(hot_widget, active_widget, null_widget, widget, condition)
-    if (active_widget == null_widget) && condition
+    if (hot_widget == null_widget) && (active_widget == null_widget) && condition
         return widget
     else
         return hot_widget
