@@ -33,7 +33,7 @@ function try_set_active_widget(hot_widget, active_widget, null_widget, widget, c
 end
 
 function try_reset_hot_widget(hot_widget, active_widget, null_widget, widget, condition)
-    if (hot_widget == widget) && (active_widget != widget) && condition
+    if (hot_widget == widget) && (active_widget == null_widget) && condition
         return null_widget
     else
         return hot_widget
