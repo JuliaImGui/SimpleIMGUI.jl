@@ -17,7 +17,7 @@ const TEXT_DISPLAY = TextDisplay()
 #####
 
 function try_set_hot_widget(hot_widget, active_widget, null_widget, widget, condition)
-    if (active_widget == null_widget) && condition
+    if (hot_widget == null_widget) && (active_widget == null_widget) && condition
         return widget
     else
         return hot_widget
@@ -33,7 +33,7 @@ function try_set_active_widget(hot_widget, active_widget, null_widget, widget, c
 end
 
 function try_reset_hot_widget(hot_widget, active_widget, null_widget, widget, condition)
-    if (hot_widget == widget) && (active_widget != widget) && condition
+    if (hot_widget == widget) && (active_widget == null_widget) && condition
         return null_widget
     else
         return hot_widget
@@ -41,7 +41,7 @@ function try_reset_hot_widget(hot_widget, active_widget, null_widget, widget, co
 end
 
 function try_reset_active_widget(hot_widget, active_widget, null_widget, widget, condition)
-    if (active_widget == widget) && (hot_widget == widget) && condition
+    if (hot_widget == widget) && (active_widget == widget) && condition
         return null_widget
     else
         return active_widget
@@ -53,7 +53,7 @@ end
 #####
 
 function get_widget_value(::Button, hot_widget, active_widget, widget, condition)
-    if (active_widget == widget) && (hot_widget == widget) && condition
+    if (hot_widget == widget) && (active_widget == widget) && condition
         return true
     else
         return false
@@ -136,7 +136,7 @@ end
 #####
 
 function get_widget_value(::Slider, hot_widget, active_widget, widget, active_value, last_value)
-    if (active_widget == widget) && (hot_widget == widget)
+    if (hot_widget == widget) && (active_widget == widget)
         return active_value
     else
         return last_value
@@ -224,7 +224,7 @@ end
 #####
 
 function get_widget_value!(::TextInput, hot_widget, active_widget, widget, text, characters)
-    if (active_widget == widget) && (hot_widget == widget)
+    if (hot_widget == widget) && (active_widget == widget)
         for character in characters
             if isascii(character)
                 if isprint(character)
