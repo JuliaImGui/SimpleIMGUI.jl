@@ -41,7 +41,7 @@ function try_reset_hot_widget(hot_widget, active_widget, null_widget, widget, co
 end
 
 function try_reset_active_widget(hot_widget, active_widget, null_widget, widget, condition)
-    if (active_widget == widget) && (hot_widget == widget) && condition
+    if (hot_widget == widget) && (active_widget == widget) && condition
         return null_widget
     else
         return active_widget
