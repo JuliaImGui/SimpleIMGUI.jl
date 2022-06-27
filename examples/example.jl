@@ -54,7 +54,7 @@ function start()
                                      )
 
     slider_value = 1
-    text_input_value = collect("Text box")
+    text_box_value = collect("Text box")
 
     setup_window_hints()
     window = GLFW.CreateWindow(width_image, height_image, window_name)
@@ -183,13 +183,13 @@ function start()
                                 slider_color,
                                )
 
-        text_input_value = SI.do_widget!(
+        text_box_value = SI.do_widget!(
                                 SI.TEXT_BOX,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
                                 SI.WidgetID(@__LINE__, @__FILE__),
-                                text_input_value,
+                                text_box_value,
                                 layout,
                                 SI.VERTICAL,
                                 SD.get_height(font),
@@ -367,7 +367,7 @@ function start()
                                 text_color,
                                )
 
-        text = "text_input_value: $(text_input_value)"
+        text = "text_box_value: $(text_box_value)"
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
