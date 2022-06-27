@@ -40,8 +40,8 @@ function get_next_widget_position(layout::BoxLayout, ::Horizontal)
 end
 
 function get_next_widget_bounding_box(layout::BoxLayout, direction::AbstractDirection, height, width)
-    widget_position = get_next_widget_position(layout, direction)
-    return SD.Rectangle(widget_position, height, width)
+    position = get_next_widget_position(layout, direction)
+    return SD.Rectangle(position, height, width)
 end
 
 function add_widget!(layout::BoxLayout, bounding_box::SD.Rectangle)
@@ -50,7 +50,7 @@ function add_widget!(layout::BoxLayout, bounding_box::SD.Rectangle)
 end
 
 function add_widget!(layout::BoxLayout, direction::AbstractDirection, height, width)
-    widget_bounding_box = get_next_widget_bounding_box(layout, direction, height, width)
-    add_widget!(layout, widget_bounding_box)
-    return widget_bounding_box
+    bounding_box = get_next_widget_bounding_box(layout, direction, height, width)
+    add_widget!(layout, bounding_box)
+    return bounding_box
 end
