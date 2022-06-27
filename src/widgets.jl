@@ -60,10 +60,10 @@ function get_widget_value(::Button, hot_widget, active_widget, widget, condition
     end
 end
 
-function do_widget(widget_type::Button, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count)
+function do_widget(widget_type::Button, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, num_transitions)
     mouse_over_button = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
-    mouse_went_down = went_down(ended_down, half_transition_count)
-    mouse_went_up = went_up(ended_down, half_transition_count)
+    mouse_went_down = went_down(ended_down, num_transitions)
+    mouse_went_up = went_up(ended_down, num_transitions)
 
     hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, widget, mouse_over_button)
 
@@ -102,7 +102,7 @@ function do_widget(
                      cursor.i,
                      cursor.j,
                      input_button.ended_down,
-                     input_button.half_transition_count,
+                     input_button.num_transitions,
                     )
 end
 
@@ -143,10 +143,10 @@ function get_widget_value(::Slider, hot_widget, active_widget, widget, active_va
     end
 end
 
-function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, last_value)
+function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, num_transitions, last_value)
     mouse_over_slider = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
-    mouse_went_down = went_down(ended_down, half_transition_count)
-    mouse_went_up = went_up(ended_down, half_transition_count)
+    mouse_went_down = went_down(ended_down, num_transitions)
+    mouse_went_up = went_up(ended_down, num_transitions)
 
     hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, widget, mouse_over_slider)
 
@@ -186,7 +186,7 @@ function do_widget(
                      cursor.i,
                      cursor.j,
                      input_button.ended_down,
-                     input_button.half_transition_count,
+                     input_button.num_transitions,
                      last_value,
                     )
 end
@@ -241,10 +241,10 @@ function get_widget_value!(::TextBox, hot_widget, active_widget, widget, text, c
     return text
 end
 
-function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text, characters)
+function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, num_transitions, text, characters)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
-    mouse_went_down = went_down(ended_down, half_transition_count)
-    mouse_went_up = went_up(ended_down, half_transition_count)
+    mouse_went_down = went_down(ended_down, num_transitions)
+    mouse_went_up = went_up(ended_down, num_transitions)
 
     hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, widget, mouse_over_widget)
 
@@ -285,7 +285,7 @@ function do_widget!(
                      cursor.i,
                      cursor.j,
                      input_button.ended_down,
-                     input_button.half_transition_count,
+                     input_button.num_transitions,
                      text,
                      characters,
                     )
