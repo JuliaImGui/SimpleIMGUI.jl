@@ -8,17 +8,17 @@ include("opengl_utils.jl")
 
 function update_button(button, action)
     if action == GLFW.PRESS
-        return SI.press_button(button)
+        return SI.press(button)
     elseif action == GLFW.RELEASE
-        return SI.release_button(button)
+        return SI.release(button)
     else
         return button
     end
 end
 
 function start()
-    height_image = 720
-    width_image = 1280
+    image_height = 720
+    image_width = 1280
     window_name = "Example"
     background_color = 0x00c0c0c0
     text_color = 0x00000000
@@ -26,7 +26,7 @@ function start()
     sliding_window_size = 30
     font = SD.TERMINUS_32_16
 
-    image = zeros(MGL.GLuint, height_image, width_image)
+    image = zeros(MGL.GLuint, image_height, image_width)
 
     SD.draw!(image, SD.Background(), background_color)
 
@@ -54,10 +54,10 @@ function start()
                                      )
 
     slider_value = 1
-    text_input_value = collect("Text box")
+    text_box_value = collect("Text box")
 
     setup_window_hints()
-    window = GLFW.CreateWindow(width_image, height_image, window_name)
+    window = GLFW.CreateWindow(image_width, image_height, window_name)
     GLFW.MakeContextCurrent(window)
 
     function cursor_position_callback(window, x, y)::Cvoid
@@ -107,7 +107,7 @@ function start()
     GLFW.SetMouseButtonCallback(window, mouse_button_callback)
     GLFW.SetCharCallback(window, character_callback)
 
-    MGL.glViewport(0, 0, width_image, height_image)
+    MGL.glViewport(0, 0, image_width, image_height)
 
     vertex_shader = setup_vertex_shader()
     fragment_shader = setup_fragment_shader()
@@ -183,13 +183,13 @@ function start()
                                 slider_color,
                                )
 
-        text_input_value = SI.do_widget!(
-                                SI.TEXT_INPUT,
+        text_box_value = SI.do_widget!(
+                                SI.TEXT_BOX,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
                                 SI.WidgetID(@__LINE__, @__FILE__),
-                                text_input_value,
+                                text_box_value,
                                 layout,
                                 SI.VERTICAL,
                                 SD.get_height(font),
@@ -200,7 +200,7 @@ function start()
 
         text = "Press the escape key to quit"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -213,7 +213,7 @@ function start()
 
         text = "previous frame number: $(i)"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -226,7 +226,7 @@ function start()
 
         text = "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -239,7 +239,7 @@ function start()
 
         text = "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -252,7 +252,7 @@ function start()
 
         text = "cursor: $(user_input_state.cursor)"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -265,7 +265,7 @@ function start()
 
         text = "mouse_left: $(user_input_state.mouse_left)"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -278,7 +278,7 @@ function start()
 
         text = "mouse_right: $(user_input_state.mouse_right)"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -291,7 +291,7 @@ function start()
 
         text = "mouse_middle: $(user_input_state.mouse_middle)"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -304,7 +304,7 @@ function start()
 
         text = "hot_widget: $(user_interaction_state.hot_widget)"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -317,7 +317,7 @@ function start()
 
         text = "active_widget: $(user_interaction_state.active_widget)"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -330,7 +330,7 @@ function start()
 
         text = "button1_value: $(button1_value)"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -343,7 +343,7 @@ function start()
 
         text = "button2_value: $(button2_value)"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -356,7 +356,7 @@ function start()
 
         text = "slider_value: $(slider_value)"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
@@ -367,9 +367,9 @@ function start()
                                 text_color,
                                )
 
-        text = "text_input_value: $(text_input_value)"
+        text = "text_box_value: $(text_box_value)"
         _ = SI.do_widget!(
-                                SI.TEXT_DISPLAY,
+                                SI.TEXT,
                                 image,
                                 text,
                                 layout,
