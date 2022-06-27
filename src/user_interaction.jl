@@ -1,8 +1,8 @@
 abstract type AbstractWidgetID end
 
 struct WidgetID <: AbstractWidgetID
-    line_number::Int
-    file_name::String
+    line::Int
+    file::String
 end
 
 abstract type AbstractUserInteractionState end
