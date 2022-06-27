@@ -6,7 +6,7 @@ import SimpleIMGUI as SI
 
 include("opengl_utils.jl")
 
-function update(button, action)
+function update_button(button, action)
     if action == GLFW.PRESS
         return SI.press(button)
     elseif action == GLFW.RELEASE
@@ -68,15 +68,15 @@ function start()
 
     function key_callback(window, key, scancode, action, mods)::Cvoid
         if key == GLFW.KEY_ESCAPE
-            user_input_state.key_escape = update(user_input_state.key_escape, action)
+            user_input_state.key_escape = update_button(user_input_state.key_escape, action)
         elseif key == GLFW.KEY_UP
-            user_input_state.key_up = update(user_input_state.key_up, action)
+            user_input_state.key_up = update_button(user_input_state.key_up, action)
         elseif key == GLFW.KEY_DOWN
-            user_input_state.key_down = update(user_input_state.key_down, action)
+            user_input_state.key_down = update_button(user_input_state.key_down, action)
         elseif key == GLFW.KEY_LEFT
-            user_input_state.key_left = update(user_input_state.key_left, action)
+            user_input_state.key_left = update_button(user_input_state.key_left, action)
         elseif key == GLFW.KEY_RIGHT
-            user_input_state.key_right = update(user_input_state.key_right, action)
+            user_input_state.key_right = update_button(user_input_state.key_right, action)
         elseif key == GLFW.KEY_BACKSPACE && (action == GLFW.PRESS || action == GLFW.REPEAT)
             push!(user_input_state.characters, '\b')
         end
@@ -86,11 +86,11 @@ function start()
 
     function mouse_button_callback(window, button, action, mods)::Cvoid
         if button == GLFW.MOUSE_BUTTON_LEFT
-            user_input_state.mouse_left = update(user_input_state.mouse_left, action)
+            user_input_state.mouse_left = update_button(user_input_state.mouse_left, action)
         elseif button == GLFW.MOUSE_BUTTON_RIGHT
-            user_input_state.mouse_right = update(user_input_state.mouse_right, action)
+            user_input_state.mouse_right = update_button(user_input_state.mouse_right, action)
         elseif button == GLFW.MOUSE_BUTTON_MIDDLE
-            user_input_state.mouse_middle = update(user_input_state.mouse_middle, action)
+            user_input_state.mouse_middle = update_button(user_input_state.mouse_middle, action)
         end
 
         return nothing
