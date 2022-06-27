@@ -184,7 +184,7 @@ function start()
                                )
 
         text_input_value = SI.do_widget!(
-                                SI.TEXT_INPUT,
+                                SI.TEXT_BOX,
                                 image,
                                 user_interaction_state,
                                 user_input_state,

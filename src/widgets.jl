@@ -6,8 +6,8 @@ const BUTTON = Button()
 struct Slider <: AbstractWidgetType end
 const SLIDER = Slider()
 
-struct TextInput <: AbstractWidgetType end
-const TEXT_INPUT = TextInput()
+struct TextBox <: AbstractWidgetType end
+const TEXT_BOX = TextBox()
 
 struct TextDisplay <: AbstractWidgetType end
 const TEXT_DISPLAY = TextDisplay()
@@ -220,10 +220,10 @@ function do_widget!(
 end
 
 #####
-##### TextInput
+##### TextBox
 #####
 
-function get_widget_value!(::TextInput, hot_widget, active_widget, widget, text, characters)
+function get_widget_value!(::TextBox, hot_widget, active_widget, widget, text, characters)
     if (hot_widget == widget) && (active_widget == widget)
         for character in characters
             if isascii(character)
@@ -241,7 +241,7 @@ function get_widget_value!(::TextInput, hot_widget, active_widget, widget, text,
     return text
 end
 
-function do_widget!(widget_type::TextInput, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text, characters)
+function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, half_transition_count, text, characters)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, half_transition_count)
     mouse_went_up = went_up(ended_down, half_transition_count)
@@ -260,7 +260,7 @@ function do_widget!(widget_type::TextInput, hot_widget, active_widget, null_widg
 end
 
 function do_widget!(
-        widget_type::TextInput,
+        widget_type::TextBox,
         hot_widget,
         active_widget,
         null_widget,
@@ -291,10 +291,10 @@ function do_widget!(
                     )
 end
 
-do_widget!!(widget_type::TextInput, args...; kwargs...) = do_widget!(widget_type, args...; kwargs...)
+do_widget!!(widget_type::TextBox, args...; kwargs...) = do_widget!(widget_type, args...; kwargs...)
 
 function do_widget!(
-        widget_type::TextInput,
+        widget_type::TextBox,
         image,
         user_interaction_state,
         user_input_state,
