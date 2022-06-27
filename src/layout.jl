@@ -1,6 +1,6 @@
 abstract type AbstractLayout end
 
-struct BoxLayout <: AbstractLayout
+mutable struct BoxLayout <: AbstractLayout
     bounding_box::SD.Rectangle
 end
 
@@ -44,10 +44,13 @@ function get_widget_bounding_box(layout::BoxLayout, direction::AbstractDirection
     return SD.Rectangle(widget_position, height, width)
 end
 
-update_layout(layout::BoxLayout, bounding_box::SD.Rectangle) = BoxLayout(get_bounding_box(layout.bounding_box, bounding_box))
+function update_layout!(layout::BoxLayout, bounding_box::SD.Rectangle)
+    layout.bounding_box = get_bounding_box(layout.bounding_box, bounding_box)
+    return nothing
+end
 
-function add_widget(layout::BoxLayout, direction::AbstractDirection, height, width)
+function add_widget!(layout::BoxLayout, direction::AbstractDirection, height, width)
     widget_bounding_box = get_widget_bounding_box(layout, direction, height, width)
-    new_layout = update_layout(layout, widget_bounding_box)
-    return new_layout, widget_bounding_box
+    update_layout!(layout, widget_bounding_box)
+    return widget_bounding_box
 end

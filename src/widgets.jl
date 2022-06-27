@@ -123,7 +123,7 @@ function do_widget!(
         color
     )
 
-    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    bounding_box = add_widget!(layout, orientation, height_widget, width_widget)
     value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left)
     SD.draw!(image, bounding_box, color)
     SD.draw!(image, SD.TextLine(bounding_box.position, text, font), color)
@@ -210,7 +210,7 @@ function do_widget!(
         slider_color
     )
 
-    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    bounding_box = add_widget!(layout, orientation, height_widget, width_widget)
     value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value)
     SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, value), slider_color)
     SD.draw!(image, bounding_box, text_color)
@@ -308,7 +308,7 @@ function do_widget!(
         color,
     )
 
-    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    bounding_box = add_widget!(layout, orientation, height_widget, width_widget)
     value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value, user_input_state.characters)
     SD.draw!(image, bounding_box, color)
     SD.draw!(image, SD.TextLine(bounding_box.position, value, font), color)
@@ -332,7 +332,7 @@ function do_widget!(
         color,
     )
 
-    layout, bounding_box = add_widget(layout, orientation, height_widget, width_widget)
+    bounding_box = add_widget!(layout, orientation, height_widget, width_widget)
     SD.draw!(image, bounding_box, color)
     SD.draw!(image, SD.TextLine(bounding_box.position, text, font), color)
 
