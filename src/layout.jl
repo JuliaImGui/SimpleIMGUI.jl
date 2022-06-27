@@ -12,9 +12,22 @@ const VERTICAL = Vertical()
 struct Horizontal <: AbstractDirection end
 const HORIZONTAL = Horizontal()
 
-update_layout(layout::BoxLayout, ::Vertical, height, width) = BoxLayout(SD.Rectangle(layout.bounding_box.position, layout.bounding_box.height + height, max(layout.bounding_box.width, width)))
+function get_bounding_box(shapes...)
+    shape1 = shapes[1]
+    i_min = SD.get_i_min(shape1)
+    j_min = SD.get_j_min(shape1)
+    i_max = SD.get_i_max(shape1)
+    j_max = SD.get_j_max(shape1)
 
-update_layout(layout::BoxLayout, ::Horizontal, height, width) = BoxLayout(SD.Rectangle(layout.bounding_box.position, max(layout.bounding_box.height, height), layout.bounding_box.width + width))
+    for shape in shapes
+        i_min = min(i_min, SD.get_i_min(shape))
+        j_min = min(j_min, SD.get_j_min(shape))
+        i_max = max(i_max, SD.get_i_max(shape))
+        j_max = max(j_max, SD.get_j_max(shape))
+    end
+
+    return SD.Rectangle(SD.Point(i_min, j_min), i_max - i_min + one(i_min), j_max - j_min + one(j_min))
+end
 
 function get_widget_position(layout::BoxLayout, ::Vertical)
     i_max = SD.get_i_max(layout.bounding_box)
@@ -31,4 +44,10 @@ function get_widget_bounding_box(layout::BoxLayout, direction::AbstractDirection
     return SD.Rectangle(widget_position, height, width)
 end
 
-add_widget(layout::BoxLayout, direction::AbstractDirection, height, width) = update_layout(layout, direction, height, width), get_widget_bounding_box(layout, direction, height, width)
+update_layout(layout::BoxLayout, bounding_box::SD.Rectangle) = BoxLayout(get_bounding_box(layout.bounding_box, bounding_box))
+
+function add_widget(layout::BoxLayout, direction::AbstractDirection, height, width)
+    widget_bounding_box = get_widget_bounding_box(layout, direction, height, width)
+    new_layout = update_layout(layout, widget_bounding_box)
+    return new_layout, widget_bounding_box
+end
