@@ -3,6 +3,7 @@ abstract type AbstractWidgetID end
 struct WidgetID <: AbstractWidgetID
     file::String
     line::Int
+    instance::Int
 end
 
 abstract type AbstractUserInteractionState end
@@ -13,7 +14,7 @@ mutable struct UserInteractionState <: AbstractUserInteractionState
     null_widget::WidgetID
 end
 
-const NULL_WIDGET_ID = WidgetID("", 0)
+const NULL_WIDGET_ID = WidgetID("", 0, 0)
 
 function do_widget!(widget_type::AbstractWidgetType, user_interaction_state::AbstractUserInteractionState, args...; kwargs...)
     hot_widget, active_widget, null_widget, values = do_widget!!(widget_type, user_interaction_state.hot_widget, user_interaction_state.active_widget, user_interaction_state.null_widget, args...; kwargs...)
