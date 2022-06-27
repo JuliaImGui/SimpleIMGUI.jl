@@ -29,18 +29,18 @@ function get_bounding_box(shapes...)
     return SD.Rectangle(SD.Point(i_min, j_min), i_max - i_min + one(i_min), j_max - j_min + one(j_min))
 end
 
-function get_widget_position(layout::BoxLayout, ::Vertical)
+function get_next_widget_position(layout::BoxLayout, ::Vertical)
     i_max = SD.get_i_max(layout.bounding_box)
     return SD.Point(i_max + one(i_max), SD.get_j_min(layout.bounding_box))
 end
 
-function get_widget_position(layout::BoxLayout, ::Horizontal)
+function get_next_widget_position(layout::BoxLayout, ::Horizontal)
     j_max = SD.get_j_max(layout.bounding_box)
     return SD.Point(SD.get_i_min(layout.bounding_box), j_max + one(j_max))
 end
 
 function get_widget_bounding_box(layout::BoxLayout, direction::AbstractDirection, height, width)
-    widget_position = get_widget_position(layout, direction)
+    widget_position = get_next_widget_position(layout, direction)
     return SD.Rectangle(widget_position, height, width)
 end
 
