@@ -17,8 +17,8 @@ function update(button, action)
 end
 
 function start()
-    height_image = 720
-    width_image = 1280
+    image_height = 720
+    image_width = 1280
     window_name = "Example"
     background_color = 0x00c0c0c0
     text_color = 0x00000000
@@ -26,7 +26,7 @@ function start()
     sliding_window_size = 30
     font = SD.TERMINUS_32_16
 
-    image = zeros(MGL.GLuint, height_image, width_image)
+    image = zeros(MGL.GLuint, image_height, image_width)
 
     SD.draw!(image, SD.Background(), background_color)
 
@@ -57,7 +57,7 @@ function start()
     text_box_value = collect("Text box")
 
     setup_window_hints()
-    window = GLFW.CreateWindow(width_image, height_image, window_name)
+    window = GLFW.CreateWindow(image_width, image_height, window_name)
     GLFW.MakeContextCurrent(window)
 
     function cursor_position_callback(window, x, y)::Cvoid
@@ -107,7 +107,7 @@ function start()
     GLFW.SetMouseButtonCallback(window, mouse_button_callback)
     GLFW.SetCharCallback(window, character_callback)
 
-    MGL.glViewport(0, 0, width_image, height_image)
+    MGL.glViewport(0, 0, image_width, image_height)
 
     vertex_shader = setup_vertex_shader()
     fragment_shader = setup_fragment_shader()
