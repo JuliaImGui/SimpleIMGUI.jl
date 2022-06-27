@@ -44,13 +44,13 @@ function get_widget_bounding_box(layout::BoxLayout, direction::AbstractDirection
     return SD.Rectangle(widget_position, height, width)
 end
 
-function update_layout!(layout::BoxLayout, bounding_box::SD.Rectangle)
+function add_widget!(layout::BoxLayout, bounding_box::SD.Rectangle)
     layout.bounding_box = get_bounding_box(layout.bounding_box, bounding_box)
     return nothing
 end
 
 function add_widget!(layout::BoxLayout, direction::AbstractDirection, height, width)
     widget_bounding_box = get_widget_bounding_box(layout, direction, height, width)
-    update_layout!(layout, widget_bounding_box)
+    add_widget!(layout, widget_bounding_box)
     return widget_bounding_box
 end
