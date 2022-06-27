@@ -9,8 +9,8 @@ const SLIDER = Slider()
 struct TextBox <: AbstractWidgetType end
 const TEXT_BOX = TextBox()
 
-struct TextDisplay <: AbstractWidgetType end
-const TEXT_DISPLAY = TextDisplay()
+struct Text <: AbstractWidgetType end
+const TEXT = Text()
 
 #####
 ##### utils
@@ -317,11 +317,11 @@ function do_widget!(
 end
 
 #####
-##### TextDisplay
+##### Text
 #####
 
 function do_widget!(
-        widget_type::TextDisplay,
+        widget_type::Text,
         image,
         text,
         layout::BoxLayout,
