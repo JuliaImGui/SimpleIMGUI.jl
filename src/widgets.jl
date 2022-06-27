@@ -128,7 +128,7 @@ function do_widget!(
     SD.draw!(image, bounding_box, color)
     SD.draw!(image, SD.TextLine(bounding_box.position, text, font), color)
 
-    return layout, value
+    return value
 end
 
 #####
@@ -216,7 +216,7 @@ function do_widget!(
     SD.draw!(image, bounding_box, text_color)
     SD.draw!(image, SD.TextLine(bounding_box.position, text, font), text_color)
 
-    return layout, value
+    return value
 end
 
 #####
@@ -313,7 +313,7 @@ function do_widget!(
     SD.draw!(image, bounding_box, color)
     SD.draw!(image, SD.TextLine(bounding_box.position, value, font), color)
 
-    return layout, value
+    return value
 end
 
 #####
@@ -336,5 +336,5 @@ function do_widget!(
     SD.draw!(image, bounding_box, color)
     SD.draw!(image, SD.TextLine(bounding_box.position, text, font), color)
 
-    return layout, text
+    return text
 end
