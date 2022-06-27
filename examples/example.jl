@@ -8,9 +8,9 @@ include("opengl_utils.jl")
 
 function update_button(button, action)
     if action == GLFW.PRESS
-        return SI.press_button(button)
+        return SI.press(button)
     elseif action == GLFW.RELEASE
-        return SI.release_button(button)
+        return SI.release(button)
     else
         return button
     end

@@ -24,8 +24,8 @@ went_up(ended_down, num_transitions) = (num_transitions >= 2) || ((num_transitio
 went_down(input_button) = went_down(input_button.ended_down, input_button.num_transitions)
 went_up(input_button) = went_up(input_button.ended_down, input_button.num_transitions)
 
-press_button(input_button) = InputButton(true, input_button.num_transitions + one(input_button.num_transitions))
-release_button(input_button) = InputButton(false, input_button.num_transitions + one(input_button.num_transitions))
+press(input_button) = InputButton(true, input_button.num_transitions + one(input_button.num_transitions))
+release(input_button) = InputButton(false, input_button.num_transitions + one(input_button.num_transitions))
 reset(input_button) = InputButton(input_button.ended_down, zero(input_button.num_transitions))
 
 function reset!(user_input_state::UserInputState)
