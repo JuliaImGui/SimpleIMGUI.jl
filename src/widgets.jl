@@ -152,7 +152,7 @@ function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, 
 
     active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, widget, mouse_over_slider && mouse_went_down)
 
-    value = get_widget_value(widget_type, hot_widget, active_widget, widget, clamp(j_mouse - j_min + one(j_min), one(j_min), j_max - j_min + one(j_min)), last_value)
+    value = get_widget_value(widget_type, hot_widget, active_widget, widget, clamp(j_mouse - j_min + one(j_min), zero(j_min), j_max - j_min + one(j_min)), last_value)
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, widget, mouse_went_up)
 
