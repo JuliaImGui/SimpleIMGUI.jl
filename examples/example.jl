@@ -197,6 +197,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 200,
+                                SI.MIDDLE_LEFT,
                                 font,
                                 text_color,
                                )
