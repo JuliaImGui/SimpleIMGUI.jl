@@ -336,13 +336,15 @@ function do_widget!(
         orientation::Vertical,
         widget_height,
         widget_width,
+        alignment,
         font,
         color,
     )
 
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment)
     SD.draw!(image, bounding_box, color)
-    SD.draw!(image, SD.TextLine(bounding_box.position, text, font), color)
+    SD.draw!(image, SD.TextLine(SD.Point(bounding_box.position.i + i_offset, bounding_box.position.j + j_offset), text, font), color)
 
     return text
 end
