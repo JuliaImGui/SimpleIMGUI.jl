@@ -206,6 +206,7 @@ function do_widget!(
         orientation::Vertical,
         widget_height,
         widget_width,
+        alignment,
         text,
         font,
         text_color,
@@ -214,9 +215,12 @@ function do_widget!(
 
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
     value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value)
-    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, value), slider_color)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment)
+    if value > zero(value)
+        SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, value), slider_color)
+    end
     SD.draw!(image, bounding_box, text_color)
-    SD.draw!(image, SD.TextLine(bounding_box.position, text, font), text_color)
+    SD.draw!(image, SD.TextLine(SD.Point(bounding_box.position.i + i_offset, bounding_box.position.j + j_offset), text, font), text_color)
 
     return value
 end

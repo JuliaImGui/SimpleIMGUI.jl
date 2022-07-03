@@ -179,6 +179,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 200,
+                                SI.CENTER,
                                 "Slider",
                                 font,
                                 text_color,
