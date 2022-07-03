@@ -118,6 +118,7 @@ function do_widget!(
         orientation::Vertical,
         widget_height,
         widget_width,
+        alignment,
         text,
         font,
         color
@@ -126,7 +127,8 @@ function do_widget!(
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
     value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left)
     SD.draw!(image, bounding_box, color)
-    SD.draw!(image, SD.TextLine(bounding_box.position, text, font), color)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment)
+    SD.draw!(image, SD.TextLine(SD.Point(bounding_box.position.i + i_offset, bounding_box.position.j + j_offset), text, font), color)
 
     return value
 end
