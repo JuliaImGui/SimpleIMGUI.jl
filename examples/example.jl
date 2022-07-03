@@ -122,7 +122,7 @@ function start()
 
     clear_display()
 
-    layout = SI.BoxLayout(SD.Rectangle(SD.Point(1, 1), 0, 0))
+    layout = SI.BoxLayout(SD.Rectangle(SD.Point(1, 1), 4, 4), 4)
 
     while !GLFW.WindowShouldClose(window)
         if SI.went_down(user_input_state.key_escape)
@@ -130,7 +130,7 @@ function start()
             break
         end
 
-        layout.bounding_box = SD.Rectangle(SD.Point(1, 1), 0, 0)
+        layout.bounding_box = SD.Rectangle(SD.Point(1, 1), 4, 4)
 
         compute_time_start = time_ns()
 
