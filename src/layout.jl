@@ -1,7 +1,7 @@
 abstract type AbstractLayout end
 
 mutable struct BoxLayout <: AbstractLayout
-    bounding_box::SD.Rectangle
+    bounding_box::SD.Rectangle{Int}
 end
 
 abstract type AbstractDirection end
