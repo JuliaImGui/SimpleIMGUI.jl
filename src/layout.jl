@@ -51,7 +51,7 @@ function add_widget!(layout::BoxLayout, direction::Vertical, bounding_box::SD.Re
                                        layout.bounding_box.height + bounding_box.height + layout.padding,
                                        max(layout.bounding_box.width, bounding_box.width + oftype(layout.padding, 2)),
                                       )
-    return nothing
+    return bounding_box
 end
 
 function add_widget!(layout::BoxLayout, direction::Horizontal, bounding_box::SD.Rectangle)
@@ -60,7 +60,7 @@ function add_widget!(layout::BoxLayout, direction::Horizontal, bounding_box::SD.
                                        max(layout.bounding_box.height, bounding_box.height + oftype(layout.padding, 2)),
                                        layout.bounding_box.width + bounding_box.width + layout.padding,
                                       )
-    return nothing
+    return bounding_box
 end
 
 function add_widget!(layout::BoxLayout, direction::AbstractDirection, height, width)
