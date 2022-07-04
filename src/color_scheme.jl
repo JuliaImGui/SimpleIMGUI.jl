@@ -1,4 +1,4 @@
-@enum ColorScheme begin
+@enum ColorIndex begin
     COLOR_BACKGROUND = 1
     COLOR_TEXT
     COLOR_BORDER
@@ -8,7 +8,7 @@
     COLOR_TEXT_BOX_BACKGROUND
 end
 
-const COLORS = zeros(UInt32, length(instances(ColorScheme)))
+const COLORS = zeros(UInt32, length(instances(ColorIndex)))
 COLORS[Integer(COLOR_BACKGROUND)] = 0x00cccccc
 COLORS[Integer(COLOR_TEXT)] = 0x00000000
 COLORS[Integer(COLOR_BORDER)] = 0x00000000
