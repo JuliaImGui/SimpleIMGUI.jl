@@ -134,7 +134,7 @@ function start()
 
         SD.draw!(image, SD.Background(), SI.COLORS[Integer(SI.COLOR_BACKGROUND)])
 
-        button1_value = SI.do_widget!(
+        button_value = SI.do_widget!(
                                 SI.BUTTON,
                                 image,
                                 user_interaction_state,
@@ -323,7 +323,7 @@ function start()
                                 SI.COLORS,
                                )
 
-        text = "button1_value: $(button1_value)"
+        text = "button_value: $(button_value)"
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
