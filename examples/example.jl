@@ -20,15 +20,13 @@ function start()
     image_height = 720
     image_width = 1280
     window_name = "Example"
-    background_color = 0x00c0c0c0
-    text_color = 0x00000000
-    slider_color = 0x00ffffff
+
     sliding_window_size = 30
     font = SD.TERMINUS_32_16
 
     image = zeros(MGL.GLuint, image_height, image_width)
 
-    SD.draw!(image, SD.Background(), background_color)
+    SD.draw!(image, SD.Background(), SI.COLORS[Integer(SI.COLOR_BACKGROUND)])
 
     i = 0
 
@@ -134,7 +132,7 @@ function start()
 
         compute_time_start = time_ns()
 
-        SD.draw!(image, SD.Background(), background_color)
+        SD.draw!(image, SD.Background(), SI.COLORS[Integer(SI.COLOR_BACKGROUND)])
 
         button1_value = SI.do_widget!(
                                 SI.BUTTON,
@@ -149,7 +147,7 @@ function start()
                                 SI.CENTER,
                                 "Button 1",
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         button2_value = SI.do_widget!(
@@ -165,7 +163,7 @@ function start()
                                 SI.CENTER,
                                 "Button 2",
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         slider_value = SI.do_widget!(
@@ -182,8 +180,7 @@ function start()
                                 SI.CENTER,
                                 "Slider",
                                 font,
-                                text_color,
-                                slider_color,
+                                SI.COLORS,
                                )
 
         text_box_value = SI.do_widget!(
@@ -199,7 +196,7 @@ function start()
                                 200,
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "Press the escape key to quit"
@@ -213,7 +210,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "previous frame number: $(i)"
@@ -227,7 +224,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms"
@@ -241,7 +238,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms"
@@ -255,7 +252,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "cursor: $(user_input_state.cursor)"
@@ -269,7 +266,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "mouse_left: $(user_input_state.mouse_left)"
@@ -283,7 +280,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "mouse_right: $(user_input_state.mouse_right)"
@@ -297,7 +294,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "mouse_middle: $(user_input_state.mouse_middle)"
@@ -311,7 +308,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "hot_widget: $(user_interaction_state.hot_widget)"
@@ -325,7 +322,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "active_widget: $(user_interaction_state.active_widget)"
@@ -339,7 +336,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "button1_value: $(button1_value)"
@@ -353,7 +350,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "button2_value: $(button2_value)"
@@ -367,7 +364,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "slider_value: $(slider_value)"
@@ -381,7 +378,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         text = "text_box_value: $(text_box_value)"
@@ -395,7 +392,7 @@ function start()
                                 length(text) * SD.get_width(font),
                                 SI.MIDDLE_LEFT,
                                 font,
-                                text_color,
+                                SI.COLORS,
                                )
 
         compute_time_end = time_ns()
