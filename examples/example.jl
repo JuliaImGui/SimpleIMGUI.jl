@@ -150,22 +150,6 @@ function start()
                                 SI.COLORS,
                                )
 
-        button2_value = SI.do_widget!(
-                                SI.BUTTON,
-                                image,
-                                user_interaction_state,
-                                user_input_state,
-                                SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                layout,
-                                SI.VERTICAL,
-                                SD.get_height(font),
-                                200,
-                                SI.CENTER,
-                                "Button 2",
-                                font,
-                                SI.COLORS,
-                               )
-
         slider_value = SI.do_widget!(
                                 SI.SLIDER,
                                 image,
@@ -340,20 +324,6 @@ function start()
                                )
 
         text = "button1_value: $(button1_value)"
-        _ = SI.do_widget!(
-                                SI.TEXT,
-                                image,
-                                text,
-                                layout,
-                                SI.VERTICAL,
-                                SD.get_height(font),
-                                length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
-                                font,
-                                SI.COLORS,
-                               )
-
-        text = "button2_value: $(button2_value)"
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
