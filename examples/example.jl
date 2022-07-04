@@ -145,7 +145,7 @@ function start()
                                 SD.get_height(font),
                                 200,
                                 SI.CENTER,
-                                "Button 1",
+                                "Button",
                                 font,
                                 SI.COLORS,
                                )
