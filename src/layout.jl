@@ -5,14 +5,6 @@ mutable struct BoxLayout <: AbstractLayout
     padding::Int
 end
 
-abstract type AbstractDirection end
-
-struct Vertical <: AbstractDirection end
-const VERTICAL = Vertical()
-
-struct Horizontal <: AbstractDirection end
-const HORIZONTAL = Horizontal()
-
 @enum Alignment begin
     UP2_LEFT2
     UP1_LEFT2
@@ -120,45 +112,6 @@ function get_bounding_box(shapes...)
     end
 
     return SD.Rectangle(SD.Point(i_min, j_min), i_max - i_min + one(i_min), j_max - j_min + one(j_min))
-end
-
-function get_next_widget_position(layout::BoxLayout, ::Vertical)
-    i_max = SD.get_i_max(layout.bounding_box)
-    return SD.Point(i_max + one(i_max), SD.get_j_min(layout.bounding_box) + layout.padding)
-end
-
-function get_next_widget_position(layout::BoxLayout, ::Horizontal)
-    j_max = SD.get_j_max(layout.bounding_box)
-    return SD.Point(SD.get_i_min(layout.bounding_box) + layout.padding, j_max + one(j_max))
-end
-
-function get_next_widget_bounding_box(layout::BoxLayout, direction::AbstractDirection, height, width)
-    position = get_next_widget_position(layout, direction)
-    return SD.Rectangle(position, height, width)
-end
-
-function add_widget!(layout::BoxLayout, direction::Vertical, bounding_box::SD.Rectangle)
-    layout.bounding_box = SD.Rectangle(
-                                       layout.bounding_box.position,
-                                       layout.bounding_box.height + bounding_box.height + layout.padding,
-                                       max(layout.bounding_box.width, bounding_box.width + oftype(layout.padding, 2)),
-                                      )
-    return bounding_box
-end
-
-function add_widget!(layout::BoxLayout, direction::Horizontal, bounding_box::SD.Rectangle)
-    layout.bounding_box = SD.Rectangle(
-                                       layout.bounding_box.position,
-                                       max(layout.bounding_box.height, bounding_box.height + oftype(layout.padding, 2)),
-                                       layout.bounding_box.width + bounding_box.width + layout.padding,
-                                      )
-    return bounding_box
-end
-
-function add_widget!(layout::BoxLayout, direction::AbstractDirection, height, width)
-    bounding_box = get_next_widget_bounding_box(layout, direction, height, width)
-    add_widget!(layout, direction, bounding_box)
-    return bounding_box
 end
 
 function add_widget!(layout::BoxLayout, alignment::Alignment, height, width)
