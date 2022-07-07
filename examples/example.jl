@@ -120,7 +120,7 @@ function start()
 
     clear_display()
 
-    layout = SI.BoxLayout(SD.Rectangle(SD.Point(1, 1), 4, 4), 4)
+    layout = SI.BoxLayout(SD.Rectangle(SD.Point(5, 5), 0, 0), 0)
 
     while !GLFW.WindowShouldClose(window)
         if SI.went_down(user_input_state.key_escape)
@@ -128,7 +128,8 @@ function start()
             break
         end
 
-        layout.bounding_box = SD.Rectangle(SD.Point(1, 1), 4, 4)
+        layout.bounding_box = SD.Rectangle(SD.Point(5, 5), 0, 0)
+        layout.padding = 0
 
         compute_time_start = time_ns()
 
@@ -141,7 +142,7 @@ function start()
                                 user_input_state,
                                 SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_RIGHT2,
                                 SD.get_height(font),
                                 200,
                                 SI.CENTER,
@@ -149,6 +150,8 @@ function start()
                                 font,
                                 SI.COLORS,
                                )
+
+        layout.padding = 4
 
         slider_value = SI.do_widget!(
                                 SI.SLIDER,
@@ -158,7 +161,7 @@ function start()
                                 SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 slider_value,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 200,
                                 SI.CENTER,
@@ -175,7 +178,7 @@ function start()
                                 SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text_box_value,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 200,
                                 SI.LEFT1,
@@ -189,7 +192,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -203,7 +206,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -217,7 +220,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -231,7 +234,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -245,7 +248,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -259,7 +262,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -273,7 +276,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -287,7 +290,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -301,7 +304,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -315,7 +318,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -329,7 +332,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -343,7 +346,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,
@@ -357,7 +360,7 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
                                 SI.LEFT1,

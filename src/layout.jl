@@ -160,3 +160,14 @@ function add_widget!(layout::BoxLayout, direction::AbstractDirection, height, wi
     add_widget!(layout, direction, bounding_box)
     return bounding_box
 end
+
+function add_widget!(layout::BoxLayout, alignment::Alignment, height, width)
+    bounding_box = get_bounding_box(layout.bounding_box, alignment, height, width, layout.padding)
+    layout.bounding_box = get_bounding_box(layout.bounding_box, bounding_box)
+    return bounding_box
+end
+
+function get_bounding_box(bounding_box::SD.Rectangle, alignment::Alignment, height, width, padding)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, height, width, alignment, padding)
+    return SD.Rectangle(SD.move(bounding_box.position, i_offset, j_offset), height, width)
+end
