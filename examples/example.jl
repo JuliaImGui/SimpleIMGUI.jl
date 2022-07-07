@@ -178,7 +178,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 200,
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -192,7 +192,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -206,7 +206,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -220,7 +220,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -234,7 +234,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -248,7 +248,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -262,7 +262,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -276,7 +276,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -290,7 +290,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -304,7 +304,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -318,7 +318,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -332,7 +332,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -346,7 +346,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -360,7 +360,7 @@ function start()
                                 SI.VERTICAL,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )

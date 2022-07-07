@@ -14,38 +14,94 @@ struct Horizontal <: AbstractDirection end
 const HORIZONTAL = Horizontal()
 
 @enum Alignment begin
-    TOP_LEFT
-    MIDDLE_LEFT
-    BOTTOM_LEFT
-    TOP_MIDDLE
+    UP2_LEFT2
+    UP1_LEFT2
+    LEFT2
+    DOWN1_LEFT2
+    DOWN2_LEFT2
+
+    UP2_LEFT1
+    UP1_LEFT1
+    LEFT1
+    DOWN1_LEFT1
+    DOWN2_LEFT1
+
+    UP2
+    UP1
     CENTER
-    BOTTOM_MIDDLE
-    TOP_RIGHT
-    MIDDLE_RIGHT
-    BOTTOM_RIGHT
+    DOWN1
+    DOWN2
+
+    UP2_RIGHT1
+    UP1_RIGHT1
+    RIGHT1
+    DOWN1_RIGHT1
+    DOWN2_RIGHT1
+
+    UP2_RIGHT2
+    UP1_RIGHT2
+    RIGHT2
+    DOWN1_RIGHT2
+    DOWN2_RIGHT2
 end
 
 function get_alignment_offset(total_height, total_width, content_height, content_width, alignment)
     I = typeof(total_height)
 
-    if alignment == TOP_LEFT
+    if alignment == UP2_LEFT2
+        return (convert(I, -content_height), convert(I, -content_width))
+    elseif alignment == UP1_LEFT2
+        return (zero(I), convert(I, -content_width))
+    elseif alignment == LEFT2
+        return (convert(I, (total_height - content_height) ÷ 2), convert(I, -content_width))
+    elseif alignment == DOWN1_LEFT2
+        return (convert(I, total_height - content_height), convert(I, -content_width))
+    elseif alignment == DOWN2_LEFT2
+        return (convert(I, total_height), convert(I, -content_width))
+
+    elseif alignment == UP2_LEFT1
+        return (convert(I, -content_height), zero(I))
+    elseif alignment == UP1_LEFT1
         return (zero(I), zero(I))
-    elseif alignment == MIDDLE_LEFT
+    elseif alignment == LEFT1
         return (convert(I, (total_height - content_height) ÷ 2), zero(I))
-    elseif alignment == BOTTOM_LEFT
-        return (convert(I, (total_height - content_height)), zero(I))
-    elseif alignment == TOP_MIDDLE
+    elseif alignment == DOWN1_LEFT1
+        return (convert(I, total_height - content_height), zero(I))
+    elseif alignment == DOWN2_LEFT1
+        return (convert(I, total_height), zero(I))
+
+    elseif alignment == UP2
+        return (convert(I, -content_height), convert(I, (total_width - content_width) ÷ 2))
+    elseif alignment == UP1
         return (zero(I), convert(I, (total_width - content_width) ÷ 2))
     elseif alignment == CENTER
         return (convert(I, (total_height - content_height) ÷ 2), convert(I, (total_width - content_width) ÷ 2))
-    elseif alignment == BOTTOM_MIDDLE
-        return (convert(I, (total_height - content_height)), convert(I, (total_width - content_width) ÷ 2))
-    elseif alignment == TOP_RIGHT
+    elseif alignment == DOWN1
+        return (convert(I, total_height - content_height), convert(I, (total_width - content_width) ÷ 2))
+    elseif alignment == DOWN2
+        return (convert(I, total_height), convert(I, (total_width - content_width) ÷ 2))
+
+    elseif alignment == UP2_RIGHT1
+        return (convert(I, -content_height), convert(I, total_width - content_width))
+    elseif alignment == UP1_RIGHT1
         return (zero(I), convert(I, total_width - content_width))
-    elseif alignment == MIDDLE_RIGHT
+    elseif alignment == RIGHT1
         return (convert(I, (total_height - content_height) ÷ 2), convert(I, total_width - content_width))
-    else
+    elseif alignment == DOWN1_RIGHT1
         return (convert(I, total_height - content_height), convert(I, total_width - content_width))
+    elseif alignment == DOWN2_RIGHT1
+        return (convert(I, total_height), convert(I, total_width - content_width))
+
+    elseif alignment == UP2_RIGHT2
+        return (convert(I, -content_height), convert(I, total_width))
+    elseif alignment == UP1_RIGHT2
+        return (zero(I), convert(I, total_width))
+    elseif alignment == RIGHT2
+        return (convert(I, (total_height - content_height) ÷ 2), convert(I, total_width))
+    elseif alignment == DOWN1_RIGHT2
+        return (convert(I, total_height - content_height), convert(I, total_width))
+    else
+        return (convert(I, total_height), convert(I, total_width))
     end
 end
 
