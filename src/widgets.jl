@@ -114,8 +114,8 @@ function do_widget!(
         user_interaction_state,
         user_input_state,
         widget,
-        layout::BoxLayout,
-        orientation::Vertical,
+        layout,
+        orientation,
         widget_height,
         widget_width,
         alignment,
@@ -126,7 +126,7 @@ function do_widget!(
 
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
     value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left)
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment, 0)
     SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), colors[Integer(COLOR_BUTTON_BACKGROUND)])
     SD.draw!(image, bounding_box, colors[Integer(COLOR_BORDER)])
     SD.draw!(image, SD.TextLine(SD.Point(bounding_box.position.i + i_offset, bounding_box.position.j + j_offset), text, font), colors[Integer(COLOR_TEXT)])
@@ -203,8 +203,8 @@ function do_widget!(
         user_input_state,
         widget,
         value,
-        layout::BoxLayout,
-        orientation::Vertical,
+        layout,
+        orientation,
         widget_height,
         widget_width,
         alignment,
@@ -215,7 +215,7 @@ function do_widget!(
 
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
     value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value)
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment, 0)
     SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), colors[Integer(COLOR_SLIDER_BACKGROUND)])
     if value > zero(value)
         SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, value), colors[Integer(COLOR_SLIDER_BAR)])
@@ -307,8 +307,8 @@ function do_widget!(
         user_input_state,
         widget,
         value,
-        layout::BoxLayout,
-        orientation::Vertical,
+        layout,
+        orientation,
         widget_height,
         widget_width,
         alignment,
@@ -318,7 +318,7 @@ function do_widget!(
 
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
     value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value, user_input_state.characters)
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(value), alignment)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(value), alignment, 0)
     SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), colors[Integer(COLOR_TEXT_BOX_BACKGROUND)])
     SD.draw!(image, bounding_box, colors[Integer(COLOR_BORDER)])
     SD.draw!(image, SD.TextLine(SD.Point(bounding_box.position.i + i_offset, bounding_box.position.j + j_offset), value, font), colors[Integer(COLOR_TEXT)])
@@ -334,8 +334,8 @@ function do_widget!(
         widget_type::Text,
         image,
         text,
-        layout::BoxLayout,
-        orientation::Vertical,
+        layout,
+        orientation,
         widget_height,
         widget_width,
         alignment,
@@ -344,7 +344,7 @@ function do_widget!(
     )
 
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment, 0)
     SD.draw!(image, SD.TextLine(SD.Point(bounding_box.position.i + i_offset, bounding_box.position.j + j_offset), text, font), colors[Integer(COLOR_TEXT)])
 
     return text

@@ -120,7 +120,7 @@ function start()
 
     clear_display()
 
-    layout = SI.BoxLayout(SD.Rectangle(SD.Point(1, 1), 4, 4), 4)
+    layout = SI.BoxLayout(SD.Rectangle(SD.Point(5, 5), 0, 0), 0)
 
     while !GLFW.WindowShouldClose(window)
         if SI.went_down(user_input_state.key_escape)
@@ -128,43 +128,30 @@ function start()
             break
         end
 
-        layout.bounding_box = SD.Rectangle(SD.Point(1, 1), 4, 4)
+        layout.bounding_box = SD.Rectangle(SD.Point(5, 5), 0, 0)
+        layout.padding = 0
 
         compute_time_start = time_ns()
 
         SD.draw!(image, SD.Background(), SI.COLORS[Integer(SI.COLOR_BACKGROUND)])
 
-        button1_value = SI.do_widget!(
+        button_value = SI.do_widget!(
                                 SI.BUTTON,
                                 image,
                                 user_interaction_state,
                                 user_input_state,
                                 SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_RIGHT2,
                                 SD.get_height(font),
                                 200,
                                 SI.CENTER,
-                                "Button 1",
+                                "Button",
                                 font,
                                 SI.COLORS,
                                )
 
-        button2_value = SI.do_widget!(
-                                SI.BUTTON,
-                                image,
-                                user_interaction_state,
-                                user_input_state,
-                                SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                layout,
-                                SI.VERTICAL,
-                                SD.get_height(font),
-                                200,
-                                SI.CENTER,
-                                "Button 2",
-                                font,
-                                SI.COLORS,
-                               )
+        layout.padding = 4
 
         slider_value = SI.do_widget!(
                                 SI.SLIDER,
@@ -174,7 +161,7 @@ function start()
                                 SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 slider_value,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 200,
                                 SI.CENTER,
@@ -191,10 +178,10 @@ function start()
                                 SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text_box_value,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 200,
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -205,10 +192,10 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -219,10 +206,10 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -233,10 +220,10 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -247,10 +234,10 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -261,10 +248,10 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -275,10 +262,10 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -289,10 +276,10 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -303,10 +290,10 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -317,10 +304,10 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -331,38 +318,24 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
 
-        text = "button1_value: $(button1_value)"
+        text = "button_value: $(button_value)"
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
-                                font,
-                                SI.COLORS,
-                               )
-
-        text = "button2_value: $(button2_value)"
-        _ = SI.do_widget!(
-                                SI.TEXT,
-                                image,
-                                text,
-                                layout,
-                                SI.VERTICAL,
-                                SD.get_height(font),
-                                length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -373,10 +346,10 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
@@ -387,10 +360,10 @@ function start()
                                 image,
                                 text,
                                 layout,
-                                SI.VERTICAL,
+                                SI.DOWN2_LEFT1,
                                 SD.get_height(font),
                                 length(text) * SD.get_width(font),
-                                SI.MIDDLE_LEFT,
+                                SI.LEFT1,
                                 font,
                                 SI.COLORS,
                                )
