@@ -125,11 +125,16 @@ function do_widget!(
     )
 
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
+
     value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left)
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment, 0)
-    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), colors[Integer(COLOR_BUTTON_BACKGROUND)])
-    SD.draw!(image, bounding_box, colors[Integer(COLOR_BORDER)])
-    SD.draw!(image, SD.TextLine(SD.Point(bounding_box.position.i + i_offset, bounding_box.position.j + j_offset), text, font), colors[Integer(COLOR_TEXT)])
+
+    if widget == user_interaction_state.active_widget
+        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, COLORS[Integer(COLOR_ACTIVE_BUTTON_BACKGROUND)], COLORS[Integer(COLOR_ACTIVE_BUTTON_BORDER)], COLORS[Integer(COLOR_ACTIVE_BUTTON_TEXT)])
+    elseif widget == user_interaction_state.hot_widget
+        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, COLORS[Integer(COLOR_HOT_BUTTON_BACKGROUND)], COLORS[Integer(COLOR_HOT_BUTTON_BORDER)], COLORS[Integer(COLOR_HOT_BUTTON_TEXT)])
+    else
+        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, COLORS[Integer(COLOR_NEUTRAL_BUTTON_BACKGROUND)], COLORS[Integer(COLOR_NEUTRAL_BUTTON_BORDER)], COLORS[Integer(COLOR_NEUTRAL_BUTTON_TEXT)])
+    end
 
     return value
 end
@@ -215,13 +220,14 @@ function do_widget!(
 
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
     value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value)
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment, 0)
-    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), colors[Integer(COLOR_SLIDER_BACKGROUND)])
-    if value > zero(value)
-        SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, value), colors[Integer(COLOR_SLIDER_BAR)])
+
+    if widget == user_interaction_state.active_widget
+        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, value, COLORS[Integer(COLOR_ACTIVE_SLIDER_BACKGROUND)], COLORS[Integer(COLOR_ACTIVE_SLIDER_BORDER)], COLORS[Integer(COLOR_ACTIVE_SLIDER_TEXT)], COLORS[Integer(COLOR_ACTIVE_SLIDER_BAR)])
+    elseif widget == user_interaction_state.hot_widget
+        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, value, COLORS[Integer(COLOR_HOT_SLIDER_BACKGROUND)], COLORS[Integer(COLOR_HOT_SLIDER_BORDER)], COLORS[Integer(COLOR_HOT_SLIDER_TEXT)], COLORS[Integer(COLOR_HOT_SLIDER_BAR)])
+    else
+        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, value, COLORS[Integer(COLOR_NEUTRAL_SLIDER_BACKGROUND)], COLORS[Integer(COLOR_NEUTRAL_SLIDER_BORDER)], COLORS[Integer(COLOR_NEUTRAL_SLIDER_TEXT)], COLORS[Integer(COLOR_NEUTRAL_SLIDER_BAR)])
     end
-    SD.draw!(image, bounding_box, colors[Integer(COLOR_BORDER)])
-    SD.draw!(image, SD.TextLine(SD.Point(bounding_box.position.i + i_offset, bounding_box.position.j + j_offset), text, font), colors[Integer(COLOR_TEXT)])
 
     return value
 end
@@ -318,10 +324,14 @@ function do_widget!(
 
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
     value = do_widget!(widget_type, user_interaction_state, widget, bounding_box, user_input_state.cursor, user_input_state.mouse_left, value, user_input_state.characters)
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(value), alignment, 0)
-    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), colors[Integer(COLOR_TEXT_BOX_BACKGROUND)])
-    SD.draw!(image, bounding_box, colors[Integer(COLOR_BORDER)])
-    SD.draw!(image, SD.TextLine(SD.Point(bounding_box.position.i + i_offset, bounding_box.position.j + j_offset), value, font), colors[Integer(COLOR_TEXT)])
+
+    if widget == user_interaction_state.active_widget
+        SD.draw!(image, widget_type, bounding_box, value, font, LEFT1, -1, COLORS[Integer(COLOR_ACTIVE_TEXT_BOX_BACKGROUND)], COLORS[Integer(COLOR_ACTIVE_TEXT_BOX_BORDER)], COLORS[Integer(COLOR_ACTIVE_TEXT_BOX_TEXT)])
+    elseif widget == user_interaction_state.hot_widget
+        SD.draw!(image, widget_type, bounding_box, value, font, LEFT1, -1, COLORS[Integer(COLOR_HOT_TEXT_BOX_BACKGROUND)], COLORS[Integer(COLOR_HOT_TEXT_BOX_BORDER)], COLORS[Integer(COLOR_HOT_TEXT_BOX_TEXT)])
+    else
+        SD.draw!(image, widget_type, bounding_box, value, font, LEFT1, -1, COLORS[Integer(COLOR_NEUTRAL_TEXT_BOX_BACKGROUND)], COLORS[Integer(COLOR_NEUTRAL_TEXT_BOX_BORDER)], COLORS[Integer(COLOR_NEUTRAL_TEXT_BOX_TEXT)])
+    end
 
     return value
 end
@@ -344,8 +354,8 @@ function do_widget!(
     )
 
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment, 0)
-    SD.draw!(image, SD.TextLine(SD.Point(bounding_box.position.i + i_offset, bounding_box.position.j + j_offset), text, font), colors[Integer(COLOR_TEXT)])
+
+    SD.draw!(image, widget_type, bounding_box, text, font, LEFT1, -1, COLORS[Integer(COLOR_NEUTRAL_TEXT_BACKGROUND)], COLORS[Integer(COLOR_NEUTRAL_TEXT_BORDER)], COLORS[Integer(COLOR_NEUTRAL_TEXT_TEXT)])
 
     return text
 end
