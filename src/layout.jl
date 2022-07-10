@@ -2,7 +2,6 @@ abstract type AbstractLayout end
 
 mutable struct BoxLayout <: AbstractLayout
     reference_bounding_box::SD.Rectangle{Int}
-    widget_bounding_box::SD.Rectangle{Int}
 end
 
 @enum Alignment begin
