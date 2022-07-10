@@ -78,47 +78,55 @@ function do_widget(widget_type::Button, hot_widget, active_widget, null_widget, 
     return hot_widget, active_widget, null_widget, value
 end
 
-function do_widget!(
-        widget_type::Button,
-        image,
-        user_interaction_state,
-        user_input_state,
-        widget,
-        layout,
-        orientation,
-        widget_height,
-        widget_width,
-        alignment,
-        text,
-        font,
-        colors,
-    )
-
-    bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
-
-    hot_widget, active_widget, null_widget, value = do_widget(
-                                                             widget_type,
-                                                             user_interaction_state.hot_widget,
-                                                             user_interaction_state.active_widget,
-                                                             user_interaction_state.null_widget,
-                                                             widget,
-                                                             SD.get_i_min(bounding_box),
-                                                             SD.get_j_min(bounding_box),
-                                                             SD.get_i_max(bounding_box),
-                                                             SD.get_j_max(bounding_box),
-                                                             user_input_state.cursor.i,
-                                                             user_input_state.cursor.j,
-                                                             user_input_state.mouse_left.ended_down,
-                                                             user_input_state.mouse_left.num_transitions,
-                                                            )
+function do_widget!(widget_type::Button, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
+    hot_widget, active_widget, null_widget, widget_value = do_widget(
+                                                              widget_type,
+                                                              user_interaction_state.hot_widget,
+                                                              user_interaction_state.active_widget,
+                                                              user_interaction_state.null_widget,
+                                                              this_widget,
+                                                              SD.get_i_min(bounding_box),
+                                                              SD.get_j_min(bounding_box),
+                                                              SD.get_i_max(bounding_box),
+                                                              SD.get_j_max(bounding_box),
+                                                              cursor.i,
+                                                              cursor.j,
+                                                              input_button.ended_down,
+                                                              input_button.num_transitions
+                                                             )
 
     user_interaction_state.hot_widget = hot_widget
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    SD.draw!(image, bounding_box, widget_type, user_interaction_state, widget, text, font, colors)
+    return widget_value
+end
 
-    return value
+function do_widget!(
+        widget_type::Button,
+        user_interaction_state,
+        this_widget,
+        cursor,
+        input_button,
+        layout,
+        alignment,
+        padding,
+        widget_height,
+        widget_width,
+        image,
+        text,
+        font,
+        colors,
+    )
+
+    widget_bounding_box = get_bounding_box(layout.referece_bounding_box, alignment, widget_height, widget_width, padding)
+    layout.widget_bounding_box = widget_bounding_box
+
+    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
+
+    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, text, font, colors)
+
+    return widget_value
 end
 
 #####
@@ -151,49 +159,57 @@ function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, 
     return hot_widget, active_widget, null_widget, value
 end
 
-function do_widget!(
-        widget_type::Slider,
-        image,
-        user_interaction_state,
-        user_input_state,
-        widget,
-        value,
-        layout,
-        orientation,
-        widget_height,
-        widget_width,
-        alignment,
-        text,
-        font,
-        colors,
-    )
-
-    bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
-
-    hot_widget, active_widget, null_widget, value = do_widget(
-                                                             widget_type,
-                                                             user_interaction_state.hot_widget,
-                                                             user_interaction_state.active_widget,
-                                                             user_interaction_state.null_widget,
-                                                             widget,
-                                                             SD.get_i_min(bounding_box),
-                                                             SD.get_j_min(bounding_box),
-                                                             SD.get_i_max(bounding_box),
-                                                             SD.get_j_max(bounding_box),
-                                                             user_input_state.cursor.i,
-                                                             user_input_state.cursor.j,
-                                                             user_input_state.mouse_left.ended_down,
-                                                             user_input_state.mouse_left.num_transitions,
-                                                             value,
-                                                            )
+function do_widget!(widget_type::Slider, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
+    hot_widget, active_widget, null_widget, widget_value = do_widget(
+                                                              widget_type,
+                                                              user_interaction_state.hot_widget,
+                                                              user_interaction_state.active_widget,
+                                                              user_interaction_state.null_widget,
+                                                              this_widget,
+                                                              SD.get_i_min(bounding_box),
+                                                              SD.get_j_min(bounding_box),
+                                                              SD.get_i_max(bounding_box),
+                                                              SD.get_j_max(bounding_box),
+                                                              cursor.i,
+                                                              cursor.j,
+                                                              input_button.ended_down,
+                                                              input_button.num_transitions,
+                                                              value,
+                                                             )
 
     user_interaction_state.hot_widget = hot_widget
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    SD.draw!(image, bounding_box, widget_type, user_interaction_state, widget, value, text, font, colors)
+    return widget_value
+end
 
-    return value
+function do_widget!(
+        widget_type::Slider,
+        user_interaction_state,
+        this_widget,
+        widget_value,
+        cursor,
+        input_button,
+        layout,
+        alignment,
+        padding,
+        widget_height,
+        widget_width,
+        image,
+        text,
+        font,
+        colors,
+    )
+
+    widget_bounding_box = get_bounding_box(layout.referece_bounding_box, alignment, widget_height, widget_width, padding)
+    layout.widget_bounding_box = widget_bounding_box
+
+    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
+
+    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, text, font, colors)
+
+    return widget_value
 end
 
 #####
@@ -236,73 +252,129 @@ function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget
     return hot_widget, active_widget, null_widget, value
 end
 
-function do_widget!(
-        widget_type::TextBox,
-        image,
-        user_interaction_state,
-        user_input_state,
-        widget,
-        value,
-        layout,
-        orientation,
-        widget_height,
-        widget_width,
-        alignment,
-        font,
-        colors,
-    )
-
-    bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
-    hot_widget, active_widget, null_widget, value = do_widget!(
-                                                                 widget_type,
-                                                                 user_interaction_state.hot_widget,
-                                                                 user_interaction_state.active_widget,
-                                                                 user_interaction_state.null_widget,
-                                                                 widget,
-                                                                 SD.get_i_min(bounding_box),
-                                                                 SD.get_j_min(bounding_box),
-                                                                 SD.get_i_max(bounding_box),
-                                                                 SD.get_j_max(bounding_box),
-                                                                 user_input_state.cursor.i,
-                                                                 user_input_state.cursor.j,
-                                                                 user_input_state.mouse_left.ended_down,
-                                                                 user_input_state.mouse_left.num_transitions,
-                                                                 value,
-                                                                 user_input_state.characters,
-                                                                )
+function do_widget!(widget_type::TextBox, user_interaction_state, this_widget, widget_value, cursor, input_button, characters, widget_bounding_box)
+    hot_widget, active_widget, null_widget, widget_value = do_widget(
+                                                              widget_type,
+                                                              user_interaction_state.hot_widget,
+                                                              user_interaction_state.active_widget,
+                                                              user_interaction_state.null_widget,
+                                                              this_widget,
+                                                              SD.get_i_min(bounding_box),
+                                                              SD.get_j_min(bounding_box),
+                                                              SD.get_i_max(bounding_box),
+                                                              SD.get_j_max(bounding_box),
+                                                              cursor.i,
+                                                              cursor.j,
+                                                              input_button.ended_down,
+                                                              input_button.num_transitions,
+                                                              value,
+                                                              characters,
+                                                             )
 
     user_interaction_state.hot_widget = hot_widget
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    SD.draw!(image, bounding_box, widget_type, user_interaction_state, widget, value, font, colors)
+    return widget_value
+end
 
-    return value
+function do_widget!(
+        widget_type::TextBox,
+        user_interaction_state,
+        this_widget,
+        widget_value,
+        cursor,
+        input_button,
+        characters,
+        layout,
+        alignment,
+        padding,
+        widget_height,
+        widget_width,
+        image,
+        text,
+        font,
+        colors,
+    )
+
+    widget_bounding_box = get_bounding_box(layout.referece_bounding_box, alignment, widget_height, widget_width, padding)
+    layout.widget_bounding_box = widget_bounding_box
+
+    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, cursor, input_button, characters, widget_bounding_box)
+
+    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, text, font, colors)
+
+    return widget_value
 end
 
 #####
 ##### Text
 #####
 
+function do_widget(widget_type::Text, hot_widget, active_widget, null_widget, widget, i_min, j_min, i_max, j_max, i_mouse, j_mouse, ended_down, num_transitions, value)
+    mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
+    mouse_went_down = went_down(ended_down, num_transitions)
+    mouse_went_up = went_up(ended_down, num_transitions)
+
+    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, widget, mouse_over_widget)
+
+    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, widget, mouse_over_widget && mouse_went_down)
+
+    active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, widget, mouse_went_up)
+
+    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, widget, !mouse_over_widget)
+
+    return hot_widget, active_widget, null_widget, value
+end
+
+function do_widget!(widget_type::Text, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
+    hot_widget, active_widget, null_widget, widget_value = do_widget(
+                                                              widget_type,
+                                                              user_interaction_state.hot_widget,
+                                                              user_interaction_state.active_widget,
+                                                              user_interaction_state.null_widget,
+                                                              this_widget,
+                                                              SD.get_i_min(bounding_box),
+                                                              SD.get_j_min(bounding_box),
+                                                              SD.get_i_max(bounding_box),
+                                                              SD.get_j_max(bounding_box),
+                                                              cursor.i,
+                                                              cursor.j,
+                                                              input_button.ended_down,
+                                                              input_button.num_transitions,
+                                                              widget_value,
+                                                             )
+
+    user_interaction_state.hot_widget = hot_widget
+    user_interaction_state.active_widget = active_widget
+    user_interaction_state.null_widget = null_widget
+
+    return widget_value
+end
+
 function do_widget!(
         widget_type::Text,
-        image,
         user_interaction_state,
-        user_input_state,
-        widget,
-        text,
+        this_widget,
+        cursor,
+        input_button,
         layout,
-        orientation,
+        alignment,
+        padding,
         widget_height,
         widget_width,
-        alignment,
+        image,
+        text,
         font,
         colors,
     )
 
-    bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
+    widget_bounding_box = get_bounding_box(layout.referece_bounding_box, alignment, widget_height, widget_width, padding)
+    layout.widget_bounding_box = widget_bounding_box
 
-    SD.draw!(image, bounding_box, widget_type, user_interaction_state, widget, text, font, colors)
+    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
 
-    return text
+    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, text, font, colors)
+
+    return widget_value
 end
