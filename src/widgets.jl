@@ -116,13 +116,7 @@ function do_widget!(
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    if widget == user_interaction_state.active_widget
-        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, COLORS[Integer(COLOR_ACTIVE_BUTTON_BACKGROUND)], COLORS[Integer(COLOR_ACTIVE_BUTTON_BORDER)], COLORS[Integer(COLOR_ACTIVE_BUTTON_TEXT)])
-    elseif widget == user_interaction_state.hot_widget
-        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, COLORS[Integer(COLOR_HOT_BUTTON_BACKGROUND)], COLORS[Integer(COLOR_HOT_BUTTON_BORDER)], COLORS[Integer(COLOR_HOT_BUTTON_TEXT)])
-    else
-        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, COLORS[Integer(COLOR_NEUTRAL_BUTTON_BACKGROUND)], COLORS[Integer(COLOR_NEUTRAL_BUTTON_BORDER)], COLORS[Integer(COLOR_NEUTRAL_BUTTON_TEXT)])
-    end
+    SD.draw!(image, bounding_box, widget_type, user_interaction_state, widget, text, font, colors)
 
     return value
 end
@@ -197,13 +191,7 @@ function do_widget!(
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    if widget == user_interaction_state.active_widget
-        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, value, COLORS[Integer(COLOR_ACTIVE_SLIDER_BACKGROUND)], COLORS[Integer(COLOR_ACTIVE_SLIDER_BORDER)], COLORS[Integer(COLOR_ACTIVE_SLIDER_TEXT)], COLORS[Integer(COLOR_ACTIVE_SLIDER_BAR)])
-    elseif widget == user_interaction_state.hot_widget
-        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, value, COLORS[Integer(COLOR_HOT_SLIDER_BACKGROUND)], COLORS[Integer(COLOR_HOT_SLIDER_BORDER)], COLORS[Integer(COLOR_HOT_SLIDER_TEXT)], COLORS[Integer(COLOR_HOT_SLIDER_BAR)])
-    else
-        SD.draw!(image, widget_type, bounding_box, text, font, CENTER, -1, value, COLORS[Integer(COLOR_NEUTRAL_SLIDER_BACKGROUND)], COLORS[Integer(COLOR_NEUTRAL_SLIDER_BORDER)], COLORS[Integer(COLOR_NEUTRAL_SLIDER_TEXT)], COLORS[Integer(COLOR_NEUTRAL_SLIDER_BAR)])
-    end
+    SD.draw!(image, bounding_box, widget_type, user_interaction_state, widget, value, text, font, colors)
 
     return value
 end
@@ -287,18 +275,7 @@ function do_widget!(
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    content_alignment = LEFT1
-    if length(value) * SD.get_width(font) > widget_width
-        content_alignment = RIGHT1
-    end
-
-    if widget == user_interaction_state.active_widget
-        SD.draw!(image, widget_type, bounding_box, value, font, content_alignment, -1, COLORS[Integer(COLOR_ACTIVE_TEXT_BOX_BACKGROUND)], COLORS[Integer(COLOR_ACTIVE_TEXT_BOX_BORDER)], COLORS[Integer(COLOR_ACTIVE_TEXT_BOX_TEXT)])
-    elseif widget == user_interaction_state.hot_widget
-        SD.draw!(image, widget_type, bounding_box, value, font, content_alignment, -1, COLORS[Integer(COLOR_HOT_TEXT_BOX_BACKGROUND)], COLORS[Integer(COLOR_HOT_TEXT_BOX_BORDER)], COLORS[Integer(COLOR_HOT_TEXT_BOX_TEXT)])
-    else
-        SD.draw!(image, widget_type, bounding_box, value, font, content_alignment, -1, COLORS[Integer(COLOR_NEUTRAL_TEXT_BOX_BACKGROUND)], COLORS[Integer(COLOR_NEUTRAL_TEXT_BOX_BORDER)], COLORS[Integer(COLOR_NEUTRAL_TEXT_BOX_TEXT)])
-    end
+    SD.draw!(image, bounding_box, widget_type, user_interaction_state, widget, value, font, colors)
 
     return value
 end
@@ -310,6 +287,9 @@ end
 function do_widget!(
         widget_type::Text,
         image,
+        user_interaction_state,
+        user_input_state,
+        widget,
         text,
         layout,
         orientation,
@@ -322,7 +302,7 @@ function do_widget!(
 
     bounding_box = add_widget!(layout, orientation, widget_height, widget_width)
 
-    SD.draw!(image, widget_type, bounding_box, text, font, LEFT1, -1, COLORS[Integer(COLOR_NEUTRAL_TEXT_BACKGROUND)], COLORS[Integer(COLOR_NEUTRAL_TEXT_BORDER)], COLORS[Integer(COLOR_NEUTRAL_TEXT_TEXT)])
+    SD.draw!(image, bounding_box, widget_type, user_interaction_state, widget, text, font, colors)
 
     return text
 end

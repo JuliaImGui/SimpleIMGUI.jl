@@ -190,6 +190,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -204,6 +207,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -218,6 +224,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -232,6 +241,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -246,6 +258,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -260,6 +275,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -274,6 +292,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -288,6 +309,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -302,6 +326,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -316,6 +343,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -330,6 +360,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -344,6 +377,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
@@ -358,6 +394,9 @@ function start()
         _ = SI.do_widget!(
                                 SI.TEXT,
                                 image,
+                                user_interaction_state,
+                                user_input_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
                                 text,
                                 layout,
                                 SI.DOWN2_LEFT1,
