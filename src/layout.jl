@@ -1,8 +1,8 @@
 abstract type AbstractLayout end
 
 mutable struct BoxLayout <: AbstractLayout
-    bounding_box::SD.Rectangle{Int}
-    padding::Int
+    reference_bounding_box::SD.Rectangle{Int}
+    widget_bounding_box::SD.Rectangle{Int}
 end
 
 @enum Alignment begin
@@ -112,12 +112,6 @@ function get_bounding_box(shapes...)
     end
 
     return SD.Rectangle(SD.Point(i_min, j_min), i_max - i_min + one(i_min), j_max - j_min + one(j_min))
-end
-
-function add_widget!(layout::BoxLayout, alignment::Alignment, height, width)
-    bounding_box = get_bounding_box(layout.bounding_box, alignment, height, width, layout.padding)
-    layout.bounding_box = get_bounding_box(layout.bounding_box, bounding_box)
-    return bounding_box
 end
 
 function get_bounding_box(bounding_box::SD.Rectangle, alignment::Alignment, height, width, padding)
