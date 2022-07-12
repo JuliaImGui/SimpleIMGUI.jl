@@ -141,7 +141,7 @@ function get_widget_value(::Slider, hot_widget, active_widget, this_widget, acti
     end
 end
 
-function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, last_value, i_min, j_min, i_max, j_max)
+function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, this_widget, last_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)
@@ -166,11 +166,11 @@ function do_widget!(widget_type::Slider, user_interaction_state, this_widget, wi
                                                               user_interaction_state.active_widget,
                                                               user_interaction_state.null_widget,
                                                               this_widget,
+                                                              widget_value,
                                                               cursor.i,
                                                               cursor.j,
                                                               input_button.ended_down,
                                                               input_button.num_transitions,
-                                                              widget_value,
                                                               SD.get_i_min(widget_bounding_box),
                                                               SD.get_j_min(widget_bounding_box),
                                                               SD.get_i_max(widget_bounding_box),
@@ -234,7 +234,7 @@ function get_widget_value!(::TextBox, hot_widget, active_widget, this_widget, te
     return text
 end
 
-function do_widget!(widget_type::TextBox, hot_widget::AbstractWidgetID, active_widget::AbstractWidgetID, null_widget::AbstractWidgetID, this_widget::AbstractWidgetID, i_mouse, j_mouse, ended_down, num_transitions, text, characters, i_min, j_min, i_max, j_max)
+function do_widget!(widget_type::TextBox, hot_widget::AbstractWidgetID, active_widget::AbstractWidgetID, null_widget::AbstractWidgetID, this_widget::AbstractWidgetID, text, i_mouse, j_mouse, ended_down, num_transitions, characters, i_min, j_min, i_max, j_max)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)
@@ -259,11 +259,11 @@ function do_widget!(widget_type::TextBox, user_interaction_state, this_widget, w
                                                               user_interaction_state.active_widget,
                                                               user_interaction_state.null_widget,
                                                               this_widget,
+                                                              widget_value,
                                                               cursor.i,
                                                               cursor.j,
                                                               input_button.ended_down,
                                                               input_button.num_transitions,
-                                                              widget_value,
                                                               characters,
                                                               SD.get_i_min(widget_bounding_box),
                                                               SD.get_j_min(widget_bounding_box),
@@ -311,7 +311,7 @@ end
 ##### Text
 #####
 
-function do_widget(widget_type::Text, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, value, i_min, j_min, i_max, j_max)
+function do_widget(widget_type::Text, hot_widget, active_widget, null_widget, this_widget, value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)
@@ -334,11 +334,11 @@ function do_widget!(widget_type::Text, user_interaction_state, this_widget, widg
                                                               user_interaction_state.active_widget,
                                                               user_interaction_state.null_widget,
                                                               this_widget,
+                                                              widget_value,
                                                               cursor.i,
                                                               cursor.j,
                                                               input_button.ended_down,
                                                               input_button.num_transitions,
-                                                              widget_value,
                                                               SD.get_i_min(widget_bounding_box),
                                                               SD.get_j_min(widget_bounding_box),
                                                               SD.get_i_max(widget_bounding_box),
