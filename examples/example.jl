@@ -131,6 +131,7 @@ function start()
         layout.reference_bounding_box = SD.Rectangle(SD.Point(1, 1), image_height, image_width)
         padding = 4
         font = SD.TERMINUS_32_16
+        colors = SI.COLORS
 
         compute_time_start = time_ns()
 
@@ -178,6 +179,7 @@ function start()
                                 text_box_value,
                                 user_input_state.cursor,
                                 user_input_state.mouse_left,
+                                user_input_state.characters,
                                 layout,
                                 SI.DOWN2_LEFT1,
                                 padding,
@@ -207,209 +209,221 @@ function start()
                                 colors,
                                )
 
-        # text = "previous frame number: $(i)"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "previous frame number: $(i)"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
-        # text = "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
-        # text = "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
-        # text = "cursor: $(user_input_state.cursor)"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "cursor: $(user_input_state.cursor)"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
-        # text = "mouse_left: $(user_input_state.mouse_left)"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "mouse_left: $(user_input_state.mouse_left)"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
-        # text = "mouse_right: $(user_input_state.mouse_right)"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "mouse_right: $(user_input_state.mouse_right)"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
-        # text = "mouse_middle: $(user_input_state.mouse_middle)"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "mouse_middle: $(user_input_state.mouse_middle)"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
-        # text = "hot_widget: $(user_interaction_state.hot_widget)"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "hot_widget: $(user_interaction_state.hot_widget)"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
-        # text = "active_widget: $(user_interaction_state.active_widget)"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "active_widget: $(user_interaction_state.active_widget)"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
-        # text = "button_value: $(button_value)"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "button_value: $(button_value)"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
-        # text = "slider_value: $(slider_value)"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "slider_value: $(slider_value)"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
-        # text = "text_box_value: $(text_box_value)"
-        # _ = SI.do_widget!(
-                                # SI.TEXT,
-                                # image,
-                                # user_interaction_state,
-                                # user_input_state,
-                                # SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                # text,
-                                # layout,
-                                # SI.DOWN2_LEFT1,
-                                # SD.get_height(font),
-                                # length(text) * SD.get_width(font),
-                                # SI.LEFT1,
-                                # font,
-                                # SI.COLORS,
-                               # )
+        text = "text_box_value: $(text_box_value)"
+        _ = SI.do_widget!(
+                                SI.TEXT,
+                                user_interaction_state,
+                                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                                user_input_state.cursor,
+                                user_input_state.mouse_left,
+                                layout,
+                                SI.DOWN2_LEFT1,
+                                padding,
+                                SD.get_height(font),
+                                SD.get_width(font) * length(text),
+                                image,
+                                text,
+                                font,
+                                colors,
+                               )
 
         compute_time_end = time_ns()
         push!(compute_time_buffer, compute_time_end - compute_time_start)
