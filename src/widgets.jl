@@ -119,7 +119,7 @@ function do_widget!(
         colors,
     )
 
-    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, widget_height, widget_width, padding)
+    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
 
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
@@ -202,7 +202,7 @@ function do_widget!(
         colors,
     )
 
-    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, widget_height, widget_width, padding)
+    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
 
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
@@ -297,7 +297,7 @@ function do_widget!(
         colors,
     )
 
-    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, widget_height, widget_width, padding)
+    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
 
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, characters, widget_bounding_box)
@@ -369,7 +369,7 @@ function do_widget!(
         colors,
     )
 
-    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, widget_height, widget_width, padding)
+    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
 
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, text, cursor, input_button, widget_bounding_box)

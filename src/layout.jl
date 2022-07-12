@@ -113,7 +113,7 @@ function get_bounding_box(shapes...)
     return SD.Rectangle(SD.Point(i_min, j_min), i_max - i_min + one(i_min), j_max - j_min + one(j_min))
 end
 
-function get_bounding_box(bounding_box::SD.Rectangle, alignment::Alignment, height, width, padding)
+function get_bounding_box(bounding_box::SD.Rectangle, alignment::Alignment, padding, height, width)
     i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, height, width, alignment, padding)
     return SD.Rectangle(SD.move(bounding_box.position, i_offset, j_offset), height, width)
 end
