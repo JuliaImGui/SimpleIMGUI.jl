@@ -78,7 +78,7 @@ function do_widget(widget_type::Button, hot_widget, active_widget, null_widget, 
     return hot_widget, active_widget, null_widget, widget_value
 end
 
-function do_widget!(widget_type::Button, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
+function do_widget!(widget_type::Button, user_interaction_state::AbstractUserInteractionState, this_widget, cursor, input_button, widget_bounding_box)
     hot_widget, active_widget, null_widget, widget_value = do_widget(
                                                               widget_type,
                                                               user_interaction_state.hot_widget,
@@ -104,7 +104,7 @@ end
 
 function do_widget!(
         widget_type::Button,
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         cursor,
         input_button,
@@ -159,7 +159,7 @@ function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, 
     return hot_widget, active_widget, null_widget, widget_value
 end
 
-function do_widget!(widget_type::Slider, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
+function do_widget!(widget_type::Slider, user_interaction_state::AbstractUserInteractionState, this_widget, widget_value, cursor, input_button, widget_bounding_box)
     hot_widget, active_widget, null_widget, widget_value = do_widget(
                                                               widget_type,
                                                               user_interaction_state.hot_widget,
@@ -186,7 +186,7 @@ end
 
 function do_widget!(
         widget_type::Slider,
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         widget_value,
         cursor,
@@ -252,7 +252,7 @@ function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget
     return hot_widget, active_widget, null_widget, widget_value
 end
 
-function do_widget!(widget_type::TextBox, user_interaction_state, this_widget, widget_value, cursor, input_button, characters, widget_bounding_box)
+function do_widget!(widget_type::TextBox, user_interaction_state::AbstractUserInteractionState, this_widget, widget_value, cursor, input_button, characters, widget_bounding_box)
     hot_widget, active_widget, null_widget, widget_value = do_widget!(
                                                               widget_type,
                                                               user_interaction_state.hot_widget,
@@ -326,7 +326,7 @@ function do_widget(widget_type::Text, hot_widget, active_widget, null_widget, th
     return hot_widget, active_widget, null_widget, nothing
 end
 
-function do_widget!(widget_type::Text, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
+function do_widget!(widget_type::Text, user_interaction_state::AbstractUserInteractionState, this_widget, cursor, input_button, widget_bounding_box)
     hot_widget, active_widget, null_widget, widget_value = do_widget(
                                                               widget_type,
                                                               user_interaction_state.hot_widget,
@@ -352,7 +352,7 @@ end
 
 function do_widget!(
         widget_type::Text,
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         cursor,
         input_button,
