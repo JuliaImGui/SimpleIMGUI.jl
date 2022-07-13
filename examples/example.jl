@@ -122,6 +122,7 @@ function start()
 
     layout = SI.BoxLayout(SD.Rectangle(SD.Point(1, 1), image_height, image_width))
     debug_text = String[]
+    show_debug_text = false
 
     while !GLFW.WindowShouldClose(window)
         if SI.went_down(user_input_state.key_escape)
@@ -274,23 +275,44 @@ function start()
         push!(debug_text, "hot_widget: $(user_interaction_state.hot_widget)")
         push!(debug_text, "active_widget: $(user_interaction_state.active_widget)")
 
-        for text in debug_text
-            SI.do_widget!(
-                SI.TEXT,
-                user_interaction_state,
-                SI.WidgetID(@__FILE__, @__LINE__, 1),
-                user_input_state.cursor,
-                user_input_state.mouse_left,
-                layout,
-                SI.DOWN2_LEFT1,
-                padding,
-                SD.get_height(font),
-                SD.get_width(font) * length(text),
-                image,
-                text,
-                font,
-                colors,
-               )
+        if SI.do_widget!(
+            SI.BUTTON,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            user_input_state.cursor,
+            user_input_state.mouse_left,
+            layout,
+            SI.DOWN2_LEFT1,
+            padding,
+            SD.get_height(font),
+            360,
+            image,
+            "Show debug text: $(show_debug_text)",
+            font,
+            colors,
+        )
+            show_debug_text = !show_debug_text
+        end
+
+        if show_debug_text
+            for text in debug_text
+                SI.do_widget!(
+                    SI.TEXT,
+                    user_interaction_state,
+                    SI.WidgetID(@__FILE__, @__LINE__, 1),
+                    user_input_state.cursor,
+                    user_input_state.mouse_left,
+                    layout,
+                    SI.DOWN2_LEFT1,
+                    padding,
+                    SD.get_height(font),
+                    SD.get_width(font) * length(text),
+                    image,
+                    text,
+                    font,
+                    colors,
+                   )
+            end
         end
 
         compute_time_end = time_ns()
