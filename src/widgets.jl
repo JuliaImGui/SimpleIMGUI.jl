@@ -280,7 +280,7 @@ end
 
 function do_widget!(
         widget_type::TextBox,
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         widget_value,
         cursor,
@@ -292,7 +292,6 @@ function do_widget!(
         widget_height,
         widget_width,
         image,
-        text,
         font,
         colors,
     )
@@ -302,7 +301,7 @@ function do_widget!(
 
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, characters, widget_bounding_box)
 
-    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, text, font, colors)
+    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, widget_value, font, colors)
 
     return widget_value
 end

@@ -186,7 +186,6 @@ function start()
                                 SD.get_height(font),
                                 256,
                                 image,
-                                text_box_value,
                                 font,
                                 colors,
                                )
