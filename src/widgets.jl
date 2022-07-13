@@ -133,9 +133,9 @@ end
 ##### Slider
 #####
 
-function get_widget_value(::Slider, hot_widget, active_widget, this_widget, active_value, widget_value)
+function get_widget_value(::Slider, hot_widget, active_widget, this_widget, potential_next_widget_value, widget_value)
     if (hot_widget == this_widget) && (active_widget == this_widget)
-        return active_value
+        return potential_next_widget_value
     else
         return widget_value
     end
