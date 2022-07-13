@@ -158,6 +158,24 @@ function start()
             colors,
         )
 
+        SI.do_widget!(
+            SI.TEXT,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            user_input_state.cursor,
+            user_input_state.mouse_left,
+            layout,
+            SI.DOWN2_LEFT1,
+            padding,
+            SD.get_height(font),
+            SD.get_width(font) * 8,
+            image,
+            "Button",
+            font,
+            colors,
+        )
+        reference_bounding_box = layout.reference_bounding_box
+
         button_value = SI.do_widget!(
             SI.BUTTON,
             user_interaction_state,
@@ -165,7 +183,7 @@ function start()
             user_input_state.cursor,
             user_input_state.mouse_left,
             layout,
-            SI.DOWN2_LEFT1,
+            SI.RIGHT2,
             padding,
             SD.get_height(font),
             256,
@@ -175,6 +193,25 @@ function start()
             colors,
         )
 
+        layout.reference_bounding_box = reference_bounding_box
+        SI.do_widget!(
+            SI.TEXT,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            user_input_state.cursor,
+            user_input_state.mouse_left,
+            layout,
+            SI.DOWN2_LEFT1,
+            padding,
+            SD.get_height(font),
+            SD.get_width(font) * 8,
+            image,
+            "Slider",
+            font,
+            colors,
+        )
+        reference_bounding_box = layout.reference_bounding_box
+
         slider_value = SI.do_widget!(
             SI.SLIDER,
             user_interaction_state,
@@ -183,7 +220,7 @@ function start()
             user_input_state.cursor,
             user_input_state.mouse_left,
             layout,
-            SI.DOWN2_LEFT1,
+            SI.RIGHT2,
             padding,
             SD.get_height(font),
             256,
@@ -192,6 +229,25 @@ function start()
             font,
             colors,
         )
+
+        layout.reference_bounding_box = reference_bounding_box
+        SI.do_widget!(
+            SI.TEXT,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            user_input_state.cursor,
+            user_input_state.mouse_left,
+            layout,
+            SI.DOWN2_LEFT1,
+            padding,
+            SD.get_height(font),
+            SD.get_width(font) * 8,
+            image,
+            "TextBox",
+            font,
+            colors,
+        )
+        reference_bounding_box = layout.reference_bounding_box
 
         text_box_value = SI.do_widget!(
             SI.TEXT_BOX,
@@ -202,7 +258,7 @@ function start()
             user_input_state.mouse_left,
             user_input_state.characters,
             layout,
-            SI.DOWN2_LEFT1,
+            SI.RIGHT2,
             padding,
             SD.get_height(font),
             256,
@@ -224,6 +280,7 @@ function start()
         push!(debug_text, "slider_value: $(slider_value)")
         push!(debug_text, "text_box_value: $(text_box_value)")
 
+        layout.reference_bounding_box = reference_bounding_box
         if SI.do_widget!(
             SI.BUTTON,
             user_interaction_state,
