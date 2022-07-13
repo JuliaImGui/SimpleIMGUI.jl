@@ -211,60 +211,6 @@ function start()
             colors,
         )
 
-        text = "button_value: $(button_value)"
-        SI.do_widget!(
-            SI.TEXT,
-            user_interaction_state,
-            SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_left,
-            layout,
-            SI.DOWN2_LEFT1,
-            padding,
-            SD.get_height(font),
-            SD.get_width(font) * length(text),
-            image,
-            text,
-            font,
-            colors,
-        )
-
-        text = "slider_value: $(slider_value)"
-        SI.do_widget!(
-            SI.TEXT,
-            user_interaction_state,
-            SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_left,
-            layout,
-            SI.DOWN2_LEFT1,
-            padding,
-            SD.get_height(font),
-            SD.get_width(font) * length(text),
-            image,
-            text,
-            font,
-            colors,
-        )
-
-        text = "text_box_value: $(text_box_value)"
-        SI.do_widget!(
-            SI.TEXT,
-            user_interaction_state,
-            SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_left,
-            layout,
-            SI.DOWN2_LEFT1,
-            padding,
-            SD.get_height(font),
-            SD.get_width(font) * length(text),
-            image,
-            text,
-            font,
-            colors,
-        )
-
         push!(debug_text, "previous frame number: $(i)")
         push!(debug_text, "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
         push!(debug_text, "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms")
@@ -274,6 +220,9 @@ function start()
         push!(debug_text, "mouse_middle: $(user_input_state.mouse_middle)")
         push!(debug_text, "hot_widget: $(user_interaction_state.hot_widget)")
         push!(debug_text, "active_widget: $(user_interaction_state.active_widget)")
+        push!(debug_text, "button_value: $(button_value)")
+        push!(debug_text, "slider_value: $(slider_value)")
+        push!(debug_text, "text_box_value: $(text_box_value)")
 
         if SI.do_widget!(
             SI.BUTTON,
