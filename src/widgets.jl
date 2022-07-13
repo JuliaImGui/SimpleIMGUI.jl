@@ -234,7 +234,7 @@ function get_widget_value!(::TextBox, hot_widget, active_widget, this_widget, wi
     return widget_value
 end
 
-function do_widget!(widget_type::TextBox, hot_widget::AbstractWidgetID, active_widget::AbstractWidgetID, null_widget::AbstractWidgetID, this_widget::AbstractWidgetID, widget_value, i_mouse, j_mouse, ended_down, num_transitions, characters, i_min, j_min, i_max, j_max)
+function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, characters, i_min, j_min, i_max, j_max)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)
@@ -280,8 +280,8 @@ end
 
 function do_widget!(
         widget_type::TextBox,
-        user_interaction_state::AbstractUserInteractionState,
-        this_widget::AbstractWidgetID,
+        user_interaction_state,
+        this_widget,
         widget_value,
         cursor,
         input_button,
