@@ -140,6 +140,24 @@ function start()
 
         SD.draw!(image, SD.Background(), SI.COLORS[Integer(SI.COLOR_BACKGROUND)])
 
+        text = "Press the escape key to quit"
+        SI.do_widget!(
+            SI.TEXT,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            user_input_state.cursor,
+            user_input_state.mouse_left,
+            layout,
+            SI.UP1_LEFT1,
+            padding,
+            SD.get_height(font),
+            SD.get_width(font) * length(text),
+            image,
+            text,
+            font,
+            colors,
+        )
+
         button_value = SI.do_widget!(
                                 SI.BUTTON,
                                 user_interaction_state,
@@ -147,7 +165,7 @@ function start()
                                 user_input_state.cursor,
                                 user_input_state.mouse_left,
                                 layout,
-                                SI.UP1_LEFT1,
+                                SI.DOWN2_LEFT1,
                                 padding,
                                 SD.get_height(font),
                                 256,
@@ -189,24 +207,6 @@ function start()
                                 SD.get_height(font),
                                 256,
                                 image,
-                                font,
-                                colors,
-                               )
-
-        text = "Press the escape key to quit"
-        _ = SI.do_widget!(
-                                SI.TEXT,
-                                user_interaction_state,
-                                SI.WidgetID(@__FILE__, @__LINE__, 1),
-                                user_input_state.cursor,
-                                user_input_state.mouse_left,
-                                layout,
-                                SI.DOWN2_LEFT1,
-                                padding,
-                                SD.get_height(font),
-                                SD.get_width(font) * length(text),
-                                image,
-                                text,
                                 font,
                                 colors,
                                )
