@@ -311,7 +311,7 @@ end
 ##### Text
 #####
 
-function do_widget(widget_type::Text, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+function do_widget(widget_type::Text, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)
@@ -324,17 +324,16 @@ function do_widget(widget_type::Text, hot_widget, active_widget, null_widget, th
 
     hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_widget)
 
-    return hot_widget, active_widget, null_widget, widget_value
+    return hot_widget, active_widget, null_widget, nothing
 end
 
-function do_widget!(widget_type::Text, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
+function do_widget!(widget_type::Text, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
     hot_widget, active_widget, null_widget, widget_value = do_widget(
                                                               widget_type,
                                                               user_interaction_state.hot_widget,
                                                               user_interaction_state.active_widget,
                                                               user_interaction_state.null_widget,
                                                               this_widget,
-                                                              widget_value,
                                                               cursor.i,
                                                               cursor.j,
                                                               input_button.ended_down,
@@ -372,7 +371,7 @@ function do_widget!(
     widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
 
-    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, text, cursor, input_button, widget_bounding_box)
+    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
 
     SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, text, font, colors)
 
