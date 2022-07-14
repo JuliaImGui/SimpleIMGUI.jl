@@ -132,7 +132,7 @@ function start()
 
         layout.reference_bounding_box = SD.Rectangle(SD.Point(1, 1), image_height, image_width)
         empty!(debug_text)
-        padding = 4
+        padding = 8
         font = SD.TERMINUS_32_16
         colors = SI.COLORS
 
@@ -168,7 +168,7 @@ function start()
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
-            SD.get_width(font) * 8,
+            SD.get_width(font) * 12,
             image,
             "Button",
             font,
@@ -186,7 +186,7 @@ function start()
             SI.RIGHT2,
             padding,
             SD.get_height(font),
-            256,
+            360,
             image,
             "Button",
             font,
@@ -204,7 +204,7 @@ function start()
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
-            SD.get_width(font) * 8,
+            SD.get_width(font) * 12,
             image,
             "Slider",
             font,
@@ -223,7 +223,7 @@ function start()
             SI.RIGHT2,
             padding,
             SD.get_height(font),
-            256,
+            360,
             image,
             "Slider",
             font,
@@ -241,7 +241,7 @@ function start()
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
-            SD.get_width(font) * 8,
+            SD.get_width(font) * 12,
             image,
             "TextBox",
             font,
@@ -261,7 +261,7 @@ function start()
             SI.RIGHT2,
             padding,
             SD.get_height(font),
-            256,
+            360,
             image,
             font,
             colors,
@@ -291,7 +291,7 @@ function start()
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
-            SD.get_width(font) * 8,
+            SD.get_width(font) * 12,
             image,
             "CheckBox",
             font,
@@ -299,7 +299,6 @@ function start()
         )
         reference_bounding_box = layout.reference_bounding_box
 
-        text = "show debug text"
         show_debug_text = SI.do_widget!(
             SI.CHECK_BOX,
             user_interaction_state,
@@ -311,9 +310,9 @@ function start()
             SI.RIGHT2,
             padding,
             SD.get_height(font),
-            SD.get_width(font) * (length(text) + 2),
+            360,
             image,
-            "Show debug text",
+            "show debug text",
             font,
             colors,
         )
