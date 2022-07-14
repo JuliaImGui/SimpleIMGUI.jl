@@ -53,6 +53,7 @@ function start()
 
     slider_value = 1
     text_box_value = collect("Text box")
+    num_button_clicks = 0
 
     setup_window_hints()
     window = GLFW.CreateWindow(image_width, image_height, window_name)
@@ -188,10 +189,13 @@ function start()
             SD.get_height(font),
             360,
             image,
-            "Button",
+            "button clicks: $(num_button_clicks)",
             font,
             colors,
         )
+        if button_value
+            num_button_clicks += 1
+        end
 
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
