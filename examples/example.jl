@@ -281,6 +281,24 @@ function start()
         push!(debug_text, "text_box_value: $(text_box_value)")
 
         layout.reference_bounding_box = reference_bounding_box
+        SI.do_widget!(
+            SI.TEXT,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            user_input_state.cursor,
+            user_input_state.mouse_left,
+            layout,
+            SI.DOWN2_LEFT1,
+            padding,
+            SD.get_height(font),
+            SD.get_width(font) * 8,
+            image,
+            "CheckBox",
+            font,
+            colors,
+        )
+        reference_bounding_box = layout.reference_bounding_box
+
         text = "show debug text"
         show_debug_text = SI.do_widget!(
             SI.CHECK_BOX,
@@ -290,7 +308,7 @@ function start()
             user_input_state.cursor,
             user_input_state.mouse_left,
             layout,
-            SI.DOWN2_LEFT1,
+            SI.RIGHT2,
             padding,
             SD.get_height(font),
             SD.get_width(font) * (length(text) + 2),
@@ -301,6 +319,7 @@ function start()
         )
 
         if show_debug_text
+            layout.reference_bounding_box = reference_bounding_box
             for text in debug_text
                 SI.do_widget!(
                     SI.TEXT,
