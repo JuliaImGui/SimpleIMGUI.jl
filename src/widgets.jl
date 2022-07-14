@@ -12,6 +12,9 @@ const TEXT_BOX = TextBox()
 struct Text <: AbstractWidgetType end
 const TEXT = Text()
 
+struct CheckBox <: AbstractWidgetType end
+const CHECK_BOX = CheckBox()
+
 #####
 ##### utils
 #####
@@ -373,6 +376,89 @@ function do_widget!(
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
 
     SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, text, font, colors)
+
+    return widget_value
+end
+
+#####
+##### CheckBox
+#####
+
+function get_widget_value(::CheckBox, hot_widget, active_widget, this_widget, widget_value, condition)
+    if (hot_widget == this_widget) && (active_widget == this_widget) && condition
+        return !widget_value
+    else
+        return widget_value
+    end
+end
+
+function do_widget(widget_type::CheckBox, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+    mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
+    mouse_went_down = went_down(ended_down, num_transitions)
+    mouse_went_up = went_up(ended_down, num_transitions)
+
+    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget)
+
+    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget && mouse_went_down)
+
+    widget_value = get_widget_value(widget_type, hot_widget, active_widget, this_widget, widget_value, mouse_over_widget && mouse_went_up)
+
+    active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_went_up)
+
+    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_widget)
+
+    return hot_widget, active_widget, null_widget, widget_value
+end
+
+function do_widget!(widget_type::CheckBox, user_interaction_state::AbstractUserInteractionState, this_widget, widget_value, cursor, input_button, widget_bounding_box)
+    hot_widget, active_widget, null_widget, widget_value = do_widget(
+                                                              widget_type,
+                                                              user_interaction_state.hot_widget,
+                                                              user_interaction_state.active_widget,
+                                                              user_interaction_state.null_widget,
+                                                              this_widget,
+                                                              widget_value,
+                                                              cursor.i,
+                                                              cursor.j,
+                                                              input_button.ended_down,
+                                                              input_button.num_transitions,
+                                                              SD.get_i_min(widget_bounding_box),
+                                                              SD.get_j_min(widget_bounding_box),
+                                                              SD.get_i_max(widget_bounding_box),
+                                                              SD.get_j_max(widget_bounding_box),
+                                                             )
+
+    user_interaction_state.hot_widget = hot_widget
+    user_interaction_state.active_widget = active_widget
+    user_interaction_state.null_widget = null_widget
+
+    return widget_value
+end
+
+function do_widget!(
+        widget_type::CheckBox,
+        user_interaction_state::AbstractUserInteractionState,
+        this_widget,
+        widget_value,
+        cursor,
+        input_button,
+        layout,
+        alignment,
+        padding,
+        widget_height,
+        widget_width,
+        image,
+        text,
+        font,
+        colors,
+    )
+
+    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
+    layout.reference_bounding_box = widget_bounding_box
+
+    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
+
+    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, widget_value, text, font, colors)
 
     return widget_value
 end

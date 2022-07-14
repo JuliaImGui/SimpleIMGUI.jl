@@ -281,24 +281,24 @@ function start()
         push!(debug_text, "text_box_value: $(text_box_value)")
 
         layout.reference_bounding_box = reference_bounding_box
-        if SI.do_widget!(
-            SI.BUTTON,
+        text = "show debug text"
+        show_debug_text = SI.do_widget!(
+            SI.CHECK_BOX,
             user_interaction_state,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
+            show_debug_text,
             user_input_state.cursor,
             user_input_state.mouse_left,
             layout,
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
-            360,
+            SD.get_width(font) * (length(text) + 2),
             image,
-            "Show debug text: $(show_debug_text)",
+            "Show debug text",
             font,
             colors,
         )
-            show_debug_text = !show_debug_text
-        end
 
         if show_debug_text
             for text in debug_text

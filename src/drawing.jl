@@ -156,3 +156,36 @@ function draw_widget!(image, bounding_box, widget_type::Text, user_interaction_s
 
     return nothing
 end
+
+function draw_widget!(image, bounding_box, widget_type::CheckBox, user_interaction_state, this_widget, widget_value, text, font, colors)
+    alignment = LEFT1
+    padding = -1
+
+    if this_widget == user_interaction_state.active_widget
+        background_color = colors[Integer(COLOR_ACTIVE_CHECK_BOX_BACKGROUND)]
+        border_color = colors[Integer(COLOR_ACTIVE_CHECK_BOX_BORDER)]
+        text_color = colors[Integer(COLOR_ACTIVE_CHECK_BOX_TEXT)]
+        box_color = colors[Integer(COLOR_ACTIVE_CHECK_BOX_BOX)]
+    elseif this_widget == user_interaction_state.hot_widget
+        background_color = colors[Integer(COLOR_HOT_CHECK_BOX_BACKGROUND)]
+        border_color = colors[Integer(COLOR_HOT_CHECK_BOX_BORDER)]
+        text_color = colors[Integer(COLOR_HOT_CHECK_BOX_TEXT)]
+        box_color = colors[Integer(COLOR_HOT_CHECK_BOX_BOX)]
+    else
+        background_color = colors[Integer(COLOR_NEUTRAL_CHECK_BOX_BACKGROUND)]
+        border_color = colors[Integer(COLOR_NEUTRAL_CHECK_BOX_BORDER)]
+        text_color = colors[Integer(COLOR_NEUTRAL_CHECK_BOX_TEXT)]
+        box_color = colors[Integer(COLOR_NEUTRAL_CHECK_BOX_BOX)]
+    end
+
+    font_width = SD.get_width(font)
+    box_width = oftype(font_width, 2) * font_width
+    x = box_width ÷ oftype(box_width, 8)
+    SD.draw!(image, SD.ThickRectangle(SD.move(bounding_box.position, x, x), oftype(x, 6) * x, oftype(x, 6) * x, x), box_color)
+    if widget_value
+        SD.draw!(image, SD.FilledRectangle(SD.move(bounding_box.position, oftype(x, 3) * x, oftype(x, 3) * x), oftype(x, 2) * x, oftype(x, 2) * x), box_color)
+    end
+    draw_text_line_in_a_box!(image, SD.Rectangle(SD.move_j(bounding_box.position, box_width), bounding_box.height, bounding_box.width - box_width), text, font, alignment, padding, background_color, border_color, text_color)
+
+    return nothing
+end
