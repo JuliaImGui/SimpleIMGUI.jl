@@ -229,7 +229,7 @@ function start()
             SD.get_height(font),
             360,
             image,
-            "Slider",
+            "slider value: $(slider_value)",
             font,
             colors,
         )
