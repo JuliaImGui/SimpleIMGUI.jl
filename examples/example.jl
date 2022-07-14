@@ -51,7 +51,7 @@ function start()
                                       Char[],
                                      )
 
-    slider_value = 1
+    slider_value = 0
     text_box_value = collect("Text box")
     num_button_clicks = 0
 
