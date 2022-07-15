@@ -21,22 +21,11 @@ function start()
     image_width = 1280
     window_name = "Example"
 
-    sliding_window_size = 30
-    font = SD.TERMINUS_32_16
-
     image = zeros(MGL.GLuint, image_height, image_width)
 
-    SD.draw!(image, SD.Background(), SI.COLORS[Integer(SI.COLOR_BACKGROUND)])
-
-    i = 0
-
-    time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(time_stamp_buffer, time_ns())
-
-    compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(compute_time_buffer, zero(UInt))
-
-    user_interaction_state = SI.UserInteractionState(SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID)
+    setup_window_hints()
+    window = GLFW.CreateWindow(image_width, image_height, window_name)
+    GLFW.MakeContextCurrent(window)
 
     user_input_state = SI.UserInputState(
                                       SD.Point(1, 1),
@@ -50,14 +39,6 @@ function start()
                                       SI.InputButton(false, 0),
                                       Char[],
                                      )
-
-    slider_value = 0
-    text_box_value = collect("Text box")
-    num_button_clicks = 0
-
-    setup_window_hints()
-    window = GLFW.CreateWindow(image_width, image_height, window_name)
-    GLFW.MakeContextCurrent(window)
 
     function cursor_position_callback(window, x, y)::Cvoid
         user_input_state.cursor = SD.Point(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
@@ -121,9 +102,25 @@ function start()
 
     clear_display()
 
+    user_interaction_state = SI.UserInteractionState(SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID)
+
     layout = SI.BoxLayout(SD.Rectangle(SD.Point(1, 1), image_height, image_width))
     debug_text = String[]
     show_debug_text = false
+    slider_value = 0
+    text_box_value = collect("Text box")
+    num_button_clicks = 0
+    padding = 8
+    font = SD.TERMINUS_32_16
+    colors = SI.COLORS
+    sliding_window_size = 30
+    i = 0
+
+    time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(time_stamp_buffer, time_ns())
+
+    compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(compute_time_buffer, zero(UInt))
 
     while !GLFW.WindowShouldClose(window)
         if SI.went_down(user_input_state.key_escape)
@@ -133,9 +130,6 @@ function start()
 
         layout.reference_bounding_box = SD.Rectangle(SD.Point(1, 1), image_height, image_width)
         empty!(debug_text)
-        padding = 8
-        font = SD.TERMINUS_32_16
-        colors = SI.COLORS
 
         compute_time_start = time_ns()
 
