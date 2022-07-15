@@ -209,3 +209,36 @@ function draw_widget!(image, bounding_box, widget_type::CheckBox, user_interacti
 
     return nothing
 end
+
+function draw_widget!(image, bounding_box, widget_type::RadioButton, user_interaction_state, this_widget, widget_value, text, font, colors)
+    alignment = LEFT1
+    padding = -1
+
+    if this_widget == user_interaction_state.active_widget
+        background_color = colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_BACKGROUND)]
+        border_color = colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_BORDER)]
+        text_color = colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_TEXT)]
+        indicator_color = colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_INDICATOR)]
+    elseif this_widget == user_interaction_state.hot_widget
+        background_color = colors[Integer(COLOR_HOT_RADIO_BUTTON_BACKGROUND)]
+        border_color = colors[Integer(COLOR_HOT_RADIO_BUTTON_BORDER)]
+        text_color = colors[Integer(COLOR_HOT_RADIO_BUTTON_TEXT)]
+        indicator_color = colors[Integer(COLOR_HOT_RADIO_BUTTON_INDICATOR)]
+    else
+        background_color = colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_BACKGROUND)]
+        border_color = colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_BORDER)]
+        text_color = colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_TEXT)]
+        indicator_color = colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_INDICATOR)]
+    end
+
+    font_width = SD.get_width(font)
+    indicator_width = oftype(font_width, 2) * font_width
+    x = indicator_width ÷ oftype(indicator_width, 8)
+    SD.draw!(image, SD.ThickCircle(SD.move(bounding_box.position, x, x), oftype(x, 6) * x, x), indicator_color)
+    if widget_value
+        SD.draw!(image, SD.FilledCircle(SD.move(bounding_box.position, oftype(x, 3) * x, oftype(x, 3) * x), oftype(x, 2) * x), indicator_color)
+    end
+    draw_text_line_in_a_box!(image, SD.Rectangle(SD.move_j(bounding_box.position, indicator_width), bounding_box.height, bounding_box.width - indicator_width), text, font, alignment, padding, background_color, border_color, text_color)
+
+    return nothing
+end
