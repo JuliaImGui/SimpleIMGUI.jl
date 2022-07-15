@@ -222,13 +222,11 @@ end
 function get_widget_value!(::TextBox, hot_widget, active_widget, this_widget, widget_value, characters)
     if (hot_widget == this_widget) && (active_widget == this_widget)
         for character in characters
-            if isascii(character)
-                if isprint(character)
-                    push!(widget_value, character)
-                elseif character == '\b'
-                    if get_num_printable_characters(widget_value) > 0
-                        pop!(widget_value)
-                    end
+            if isprint(character)
+                push!(widget_value, character)
+            elseif character == '\b'
+                if get_num_printable_characters(widget_value) > 0
+                    pop!(widget_value)
                 end
             end
         end
