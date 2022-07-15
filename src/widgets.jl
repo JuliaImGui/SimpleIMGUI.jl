@@ -226,7 +226,7 @@ function get_widget_value!(::TextBox, hot_widget, active_widget, this_widget, wi
                 if isprint(character)
                     push!(widget_value, character)
                 elseif character == '\b'
-                    if length(widget_value) > 0
+                    if get_num_printable_characters(widget_value) > 0
                         pop!(widget_value)
                     end
                 end

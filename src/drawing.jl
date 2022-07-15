@@ -31,7 +31,7 @@ function draw_text_line_in_a_box!(image, bounding_box, text, font, alignment, pa
 
     SD.draw!(image, bounding_box, border_color)
 
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment, padding)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * get_num_printable_characters(text), alignment, padding)
     SD.draw!(image, SD.TextLine(SD.move(bounding_box.position, i_offset, j_offset), text, font), text_color)
 
     return nothing
@@ -46,7 +46,7 @@ function draw_text_line_with_slider_in_a_box!(image, bounding_box, slider_value,
 
     SD.draw!(image, bounding_box, border_color)
 
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * length(text), alignment, padding)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * get_num_printable_characters(text), alignment, padding)
     SD.draw!(image, SD.TextLine(SD.move(bounding_box.position, i_offset, j_offset), text, font), text_color)
 
     return nothing
@@ -121,7 +121,7 @@ end
 
 function draw_widget!(image, bounding_box, widget_type::TextBox, user_interaction_state, this_widget, text, font, colors)
     alignment = LEFT1
-    if length(text) * SD.get_width(font) > bounding_box.width
+    if get_num_printable_characters(text) * SD.get_width(font) > bounding_box.width
         alignment = RIGHT1
     end
 
