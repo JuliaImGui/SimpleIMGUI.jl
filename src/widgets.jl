@@ -382,28 +382,12 @@ end
 ##### CheckBox
 #####
 
-function get_widget_value(::CheckBox, hot_widget, active_widget, this_widget, widget_value, condition)
-    if (hot_widget == this_widget) && (active_widget == this_widget) && condition
-        return !widget_value
-    else
-        return widget_value
-    end
-end
-
 function do_widget(widget_type::CheckBox, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
-    mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
-    mouse_went_down = went_down(ended_down, num_transitions)
-    mouse_went_up = went_up(ended_down, num_transitions)
+    hot_widget, active_widget, null_widget, button_value = do_widget(BUTTON, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
 
-    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget)
-
-    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget && mouse_went_down)
-
-    widget_value = get_widget_value(widget_type, hot_widget, active_widget, this_widget, widget_value, mouse_over_widget && mouse_went_up)
-
-    active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_went_up)
-
-    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_widget)
+    if button_value
+        widget_value = !widget_value
+    end
 
     return hot_widget, active_widget, null_widget, widget_value
 end
