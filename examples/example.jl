@@ -108,7 +108,7 @@ function start()
     debug_text = String[]
     show_debug_text = false
     slider_value = 0
-    text_box_value = collect("Text box")
+    text_box_value = collect("Enter text")
     num_button_clicks = 0
     padding = 8
     font = SD.TERMINUS_32_16
@@ -183,7 +183,7 @@ function start()
             SD.get_height(font),
             360,
             image,
-            "button clicks: $(num_button_clicks)",
+            "Button clicks: $(num_button_clicks)",
             font,
             colors,
         )
@@ -223,7 +223,7 @@ function start()
             SD.get_height(font),
             360,
             image,
-            "slider value: $(slider_value)",
+            "Slider value: $(slider_value)",
             font,
             colors,
         )
@@ -310,7 +310,7 @@ function start()
             SD.get_height(font),
             360,
             image,
-            "show debug text",
+            "Show debug text",
             font,
             colors,
         )
