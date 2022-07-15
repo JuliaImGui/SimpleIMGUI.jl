@@ -21,22 +21,11 @@ function start()
     image_width = 1280
     window_name = "Example"
 
-    sliding_window_size = 30
-    font = SD.TERMINUS_32_16
-
     image = zeros(MGL.GLuint, image_height, image_width)
 
-    SD.draw!(image, SD.Background(), SI.COLORS[Integer(SI.COLOR_BACKGROUND)])
-
-    i = 0
-
-    time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(time_stamp_buffer, time_ns())
-
-    compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(compute_time_buffer, zero(UInt))
-
-    user_interaction_state = SI.UserInteractionState(SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID)
+    setup_window_hints()
+    window = GLFW.CreateWindow(image_width, image_height, window_name)
+    GLFW.MakeContextCurrent(window)
 
     user_input_state = SI.UserInputState(
                                       SD.Point(1, 1),
@@ -50,13 +39,6 @@ function start()
                                       SI.InputButton(false, 0),
                                       Char[],
                                      )
-
-    slider_value = 1
-    text_box_value = collect("Text box")
-
-    setup_window_hints()
-    window = GLFW.CreateWindow(image_width, image_height, window_name)
-    GLFW.MakeContextCurrent(window)
 
     function cursor_position_callback(window, x, y)::Cvoid
         user_input_state.cursor = SD.Point(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
@@ -120,9 +102,25 @@ function start()
 
     clear_display()
 
+    user_interaction_state = SI.UserInteractionState(SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID)
+
     layout = SI.BoxLayout(SD.Rectangle(SD.Point(1, 1), image_height, image_width))
     debug_text = String[]
     show_debug_text = false
+    slider_value = 0
+    text_box_value = collect("Enter text")
+    num_button_clicks = 0
+    padding = 8
+    font = SD.TERMINUS_32_16
+    colors = SI.COLORS
+    sliding_window_size = 30
+    i = 0
+
+    time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(time_stamp_buffer, time_ns())
+
+    compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(compute_time_buffer, zero(UInt))
 
     while !GLFW.WindowShouldClose(window)
         if SI.went_down(user_input_state.key_escape)
@@ -132,9 +130,6 @@ function start()
 
         layout.reference_bounding_box = SD.Rectangle(SD.Point(1, 1), image_height, image_width)
         empty!(debug_text)
-        padding = 4
-        font = SD.TERMINUS_32_16
-        colors = SI.COLORS
 
         compute_time_start = time_ns()
 
@@ -151,7 +146,7 @@ function start()
             SI.UP1_LEFT1,
             padding,
             SD.get_height(font),
-            SD.get_width(font) * length(text),
+            SD.get_width(font) * SI.get_num_printable_characters(text),
             image,
             text,
             font,
@@ -168,7 +163,7 @@ function start()
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
-            SD.get_width(font) * 8,
+            SD.get_width(font) * 12,
             image,
             "Button",
             font,
@@ -186,12 +181,15 @@ function start()
             SI.RIGHT2,
             padding,
             SD.get_height(font),
-            256,
+            360,
             image,
-            "Button",
+            "Button clicks: $(num_button_clicks)",
             font,
             colors,
         )
+        if button_value
+            num_button_clicks += 1
+        end
 
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
@@ -204,7 +202,7 @@ function start()
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
-            SD.get_width(font) * 8,
+            SD.get_width(font) * 12,
             image,
             "Slider",
             font,
@@ -223,9 +221,9 @@ function start()
             SI.RIGHT2,
             padding,
             SD.get_height(font),
-            256,
+            360,
             image,
-            "Slider",
+            "Slider value: $(slider_value)",
             font,
             colors,
         )
@@ -241,7 +239,7 @@ function start()
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
-            SD.get_width(font) * 8,
+            SD.get_width(font) * 12,
             image,
             "TextBox",
             font,
@@ -261,7 +259,7 @@ function start()
             SI.RIGHT2,
             padding,
             SD.get_height(font),
-            256,
+            360,
             image,
             font,
             colors,
@@ -281,7 +279,24 @@ function start()
         push!(debug_text, "text_box_value: $(text_box_value)")
 
         layout.reference_bounding_box = reference_bounding_box
-        text = "show debug text"
+        SI.do_widget!(
+            SI.TEXT,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            user_input_state.cursor,
+            user_input_state.mouse_left,
+            layout,
+            SI.DOWN2_LEFT1,
+            padding,
+            SD.get_height(font),
+            SD.get_width(font) * 12,
+            image,
+            "CheckBox",
+            font,
+            colors,
+        )
+        reference_bounding_box = layout.reference_bounding_box
+
         show_debug_text = SI.do_widget!(
             SI.CHECK_BOX,
             user_interaction_state,
@@ -290,10 +305,10 @@ function start()
             user_input_state.cursor,
             user_input_state.mouse_left,
             layout,
-            SI.DOWN2_LEFT1,
+            SI.RIGHT2,
             padding,
             SD.get_height(font),
-            SD.get_width(font) * (length(text) + 2),
+            360,
             image,
             "Show debug text",
             font,
@@ -301,6 +316,7 @@ function start()
         )
 
         if show_debug_text
+            layout.reference_bounding_box = reference_bounding_box
             for text in debug_text
                 SI.do_widget!(
                     SI.TEXT,
@@ -312,7 +328,7 @@ function start()
                     SI.DOWN2_LEFT1,
                     padding,
                     SD.get_height(font),
-                    SD.get_width(font) * length(text),
+                    SD.get_width(font) * SI.get_num_printable_characters(text),
                     image,
                     text,
                     font,
