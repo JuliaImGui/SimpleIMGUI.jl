@@ -15,6 +15,9 @@ const TEXT = Text()
 struct CheckBox <: AbstractWidgetType end
 const CHECK_BOX = CheckBox()
 
+struct RadioButton <: AbstractWidgetType end
+const RADIO_BUTTON = RadioButton()
+
 #####
 ##### utils
 #####
@@ -382,28 +385,12 @@ end
 ##### CheckBox
 #####
 
-function get_widget_value(::CheckBox, hot_widget, active_widget, this_widget, widget_value, condition)
-    if (hot_widget == this_widget) && (active_widget == this_widget) && condition
-        return !widget_value
-    else
-        return widget_value
-    end
-end
-
 function do_widget(widget_type::CheckBox, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
-    mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
-    mouse_went_down = went_down(ended_down, num_transitions)
-    mouse_went_up = went_up(ended_down, num_transitions)
+    hot_widget, active_widget, null_widget, button_value = do_widget(BUTTON, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
 
-    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget)
-
-    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget && mouse_went_down)
-
-    widget_value = get_widget_value(widget_type, hot_widget, active_widget, this_widget, widget_value, mouse_over_widget && mouse_went_up)
-
-    active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_went_up)
-
-    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_widget)
+    if button_value
+        widget_value = !widget_value
+    end
 
     return hot_widget, active_widget, null_widget, widget_value
 end
@@ -435,6 +422,42 @@ end
 
 function do_widget!(
         widget_type::CheckBox,
+        user_interaction_state::AbstractUserInteractionState,
+        this_widget,
+        widget_value,
+        cursor,
+        input_button,
+        layout,
+        alignment,
+        padding,
+        widget_height,
+        widget_width,
+        image,
+        text,
+        font,
+        colors,
+    )
+
+    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
+    layout.reference_bounding_box = widget_bounding_box
+
+    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
+
+    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, widget_value, text, font, colors)
+
+    return widget_value
+end
+
+#####
+##### RadioButton
+#####
+
+do_widget(widget_type::RadioButton, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max) = do_widget(CHECK_BOX, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+
+do_widget!(widget_type::RadioButton, user_interaction_state::AbstractUserInteractionState, this_widget, widget_value, cursor, input_button, widget_bounding_box) = do_widget!(CHECK_BOX, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
+
+function do_widget!(
+        widget_type::RadioButton,
         user_interaction_state::AbstractUserInteractionState,
         this_widget,
         widget_value,

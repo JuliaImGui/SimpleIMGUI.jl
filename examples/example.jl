@@ -115,6 +115,7 @@ function start()
     colors = SI.COLORS
     sliding_window_size = 30
     i = 0
+    radio_button_value = 1
 
     time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(time_stamp_buffer, time_ns())
@@ -279,6 +280,29 @@ function start()
         push!(debug_text, "text_box_value: $(text_box_value)")
 
         layout.reference_bounding_box = reference_bounding_box
+        for j in Base.OneTo(3)
+            if SI.do_widget!(
+                SI.RADIO_BUTTON,
+                user_interaction_state,
+                SI.WidgetID(@__FILE__, @__LINE__, j),
+                radio_button_value == j,
+                user_input_state.cursor,
+                user_input_state.mouse_left,
+                layout,
+                SI.DOWN2_LEFT1,
+                padding,
+                SD.get_height(font),
+                360,
+                image,
+                "radio button $(j)",
+                font,
+                colors,
+            )
+                radio_button_value = j
+            end
+        end
+        push!(debug_text, "radio_button_value: $(radio_button_value)")
+
         SI.do_widget!(
             SI.TEXT,
             user_interaction_state,
