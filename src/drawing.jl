@@ -78,9 +78,9 @@ function draw_widget!(image, bounding_box, widget_type::Button, user_interaction
         font,
         alignment,
         padding,
-        background_color,
-        border_color,
-        text_color,
+        get_color(user_interaction_state, this_widget, background_color),
+        get_color(user_interaction_state, this_widget, border_color),
+        get_color(user_interaction_state, this_widget, text_color),
     )
 end
 

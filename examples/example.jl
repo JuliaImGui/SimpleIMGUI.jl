@@ -190,9 +190,9 @@ function start()
             font,
             SI.CENTER,
             -1,
-            0x00b0b0b0,
-            0x00000000,
-            0x00000000,
+            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
+            SI.ContextualColor(0x00000000, 0x00000000, 0x00000000),
+            SI.ContextualColor(0x00000000, 0x00000000, 0x00000000),
         )
         if button_value
             num_button_clicks += 1

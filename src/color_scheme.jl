@@ -1,3 +1,9 @@
+struct ContextualColor{C}
+    neutral_color::C
+    hot_color::C
+    active_color::C
+end
+
 @enum Colorable begin
     COLOR_BACKGROUND = 1
 
@@ -211,3 +217,15 @@ COLORS[Integer(COLOR_ACTIVE_DROP_DOWN_BACKGROUND)] = COLORS[Integer(COLOR_BACKGR
 COLORS[Integer(COLOR_ACTIVE_DROP_DOWN_BORDER)] = COLORS[Integer(COLOR_BACKGROUND)]
 COLORS[Integer(COLOR_ACTIVE_DROP_DOWN_TEXT)] = 0x00000000
 COLORS[Integer(COLOR_ACTIVE_DROP_DOWN_INDICATOR)] = 0x00000000
+
+get_color(user_interaction_state, this_widget, color) = color
+
+function get_color(user_interaction_state, this_widget, color::ContextualColor)
+    if this_widget == user_interaction_state.active_widget
+        return color.active_color
+    elseif this_widget == user_interaction_state.hot_widget
+        return color.hot_color
+    else
+        return color.neutral_color
+    end
+end
