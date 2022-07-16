@@ -112,6 +112,7 @@ function start()
     num_button_clicks = 0
     padding = 8
     font = SD.TERMINUS_32_16
+    colors = SI.COLORS
     sliding_window_size = 30
     i = 0
     radio_button_value = 1
@@ -278,6 +279,30 @@ function start()
         push!(debug_text, "slider_value: $(slider_value)")
         push!(debug_text, "text_box_value: $(text_box_value)")
 
+        layout.reference_bounding_box = reference_bounding_box
+        for j in Base.OneTo(3)
+            if SI.do_widget!(
+                SI.RADIO_BUTTON,
+                user_interaction_state,
+                SI.WidgetID(@__FILE__, @__LINE__, j),
+                radio_button_value == j,
+                user_input_state.cursor,
+                user_input_state.mouse_left,
+                layout,
+                SI.DOWN2_LEFT1,
+                padding,
+                SD.get_height(font),
+                360,
+                image,
+                "radio button $(j)",
+                font,
+                colors,
+            )
+                radio_button_value = j
+            end
+        end
+        push!(debug_text, "radio_button_value: $(radio_button_value)")
+
         SI.do_widget!(
             SI.TEXT,
             user_interaction_state,
@@ -335,30 +360,6 @@ function start()
                    )
             end
         end
-
-        layout.reference_bounding_box = reference_bounding_box
-        for j in Base.OneTo(3)
-            if SI.do_widget!(
-                SI.RADIO_BUTTON,
-                user_interaction_state,
-                SI.WidgetID(@__FILE__, @__LINE__, j),
-                radio_button_value == j,
-                user_input_state.cursor,
-                user_input_state.mouse_left,
-                layout,
-                SI.DOWN2_LEFT1,
-                padding,
-                SD.get_height(font),
-                360,
-                image,
-                "radio button $(j)",
-                font,
-                colors,
-            )
-                radio_button_value = j
-            end
-        end
-        push!(debug_text, "radio_button_value: $(radio_button_value)")
 
         compute_time_end = time_ns()
         push!(compute_time_buffer, compute_time_end - compute_time_start)
