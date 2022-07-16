@@ -70,27 +70,18 @@ function SD.draw!(image::AbstractMatrix, bounding_box::SD.Rectangle, widget_type
     return nothing
 end
 
-function draw_widget!(image, bounding_box, widget_type::Button, user_interaction_state, this_widget, text, font, colors)
-    alignment = CENTER
-    padding = -1
-
-    if this_widget == user_interaction_state.active_widget
-        background_color = colors[Integer(COLOR_ACTIVE_BUTTON_BACKGROUND)]
-        border_color = colors[Integer(COLOR_ACTIVE_BUTTON_BORDER)]
-        text_color = colors[Integer(COLOR_ACTIVE_BUTTON_TEXT)]
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = colors[Integer(COLOR_HOT_BUTTON_BACKGROUND)]
-        border_color = colors[Integer(COLOR_HOT_BUTTON_BORDER)]
-        text_color = colors[Integer(COLOR_HOT_BUTTON_TEXT)]
-    else
-        background_color = colors[Integer(COLOR_NEUTRAL_BUTTON_BACKGROUND)]
-        border_color = colors[Integer(COLOR_NEUTRAL_BUTTON_BORDER)]
-        text_color = colors[Integer(COLOR_NEUTRAL_BUTTON_TEXT)]
-    end
-
-    draw_text_line_in_a_box!(image, bounding_box, text, font, alignment, padding, background_color, border_color, text_color)
-
-    return nothing
+function draw_widget!(image, bounding_box, widget_type::Button, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
+    draw_text_line_in_a_box!(
+        image,
+        bounding_box,
+        text,
+        font,
+        alignment,
+        padding,
+        background_color,
+        border_color,
+        text_color,
+    )
 end
 
 function draw_widget!(image, bounding_box, widget_type::Slider, user_interaction_state, this_widget, slider_value, text, font, colors)
