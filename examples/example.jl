@@ -116,6 +116,7 @@ function start()
     sliding_window_size = 30
     i = 0
     radio_button_value = 1
+    drop_down_selected_item = 1
     drop_down_value = false
 
     time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
@@ -279,6 +280,8 @@ function start()
         push!(debug_text, "button_value: $(button_value)")
         push!(debug_text, "slider_value: $(slider_value)")
         push!(debug_text, "text_box_value: $(text_box_value)")
+        push!(debug_text, "radio_button_value: $(radio_button_value)")
+        push!(debug_text, "drop_down_value: $(drop_down_value)")
 
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
@@ -299,6 +302,59 @@ function start()
         )
         reference_bounding_box = layout.reference_bounding_box
 
+        radio_button_item_list = ("item a", "item b", "item c")
+        max_num_chars = length(first(radio_button_item_list))
+        for item in radio_button_item_list
+            max_num_chars = max(max_num_chars, length(item))
+        end
+        for (j, item) in enumerate(radio_button_item_list)
+            if SI.do_widget!(
+                SI.RADIO_BUTTON,
+                user_interaction_state,
+                SI.WidgetID(@__FILE__, @__LINE__, j),
+                radio_button_value == j,
+                user_input_state.cursor,
+                user_input_state.mouse_left,
+                layout,
+                SI.RIGHT2,
+                padding,
+                SD.get_height(font),
+                SD.get_width(font) * (max_num_chars + 2),
+                image,
+                item,
+                font,
+                colors,
+            )
+                radio_button_value = j
+            end
+            reference_bounding_box = SI.get_bounding_box(reference_bounding_box, layout.reference_bounding_box)
+        end
+        push!(debug_text, "radio_button_value: $(radio_button_value)")
+
+        layout.reference_bounding_box = reference_bounding_box
+        SI.do_widget!(
+            SI.TEXT,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            user_input_state.cursor,
+            user_input_state.mouse_left,
+            layout,
+            SI.DOWN2_LEFT1,
+            padding,
+            SD.get_height(font),
+            SD.get_width(font) * 12,
+            image,
+            "DropDown",
+            font,
+            colors,
+        )
+        reference_bounding_box = layout.reference_bounding_box
+
+        drop_down_item_list = ("item 1", "item 2", "item 3")
+        max_num_chars = length(first(drop_down_item_list))
+        for item in drop_down_item_list
+            max_num_chars = max(max_num_chars, length(item))
+        end
         drop_down_value = SI.do_widget!(
             SI.DROP_DOWN,
             user_interaction_state,
@@ -310,39 +366,40 @@ function start()
             SI.RIGHT2,
             padding,
             SD.get_height(font),
-            SD.get_width(font) * 16,
+            SD.get_width(font) * (max_num_chars + 2),
             image,
-            "radio button $(radio_button_value)",
+            drop_down_item_list[drop_down_selected_item],
             font,
             colors,
         )
         reference_bounding_box = SI.get_bounding_box(reference_bounding_box, layout.reference_bounding_box)
 
         if drop_down_value
-            for j in Base.OneTo(3)
+            for (j, item) in enumerate(drop_down_item_list)
                 if SI.do_widget!(
                     SI.RADIO_BUTTON,
                     user_interaction_state,
                     SI.WidgetID(@__FILE__, @__LINE__, j),
-                    radio_button_value == j,
+                    drop_down_selected_item == j,
                     user_input_state.cursor,
                     user_input_state.mouse_left,
                     layout,
                     SI.DOWN2_LEFT1,
                     padding,
                     SD.get_height(font),
-                    360,
+                    SD.get_width(font) * (max_num_chars + 2),
                     image,
-                    "radio button $(j)",
+                    item,
                     font,
                     colors,
                 )
-                    radio_button_value = j
+                    drop_down_selected_item = j
                 end
                 reference_bounding_box = SI.get_bounding_box(reference_bounding_box, layout.reference_bounding_box)
             end
         end
-        push!(debug_text, "radio_button_value: $(radio_button_value)")
+        push!(debug_text, "drop_down_value: $(drop_down_value)")
+        push!(debug_text, "drop_down_selected_item: $(drop_down_selected_item)")
 
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
