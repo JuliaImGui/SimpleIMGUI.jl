@@ -18,6 +18,9 @@ const CHECK_BOX = CheckBox()
 struct RadioButton <: AbstractWidgetType end
 const RADIO_BUTTON = RadioButton()
 
+struct DropDown <: AbstractWidgetType end
+const DROP_DOWN = DropDown()
+
 #####
 ##### utils
 #####
@@ -458,6 +461,42 @@ do_widget!(widget_type::RadioButton, user_interaction_state::AbstractUserInterac
 
 function do_widget!(
         widget_type::RadioButton,
+        user_interaction_state::AbstractUserInteractionState,
+        this_widget,
+        widget_value,
+        cursor,
+        input_button,
+        layout,
+        alignment,
+        padding,
+        widget_height,
+        widget_width,
+        image,
+        text,
+        font,
+        colors,
+    )
+
+    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
+    layout.reference_bounding_box = widget_bounding_box
+
+    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
+
+    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, widget_value, text, font, colors)
+
+    return widget_value
+end
+
+#####
+##### DropDown
+#####
+
+do_widget(widget_type::DropDown, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max) = do_widget(CHECK_BOX, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+
+do_widget!(widget_type::DropDown, user_interaction_state::AbstractUserInteractionState, this_widget, widget_value, cursor, input_button, widget_bounding_box) = do_widget!(CHECK_BOX, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
+
+function do_widget!(
+        widget_type::DropDown,
         user_interaction_state::AbstractUserInteractionState,
         this_widget,
         widget_value,
