@@ -308,8 +308,12 @@ function do_widget!(
         widget_height,
         widget_width,
         image,
+        content_alignment,
+        content_padding,
         font,
-        colors,
+        background_color,
+        border_color,
+        text_color,
     )
 
     widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
@@ -317,7 +321,7 @@ function do_widget!(
 
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, characters, widget_bounding_box)
 
-    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, widget_value, font, colors)
+    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, font, background_color, border_color, text_color)
 
     return widget_value
 end

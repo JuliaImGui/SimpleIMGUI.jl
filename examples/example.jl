@@ -273,8 +273,12 @@ function start()
             SD.get_height(font),
             360,
             image,
+            SI.CENTER,
+            -1,
             font,
-            colors,
+            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
+            0x00000000,
+            0x00000000,
         )
 
         push!(debug_text, "previous frame number: $(i)")
