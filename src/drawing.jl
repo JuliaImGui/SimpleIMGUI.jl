@@ -84,30 +84,20 @@ function draw_widget!(image, bounding_box, widget_type::Button, user_interaction
     )
 end
 
-function draw_widget!(image, bounding_box, widget_type::Slider, user_interaction_state, this_widget, slider_value, text, font, colors)
-    alignment = CENTER
-    padding = -1
-
-    if this_widget == user_interaction_state.active_widget
-        background_color = colors[Integer(COLOR_ACTIVE_SLIDER_BACKGROUND)]
-        border_color = colors[Integer(COLOR_ACTIVE_SLIDER_BORDER)]
-        text_color = colors[Integer(COLOR_ACTIVE_SLIDER_TEXT)]
-        bar_color = colors[Integer(COLOR_ACTIVE_SLIDER_BAR)]
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = colors[Integer(COLOR_HOT_SLIDER_BACKGROUND)]
-        border_color = colors[Integer(COLOR_HOT_SLIDER_BORDER)]
-        text_color = colors[Integer(COLOR_HOT_SLIDER_TEXT)]
-        bar_color = colors[Integer(COLOR_HOT_SLIDER_BAR)]
-    else
-        background_color = colors[Integer(COLOR_NEUTRAL_SLIDER_BACKGROUND)]
-        border_color = colors[Integer(COLOR_NEUTRAL_SLIDER_BORDER)]
-        text_color = colors[Integer(COLOR_NEUTRAL_SLIDER_TEXT)]
-        bar_color = colors[Integer(COLOR_NEUTRAL_SLIDER_BAR)]
-    end
-
-    draw_text_line_with_slider_in_a_box!(image, bounding_box, slider_value, text, font, alignment, padding, background_color, border_color, text_color, bar_color)
-
-    return nothing
+function draw_widget!(image, bounding_box, widget_type::Slider, user_interaction_state, this_widget, slider_value, alignment, padding, text, font, background_color, border_color, text_color, bar_color)
+    draw_text_line_with_slider_in_a_box!(
+        image,
+        bounding_box,
+        slider_value,
+        text,
+        font,
+        alignment,
+        padding,
+        get_color(user_interaction_state, this_widget, background_color),
+        get_color(user_interaction_state, this_widget, border_color),
+        get_color(user_interaction_state, this_widget, text_color),
+        get_color(user_interaction_state, this_widget, bar_color),
+    )
 end
 
 function draw_widget!(image, bounding_box, widget_type::TextBox, user_interaction_state, this_widget, text, font, colors)

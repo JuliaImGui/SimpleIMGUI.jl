@@ -230,9 +230,14 @@ function start()
             SD.get_height(font),
             360,
             image,
+            SI.CENTER,
+            -1,
             "Slider value: $(slider_value)",
             font,
-            colors,
+            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
+            0x00000000,
+            0x00000000,
+            0x00909090,
         )
 
         layout.reference_bounding_box = reference_bounding_box
