@@ -100,41 +100,6 @@ function draw_widget!(image, bounding_box, widget_type::Slider, user_interaction
     )
 end
 
-# function draw_widget!(image, bounding_box, widget_type::TextBox, user_interaction_state, this_widget, text, font, colors)
-    # alignment = LEFT1
-    # if get_num_printable_characters(text) * SD.get_width(font) > bounding_box.width
-        # alignment = RIGHT1
-    # end
-
-    # padding = -1
-
-    # if this_widget == user_interaction_state.active_widget
-        # background_color = colors[Integer(COLOR_ACTIVE_TEXT_BOX_BACKGROUND)]
-        # border_color = colors[Integer(COLOR_ACTIVE_TEXT_BOX_BORDER)]
-        # text_color = colors[Integer(COLOR_ACTIVE_TEXT_BOX_TEXT)]
-    # elseif this_widget == user_interaction_state.hot_widget
-        # background_color = colors[Integer(COLOR_HOT_TEXT_BOX_BACKGROUND)]
-        # border_color = colors[Integer(COLOR_HOT_TEXT_BOX_BORDER)]
-        # text_color = colors[Integer(COLOR_HOT_TEXT_BOX_TEXT)]
-    # else
-        # background_color = colors[Integer(COLOR_NEUTRAL_TEXT_BOX_BACKGROUND)]
-        # border_color = colors[Integer(COLOR_NEUTRAL_TEXT_BOX_BORDER)]
-        # text_color = colors[Integer(COLOR_NEUTRAL_TEXT_BOX_TEXT)]
-    # end
-
-    # draw_text_line_in_a_box!(image, bounding_box, text, font, alignment, padding, background_color, border_color, text_color)
-
-    # if this_widget == user_interaction_state.active_widget
-        # num_printable_characters = get_num_printable_characters(text)
-        # if num_printable_characters > zero(num_printable_characters)
-            # _, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * num_printable_characters, alignment, padding)
-            # SD.draw!(image, SD.FilledRectangle(SD.move_j(bounding_box.position, j_offset + num_printable_characters * SD.get_width(font) - one(j_offset)), bounding_box.height, oftype(bounding_box.width, 2)), text_color)
-        # end
-    # end
-
-    # return nothing
-# end
-
 function draw_widget!(image, bounding_box, widget_type::TextBox, user_interaction_state, this_widget, text, alignment, padding, font, background_color, border_color, text_color)
     if get_num_printable_characters(text) * SD.get_width(font) > bounding_box.width
         alignment = RIGHT1
