@@ -151,9 +151,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * SI.get_num_printable_characters(text),
             image,
+            SI.UP1_LEFT1,
+            -1,
             text,
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
 
         SI.do_widget!(
@@ -168,9 +172,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "Button",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -211,9 +219,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "Slider",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -253,9 +265,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "TextBox",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -309,9 +325,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "RadioButton",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -357,9 +377,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "DropDown",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -427,9 +451,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "CheckBox",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -453,11 +481,11 @@ function start()
 
         if show_debug_text
             layout.reference_bounding_box = reference_bounding_box
-            for text in debug_text
+            for (j, text) in enumerate(debug_text)
                 SI.do_widget!(
                     SI.TEXT,
                     user_interaction_state,
-                    SI.WidgetID(@__FILE__, @__LINE__, 1),
+                    SI.WidgetID(@__FILE__, @__LINE__, j),
                     user_input_state.cursor,
                     user_input_state.mouse_left,
                     layout,
@@ -466,9 +494,13 @@ function start()
                     SD.get_height(font),
                     SD.get_width(font) * SI.get_num_printable_characters(text),
                     image,
+                    SI.UP1_LEFT1,
+                    -1,
                     text,
                     font,
-                    colors,
+                    0x00cccccc,
+                    0x00cccccc,
+                    0x00000000,
                    )
             end
         end
