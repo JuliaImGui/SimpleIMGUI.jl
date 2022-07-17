@@ -126,28 +126,7 @@ function draw_widget!(image, bounding_box, widget_type::TextBox, user_interactio
     return nothing
 end
 
-function draw_widget!(image, bounding_box, widget_type::Text, user_interaction_state, this_widget, text, font, colors)
-    alignment = LEFT1
-    padding = -1
-
-    if this_widget == user_interaction_state.active_widget
-        background_color = colors[Integer(COLOR_ACTIVE_TEXT_BACKGROUND)]
-        border_color = colors[Integer(COLOR_ACTIVE_TEXT_BORDER)]
-        text_color = colors[Integer(COLOR_ACTIVE_TEXT_TEXT)]
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = colors[Integer(COLOR_HOT_TEXT_BACKGROUND)]
-        border_color = colors[Integer(COLOR_HOT_TEXT_BORDER)]
-        text_color = colors[Integer(COLOR_HOT_TEXT_TEXT)]
-    else
-        background_color = colors[Integer(COLOR_NEUTRAL_TEXT_BACKGROUND)]
-        border_color = colors[Integer(COLOR_NEUTRAL_TEXT_BORDER)]
-        text_color = colors[Integer(COLOR_NEUTRAL_TEXT_TEXT)]
-    end
-
-    draw_text_line_in_a_box!(image, bounding_box, text, font, alignment, padding, background_color, border_color, text_color)
-
-    return nothing
-end
+draw_widget!(image, bounding_box, widget_type::Text, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color) = draw_widget!(image, bounding_box, BUTTON, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
 
 function draw_widget!(image, bounding_box, widget_type::CheckBox, user_interaction_state, this_widget, widget_value, text, font, colors)
     alignment = LEFT1
