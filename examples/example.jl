@@ -474,9 +474,14 @@ function start()
             SD.get_height(font),
             360,
             image,
+            SI.LEFT1,
+            -1,
             "Show debug text",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
+            0x00000000,
         )
 
         if show_debug_text
