@@ -177,36 +177,27 @@ function draw_widget!(image, bounding_box, widget_type::RadioButton, user_intera
     return nothing
 end
 
-function draw_widget!(image, bounding_box, widget_type::DropDown, user_interaction_state, this_widget, widget_value, text, font, colors)
-    alignment = LEFT1
-    padding = -1
-
-    if this_widget == user_interaction_state.active_widget
-        background_color = colors[Integer(COLOR_ACTIVE_DROP_DOWN_BACKGROUND)]
-        border_color = colors[Integer(COLOR_ACTIVE_DROP_DOWN_BORDER)]
-        text_color = colors[Integer(COLOR_ACTIVE_DROP_DOWN_TEXT)]
-        indicator_color = colors[Integer(COLOR_ACTIVE_DROP_DOWN_INDICATOR)]
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = colors[Integer(COLOR_HOT_DROP_DOWN_BACKGROUND)]
-        border_color = colors[Integer(COLOR_HOT_DROP_DOWN_BORDER)]
-        text_color = colors[Integer(COLOR_HOT_DROP_DOWN_TEXT)]
-        indicator_color = colors[Integer(COLOR_HOT_DROP_DOWN_INDICATOR)]
-    else
-        background_color = colors[Integer(COLOR_NEUTRAL_DROP_DOWN_BACKGROUND)]
-        border_color = colors[Integer(COLOR_NEUTRAL_DROP_DOWN_BORDER)]
-        text_color = colors[Integer(COLOR_NEUTRAL_DROP_DOWN_TEXT)]
-        indicator_color = colors[Integer(COLOR_NEUTRAL_DROP_DOWN_INDICATOR)]
-    end
-
+function draw_widget!(image, bounding_box, widget_type::DropDown, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
     font_width = SD.get_width(font)
     indicator_width = oftype(font_width, 2) * font_width
     x = indicator_width ÷ oftype(indicator_width, 8)
     if widget_value
-        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 4) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 6) * x)), indicator_color)
+        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 4) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 6) * x)), get_color(user_interaction_state, this_widget, indicator_color))
     else
-        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 6) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 4) * x)), indicator_color)
+        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 6) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 4) * x)), get_color(user_interaction_state, this_widget, indicator_color))
     end
-    draw_text_line_in_a_box!(image, SD.Rectangle(SD.move_j(bounding_box.position, indicator_width), bounding_box.height, bounding_box.width - indicator_width), text, font, alignment, padding, background_color, border_color, text_color)
+
+    draw_text_line_in_a_box!(
+        image,
+        SD.Rectangle(SD.move_j(bounding_box.position, indicator_width), bounding_box.height, bounding_box.width - indicator_width),
+        text,
+        font,
+        alignment,
+        padding,
+        get_color(user_interaction_state, this_widget, background_color),
+        get_color(user_interaction_state, this_widget, border_color),
+        get_color(user_interaction_state, this_widget, text_color),
+    )
 
     return nothing
 end

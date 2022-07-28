@@ -410,9 +410,14 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * (max_num_chars + 2),
             image,
+            SI.LEFT1,
+            -1,
             drop_down_item_list[drop_down_selected_item],
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
+            0x00000000,
         )
         reference_bounding_box = SI.get_bounding_box(reference_bounding_box, layout.reference_bounding_box)
 
