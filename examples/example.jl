@@ -354,9 +354,14 @@ function start()
                 SD.get_height(font),
                 SD.get_width(font) * (max_num_chars + 2),
                 image,
+                SI.LEFT1,
+                -1,
                 item,
                 font,
-                colors,
+                0x00cccccc,
+                0x00cccccc,
+                0x00000000,
+                0x00000000,
             )
                 radio_button_value = j
             end
@@ -426,9 +431,14 @@ function start()
                     SD.get_height(font),
                     SD.get_width(font) * (max_num_chars + 2),
                     image,
+                    SI.LEFT1,
+                    -1,
                     item,
                     font,
-                    colors,
+                    0x00cccccc,
+                    0x00cccccc,
+                    0x00000000,
+                    0x00000000,
                 )
                     drop_down_selected_item = j
                 end

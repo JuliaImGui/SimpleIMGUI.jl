@@ -221,34 +221,6 @@ do_widget(widget_type::RadioButton, hot_widget, active_widget, null_widget, this
 
 do_widget!!(widget_type::RadioButton, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
-function do_widget!(
-        widget_type::RadioButton,
-        user_interaction_state::AbstractUserInteractionState,
-        this_widget,
-        widget_value,
-        cursor,
-        input_button,
-        layout,
-        alignment,
-        padding,
-        widget_height,
-        widget_width,
-        image,
-        text,
-        font,
-        colors,
-    )
-
-    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
-    layout.reference_bounding_box = widget_bounding_box
-
-    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
-
-    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, widget_value, text, font, colors)
-
-    return widget_value
-end
-
 #####
 ##### DropDown
 #####
