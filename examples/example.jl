@@ -112,7 +112,6 @@ function start()
     num_button_clicks = 0
     padding = 8
     font = SD.TERMINUS_32_16
-    colors = SI.COLORS
     sliding_window_size = 30
     i = 0
     radio_button_value = 1
@@ -136,7 +135,7 @@ function start()
 
         compute_time_start = time_ns()
 
-        SD.draw!(image, SD.Background(), SI.COLORS[Integer(SI.COLOR_BACKGROUND)])
+        SD.draw!(image, SD.Background(), 0x00cccccc)
 
         text = "Press the escape key to quit"
         SI.do_widget!(
