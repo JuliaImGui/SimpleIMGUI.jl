@@ -1,11 +1,9 @@
 # Example Usage
 
-To test an example, first clone the repository and rename it to `SimpleWidgets.jl` (if it is not already named `SimpleWidgets.jl`, which will happen soon).
-
-Then execute the following command inside the `examples` directory of the cloned repository:
+To test an example, first clone the repository and then execute the following command inside the `examples` directory of the cloned repository:
 
 ```
-julia --project=. -e 'import Pkg; Pkg.develop(path="../../SimpleWidgets.jl"); Pkg.instantiate(); include("example.jl")'
+julia --project=. -e 'import Pkg; Pkg.develop(path="../../SimpleIMGUI.jl"); Pkg.instantiate(); include("example.jl")'
 ```
 
 This will open a window and you can interact with the widgets present in it. Here is an example (note that the screenshot might not be up to date with `example.jl`):
