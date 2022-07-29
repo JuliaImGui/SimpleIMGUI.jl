@@ -12,4 +12,4 @@ julia --project=. -e 'import Pkg; Pkg.develop(path="../../SimpleIMGUI.jl"); Pkg.
 
 This will open a window and you can interact with the widgets present in it. Here is an example (note that the screenshot might not be up to date with `example.jl`):
 
-<img src="https://user-images.githubusercontent.com/32610387/165582174-fd98dd3a-d36c-4418-a673-719090b0cd54.png">
+<img src="https://user-images.githubusercontent.com/32610387/181818018-d6a466f6-e52c-4a37-8545-39b64427a6cb.png">
