@@ -112,7 +112,6 @@ function start()
     num_button_clicks = 0
     padding = 8
     font = SD.TERMINUS_32_16
-    colors = SI.COLORS
     sliding_window_size = 30
     i = 0
     radio_button_value = 1
@@ -136,7 +135,7 @@ function start()
 
         compute_time_start = time_ns()
 
-        SD.draw!(image, SD.Background(), SI.COLORS[Integer(SI.COLOR_BACKGROUND)])
+        SD.draw!(image, SD.Background(), 0x00cccccc)
 
         text = "Press the escape key to quit"
         SI.do_widget!(
@@ -151,9 +150,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * SI.get_num_printable_characters(text),
             image,
+            SI.UP1_LEFT1,
+            -1,
             text,
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
 
         SI.do_widget!(
@@ -168,9 +171,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "Button",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -186,9 +193,13 @@ function start()
             SD.get_height(font),
             360,
             image,
+            SI.CENTER,
+            -1,
             "Button clicks: $(num_button_clicks)",
             font,
-            colors,
+            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
+            SI.ContextualColor(0x00000000, 0x00000000, 0x00000000),
+            SI.ContextualColor(0x00000000, 0x00000000, 0x00000000),
         )
         if button_value
             num_button_clicks += 1
@@ -207,9 +218,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "Slider",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -226,9 +241,14 @@ function start()
             SD.get_height(font),
             360,
             image,
+            SI.CENTER,
+            -1,
             "Slider value: $(slider_value)",
             font,
-            colors,
+            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
+            0x00000000,
+            0x00000000,
+            0x00909090,
         )
 
         layout.reference_bounding_box = reference_bounding_box
@@ -244,9 +264,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "TextBox",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -264,8 +288,12 @@ function start()
             SD.get_height(font),
             360,
             image,
+            SI.CENTER,
+            -1,
             font,
-            colors,
+            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
+            0x00000000,
+            0x00000000,
         )
 
         push!(debug_text, "previous frame number: $(i)")
@@ -296,9 +324,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "RadioButton",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -321,9 +353,14 @@ function start()
                 SD.get_height(font),
                 SD.get_width(font) * (max_num_chars + 2),
                 image,
+                SI.LEFT1,
+                -1,
                 item,
                 font,
-                colors,
+                0x00cccccc,
+                0x00cccccc,
+                0x00000000,
+                0x00000000,
             )
                 radio_button_value = j
             end
@@ -344,9 +381,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "DropDown",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -368,9 +409,14 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * (max_num_chars + 2),
             image,
+            SI.LEFT1,
+            -1,
             drop_down_item_list[drop_down_selected_item],
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
+            0x00000000,
         )
         reference_bounding_box = SI.get_bounding_box(reference_bounding_box, layout.reference_bounding_box)
 
@@ -389,9 +435,14 @@ function start()
                     SD.get_height(font),
                     SD.get_width(font) * (max_num_chars + 2),
                     image,
+                    SI.LEFT1,
+                    -1,
                     item,
                     font,
-                    colors,
+                    0x00cccccc,
+                    0x00cccccc,
+                    0x00000000,
+                    0x00000000,
                 )
                     drop_down_selected_item = j
                 end
@@ -414,9 +465,13 @@ function start()
             SD.get_height(font),
             SD.get_width(font) * 12,
             image,
+            SI.UP1_LEFT1,
+            -1,
             "CheckBox",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -433,18 +488,23 @@ function start()
             SD.get_height(font),
             360,
             image,
+            SI.LEFT1,
+            -1,
             "Show debug text",
             font,
-            colors,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
+            0x00000000,
         )
 
         if show_debug_text
             layout.reference_bounding_box = reference_bounding_box
-            for text in debug_text
+            for (j, text) in enumerate(debug_text)
                 SI.do_widget!(
                     SI.TEXT,
                     user_interaction_state,
-                    SI.WidgetID(@__FILE__, @__LINE__, 1),
+                    SI.WidgetID(@__FILE__, @__LINE__, j),
                     user_input_state.cursor,
                     user_input_state.mouse_left,
                     layout,
@@ -453,9 +513,13 @@ function start()
                     SD.get_height(font),
                     SD.get_width(font) * SI.get_num_printable_characters(text),
                     image,
+                    SI.UP1_LEFT1,
+                    -1,
                     text,
                     font,
-                    colors,
+                    0x00cccccc,
+                    0x00cccccc,
+                    0x00000000,
                    )
             end
         end

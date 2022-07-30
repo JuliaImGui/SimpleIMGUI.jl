@@ -1,3 +1,21 @@
+struct ContextualColor{C}
+    neutral_color::C
+    hot_color::C
+    active_color::C
+end
+
+get_color(user_interaction_state, this_widget, color) = color
+
+function get_color(user_interaction_state, this_widget, color::ContextualColor)
+    if this_widget == user_interaction_state.active_widget
+        return color.active_color
+    elseif this_widget == user_interaction_state.hot_widget
+        return color.hot_color
+    else
+        return color.neutral_color
+    end
+end
+
 function get_num_printable_characters(text)
     num_printable = 0
 
@@ -70,209 +88,134 @@ function SD.draw!(image::AbstractMatrix, bounding_box::SD.Rectangle, widget_type
     return nothing
 end
 
-function draw_widget!(image, bounding_box, widget_type::Button, user_interaction_state, this_widget, text, font, colors)
-    alignment = CENTER
-    padding = -1
-
-    if this_widget == user_interaction_state.active_widget
-        background_color = colors[Integer(COLOR_ACTIVE_BUTTON_BACKGROUND)]
-        border_color = colors[Integer(COLOR_ACTIVE_BUTTON_BORDER)]
-        text_color = colors[Integer(COLOR_ACTIVE_BUTTON_TEXT)]
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = colors[Integer(COLOR_HOT_BUTTON_BACKGROUND)]
-        border_color = colors[Integer(COLOR_HOT_BUTTON_BORDER)]
-        text_color = colors[Integer(COLOR_HOT_BUTTON_TEXT)]
-    else
-        background_color = colors[Integer(COLOR_NEUTRAL_BUTTON_BACKGROUND)]
-        border_color = colors[Integer(COLOR_NEUTRAL_BUTTON_BORDER)]
-        text_color = colors[Integer(COLOR_NEUTRAL_BUTTON_TEXT)]
-    end
-
-    draw_text_line_in_a_box!(image, bounding_box, text, font, alignment, padding, background_color, border_color, text_color)
-
-    return nothing
+function draw_widget!(image, bounding_box, widget_type::Button, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
+    draw_text_line_in_a_box!(
+        image,
+        bounding_box,
+        text,
+        font,
+        alignment,
+        padding,
+        get_color(user_interaction_state, this_widget, background_color),
+        get_color(user_interaction_state, this_widget, border_color),
+        get_color(user_interaction_state, this_widget, text_color),
+    )
 end
 
-function draw_widget!(image, bounding_box, widget_type::Slider, user_interaction_state, this_widget, slider_value, text, font, colors)
-    alignment = CENTER
-    padding = -1
-
-    if this_widget == user_interaction_state.active_widget
-        background_color = colors[Integer(COLOR_ACTIVE_SLIDER_BACKGROUND)]
-        border_color = colors[Integer(COLOR_ACTIVE_SLIDER_BORDER)]
-        text_color = colors[Integer(COLOR_ACTIVE_SLIDER_TEXT)]
-        bar_color = colors[Integer(COLOR_ACTIVE_SLIDER_BAR)]
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = colors[Integer(COLOR_HOT_SLIDER_BACKGROUND)]
-        border_color = colors[Integer(COLOR_HOT_SLIDER_BORDER)]
-        text_color = colors[Integer(COLOR_HOT_SLIDER_TEXT)]
-        bar_color = colors[Integer(COLOR_HOT_SLIDER_BAR)]
-    else
-        background_color = colors[Integer(COLOR_NEUTRAL_SLIDER_BACKGROUND)]
-        border_color = colors[Integer(COLOR_NEUTRAL_SLIDER_BORDER)]
-        text_color = colors[Integer(COLOR_NEUTRAL_SLIDER_TEXT)]
-        bar_color = colors[Integer(COLOR_NEUTRAL_SLIDER_BAR)]
-    end
-
-    draw_text_line_with_slider_in_a_box!(image, bounding_box, slider_value, text, font, alignment, padding, background_color, border_color, text_color, bar_color)
-
-    return nothing
+function draw_widget!(image, bounding_box, widget_type::Slider, user_interaction_state, this_widget, slider_value, alignment, padding, text, font, background_color, border_color, text_color, bar_color)
+    draw_text_line_with_slider_in_a_box!(
+        image,
+        bounding_box,
+        slider_value,
+        text,
+        font,
+        alignment,
+        padding,
+        get_color(user_interaction_state, this_widget, background_color),
+        get_color(user_interaction_state, this_widget, border_color),
+        get_color(user_interaction_state, this_widget, text_color),
+        get_color(user_interaction_state, this_widget, bar_color),
+    )
 end
 
-function draw_widget!(image, bounding_box, widget_type::TextBox, user_interaction_state, this_widget, text, font, colors)
-    alignment = LEFT1
+function draw_widget!(image, bounding_box, widget_type::TextBox, user_interaction_state, this_widget, text, alignment, padding, font, background_color, border_color, text_color)
     if get_num_printable_characters(text) * SD.get_width(font) > bounding_box.width
         alignment = RIGHT1
     end
 
-    padding = -1
-
-    if this_widget == user_interaction_state.active_widget
-        background_color = colors[Integer(COLOR_ACTIVE_TEXT_BOX_BACKGROUND)]
-        border_color = colors[Integer(COLOR_ACTIVE_TEXT_BOX_BORDER)]
-        text_color = colors[Integer(COLOR_ACTIVE_TEXT_BOX_TEXT)]
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = colors[Integer(COLOR_HOT_TEXT_BOX_BACKGROUND)]
-        border_color = colors[Integer(COLOR_HOT_TEXT_BOX_BORDER)]
-        text_color = colors[Integer(COLOR_HOT_TEXT_BOX_TEXT)]
-    else
-        background_color = colors[Integer(COLOR_NEUTRAL_TEXT_BOX_BACKGROUND)]
-        border_color = colors[Integer(COLOR_NEUTRAL_TEXT_BOX_BORDER)]
-        text_color = colors[Integer(COLOR_NEUTRAL_TEXT_BOX_TEXT)]
-    end
-
-    draw_text_line_in_a_box!(image, bounding_box, text, font, alignment, padding, background_color, border_color, text_color)
+    draw_text_line_in_a_box!(
+        image,
+        bounding_box,
+        text,
+        font,
+        alignment,
+        padding,
+        get_color(user_interaction_state, this_widget, background_color),
+        get_color(user_interaction_state, this_widget, border_color),
+        get_color(user_interaction_state, this_widget, text_color),
+    )
 
     if this_widget == user_interaction_state.active_widget
         num_printable_characters = get_num_printable_characters(text)
-        if num_printable_characters > zero(num_printable_characters)
-            _, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * num_printable_characters, alignment, padding)
-            SD.draw!(image, SD.FilledRectangle(SD.move_j(bounding_box.position, j_offset + num_printable_characters * SD.get_width(font) - one(j_offset)), bounding_box.height, oftype(bounding_box.width, 2)), text_color)
-        end
+        _, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, SD.get_height(font), SD.get_width(font) * num_printable_characters, alignment, padding)
+        SD.draw!(image, SD.FilledRectangle(SD.move_j(bounding_box.position, j_offset + num_printable_characters * SD.get_width(font) - one(j_offset)), bounding_box.height, oftype(bounding_box.width, 2)), get_color(user_interaction_state, this_widget, text_color))
     end
 
     return nothing
 end
 
-function draw_widget!(image, bounding_box, widget_type::Text, user_interaction_state, this_widget, text, font, colors)
-    alignment = LEFT1
-    padding = -1
+draw_widget!(image, bounding_box, widget_type::Text, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color) = draw_widget!(image, bounding_box, BUTTON, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
 
-    if this_widget == user_interaction_state.active_widget
-        background_color = colors[Integer(COLOR_ACTIVE_TEXT_BACKGROUND)]
-        border_color = colors[Integer(COLOR_ACTIVE_TEXT_BORDER)]
-        text_color = colors[Integer(COLOR_ACTIVE_TEXT_TEXT)]
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = colors[Integer(COLOR_HOT_TEXT_BACKGROUND)]
-        border_color = colors[Integer(COLOR_HOT_TEXT_BORDER)]
-        text_color = colors[Integer(COLOR_HOT_TEXT_TEXT)]
-    else
-        background_color = colors[Integer(COLOR_NEUTRAL_TEXT_BACKGROUND)]
-        border_color = colors[Integer(COLOR_NEUTRAL_TEXT_BORDER)]
-        text_color = colors[Integer(COLOR_NEUTRAL_TEXT_TEXT)]
-    end
-
-    draw_text_line_in_a_box!(image, bounding_box, text, font, alignment, padding, background_color, border_color, text_color)
-
-    return nothing
-end
-
-function draw_widget!(image, bounding_box, widget_type::CheckBox, user_interaction_state, this_widget, widget_value, text, font, colors)
-    alignment = LEFT1
-    padding = -1
-
-    if this_widget == user_interaction_state.active_widget
-        background_color = colors[Integer(COLOR_ACTIVE_CHECK_BOX_BACKGROUND)]
-        border_color = colors[Integer(COLOR_ACTIVE_CHECK_BOX_BORDER)]
-        text_color = colors[Integer(COLOR_ACTIVE_CHECK_BOX_TEXT)]
-        box_color = colors[Integer(COLOR_ACTIVE_CHECK_BOX_BOX)]
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = colors[Integer(COLOR_HOT_CHECK_BOX_BACKGROUND)]
-        border_color = colors[Integer(COLOR_HOT_CHECK_BOX_BORDER)]
-        text_color = colors[Integer(COLOR_HOT_CHECK_BOX_TEXT)]
-        box_color = colors[Integer(COLOR_HOT_CHECK_BOX_BOX)]
-    else
-        background_color = colors[Integer(COLOR_NEUTRAL_CHECK_BOX_BACKGROUND)]
-        border_color = colors[Integer(COLOR_NEUTRAL_CHECK_BOX_BORDER)]
-        text_color = colors[Integer(COLOR_NEUTRAL_CHECK_BOX_TEXT)]
-        box_color = colors[Integer(COLOR_NEUTRAL_CHECK_BOX_BOX)]
-    end
-
+function draw_widget!(image, bounding_box, widget_type::CheckBox, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
     font_width = SD.get_width(font)
     box_width = oftype(font_width, 2) * font_width
     x = box_width ÷ oftype(box_width, 8)
-    SD.draw!(image, SD.ThickRectangle(SD.move(bounding_box.position, x, x), oftype(x, 6) * x, oftype(x, 6) * x, x), box_color)
+    SD.draw!(image, SD.ThickRectangle(SD.move(bounding_box.position, x, x), oftype(x, 6) * x, oftype(x, 6) * x, x), get_color(user_interaction_state, this_widget, indicator_color))
     if widget_value
-        SD.draw!(image, SD.FilledRectangle(SD.move(bounding_box.position, oftype(x, 3) * x, oftype(x, 3) * x), oftype(x, 2) * x, oftype(x, 2) * x), box_color)
+        SD.draw!(image, SD.FilledRectangle(SD.move(bounding_box.position, oftype(x, 3) * x, oftype(x, 3) * x), oftype(x, 2) * x, oftype(x, 2) * x), get_color(user_interaction_state, this_widget, indicator_color))
     end
-    draw_text_line_in_a_box!(image, SD.Rectangle(SD.move_j(bounding_box.position, box_width), bounding_box.height, bounding_box.width - box_width), text, font, alignment, padding, background_color, border_color, text_color)
+
+    draw_text_line_in_a_box!(
+        image,
+        SD.Rectangle(SD.move_j(bounding_box.position, box_width), bounding_box.height, bounding_box.width - box_width),
+        text,
+        font,
+        alignment,
+        padding,
+        get_color(user_interaction_state, this_widget, background_color),
+        get_color(user_interaction_state, this_widget, border_color),
+        get_color(user_interaction_state, this_widget, text_color),
+    )
 
     return nothing
 end
 
-function draw_widget!(image, bounding_box, widget_type::RadioButton, user_interaction_state, this_widget, widget_value, text, font, colors)
-    alignment = LEFT1
-    padding = -1
-
-    if this_widget == user_interaction_state.active_widget
-        background_color = colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_BACKGROUND)]
-        border_color = colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_BORDER)]
-        text_color = colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_TEXT)]
-        indicator_color = colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_INDICATOR)]
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = colors[Integer(COLOR_HOT_RADIO_BUTTON_BACKGROUND)]
-        border_color = colors[Integer(COLOR_HOT_RADIO_BUTTON_BORDER)]
-        text_color = colors[Integer(COLOR_HOT_RADIO_BUTTON_TEXT)]
-        indicator_color = colors[Integer(COLOR_HOT_RADIO_BUTTON_INDICATOR)]
-    else
-        background_color = colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_BACKGROUND)]
-        border_color = colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_BORDER)]
-        text_color = colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_TEXT)]
-        indicator_color = colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_INDICATOR)]
-    end
+function draw_widget!(image, bounding_box, widget_type::RadioButton, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
 
     font_width = SD.get_width(font)
     indicator_width = oftype(font_width, 2) * font_width
     x = indicator_width ÷ oftype(indicator_width, 8)
-    SD.draw!(image, SD.ThickCircle(SD.move(bounding_box.position, x, x), oftype(x, 6) * x, x), indicator_color)
+    SD.draw!(image, SD.ThickCircle(SD.move(bounding_box.position, x, x), oftype(x, 6) * x, x), get_color(user_interaction_state, this_widget, indicator_color))
     if widget_value
-        SD.draw!(image, SD.FilledCircle(SD.move(bounding_box.position, oftype(x, 3) * x, oftype(x, 3) * x), oftype(x, 2) * x), indicator_color)
+        SD.draw!(image, SD.FilledCircle(SD.move(bounding_box.position, oftype(x, 3) * x, oftype(x, 3) * x), oftype(x, 2) * x), get_color(user_interaction_state, this_widget, indicator_color))
     end
-    draw_text_line_in_a_box!(image, SD.Rectangle(SD.move_j(bounding_box.position, indicator_width), bounding_box.height, bounding_box.width - indicator_width), text, font, alignment, padding, background_color, border_color, text_color)
+
+    draw_text_line_in_a_box!(
+        image,
+        SD.Rectangle(SD.move_j(bounding_box.position, indicator_width), bounding_box.height, bounding_box.width - indicator_width),
+        text,
+        font,
+        alignment,
+        padding,
+        get_color(user_interaction_state, this_widget, background_color),
+        get_color(user_interaction_state, this_widget, border_color),
+        get_color(user_interaction_state, this_widget, text_color),
+    )
 
     return nothing
 end
 
-function draw_widget!(image, bounding_box, widget_type::DropDown, user_interaction_state, this_widget, widget_value, text, font, colors)
-    alignment = LEFT1
-    padding = -1
-
-    if this_widget == user_interaction_state.active_widget
-        background_color = colors[Integer(COLOR_ACTIVE_DROP_DOWN_BACKGROUND)]
-        border_color = colors[Integer(COLOR_ACTIVE_DROP_DOWN_BORDER)]
-        text_color = colors[Integer(COLOR_ACTIVE_DROP_DOWN_TEXT)]
-        indicator_color = colors[Integer(COLOR_ACTIVE_DROP_DOWN_INDICATOR)]
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = colors[Integer(COLOR_HOT_DROP_DOWN_BACKGROUND)]
-        border_color = colors[Integer(COLOR_HOT_DROP_DOWN_BORDER)]
-        text_color = colors[Integer(COLOR_HOT_DROP_DOWN_TEXT)]
-        indicator_color = colors[Integer(COLOR_HOT_DROP_DOWN_INDICATOR)]
-    else
-        background_color = colors[Integer(COLOR_NEUTRAL_DROP_DOWN_BACKGROUND)]
-        border_color = colors[Integer(COLOR_NEUTRAL_DROP_DOWN_BORDER)]
-        text_color = colors[Integer(COLOR_NEUTRAL_DROP_DOWN_TEXT)]
-        indicator_color = colors[Integer(COLOR_NEUTRAL_DROP_DOWN_INDICATOR)]
-    end
-
+function draw_widget!(image, bounding_box, widget_type::DropDown, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
     font_width = SD.get_width(font)
     indicator_width = oftype(font_width, 2) * font_width
     x = indicator_width ÷ oftype(indicator_width, 8)
     if widget_value
-        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 4) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 6) * x)), indicator_color)
+        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 4) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 6) * x)), get_color(user_interaction_state, this_widget, indicator_color))
     else
-        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 6) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 4) * x)), indicator_color)
+        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 6) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 4) * x)), get_color(user_interaction_state, this_widget, indicator_color))
     end
-    draw_text_line_in_a_box!(image, SD.Rectangle(SD.move_j(bounding_box.position, indicator_width), bounding_box.height, bounding_box.width - indicator_width), text, font, alignment, padding, background_color, border_color, text_color)
+
+    draw_text_line_in_a_box!(
+        image,
+        SD.Rectangle(SD.move_j(bounding_box.position, indicator_width), bounding_box.height, bounding_box.width - indicator_width),
+        text,
+        font,
+        alignment,
+        padding,
+        get_color(user_interaction_state, this_widget, background_color),
+        get_color(user_interaction_state, this_widget, border_color),
+        get_color(user_interaction_state, this_widget, text_color),
+    )
 
     return nothing
 end
