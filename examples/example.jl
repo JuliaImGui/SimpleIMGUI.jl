@@ -305,11 +305,6 @@ function start()
         push!(debug_text, "mouse_middle: $(user_input_state.mouse_middle)")
         push!(debug_text, "hot_widget: $(user_interaction_state.hot_widget)")
         push!(debug_text, "active_widget: $(user_interaction_state.active_widget)")
-        push!(debug_text, "button_value: $(button_value)")
-        push!(debug_text, "slider_value: $(slider_value)")
-        push!(debug_text, "text_box_value: $(text_box_value)")
-        push!(debug_text, "radio_button_value: $(radio_button_value)")
-        push!(debug_text, "drop_down_value: $(drop_down_value)")
 
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
@@ -366,7 +361,6 @@ function start()
             end
             reference_bounding_box = SI.get_bounding_box(reference_bounding_box, layout.reference_bounding_box)
         end
-        push!(debug_text, "radio_button_value: $(radio_button_value)")
 
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
@@ -449,8 +443,6 @@ function start()
                 reference_bounding_box = SI.get_bounding_box(reference_bounding_box, layout.reference_bounding_box)
             end
         end
-        push!(debug_text, "drop_down_value: $(drop_down_value)")
-        push!(debug_text, "drop_down_selected_item: $(drop_down_selected_item)")
 
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
