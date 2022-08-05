@@ -1,20 +1,20 @@
-struct InputButton
+struct InputButton{I}
     ended_down::Bool
-    num_transitions::Int
+    num_transitions::I
 end
 
 abstract type AbstractUserInputState end
 
-mutable struct UserInputState <: AbstractUserInputState
-    cursor::SD.Point
-    key_escape::InputButton
-    key_up::InputButton
-    key_down::InputButton
-    key_left::InputButton
-    key_right::InputButton
-    mouse_left::InputButton
-    mouse_right::InputButton
-    mouse_middle::InputButton
+mutable struct UserInputState{I1, I2} <: AbstractUserInputState
+    cursor::SD.Point{I1}
+    key_escape::InputButton{I2}
+    key_up::InputButton{I2}
+    key_down::InputButton{I2}
+    key_left::InputButton{I2}
+    key_right::InputButton{I2}
+    mouse_left::InputButton{I2}
+    mouse_right::InputButton{I2}
+    mouse_middle::InputButton{I2}
     characters::Vector{Char}
 end
 
@@ -28,7 +28,7 @@ press(input_button) = InputButton(true, input_button.num_transitions + one(input
 release(input_button) = InputButton(false, input_button.num_transitions + one(input_button.num_transitions))
 reset(input_button) = InputButton(input_button.ended_down, zero(input_button.num_transitions))
 
-function reset!(user_input_state::UserInputState)
+function reset!(user_input_state)
     user_input_state.key_escape = reset(user_input_state.key_escape)
     user_input_state.key_up = reset(user_input_state.key_up)
     user_input_state.key_down = reset(user_input_state.key_down)

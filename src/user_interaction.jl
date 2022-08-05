@@ -1,17 +1,17 @@
 abstract type AbstractWidgetID end
 
-struct WidgetID <: AbstractWidgetID
-    file::String
-    line::Int
-    instance::Int
+struct WidgetID{S, I} <: AbstractWidgetID
+    file::S
+    line::I
+    instance::I
 end
 
 abstract type AbstractUserInteractionState end
 
-mutable struct UserInteractionState <: AbstractUserInteractionState
-    hot_widget::WidgetID
-    active_widget::WidgetID
-    null_widget::WidgetID
+mutable struct UserInteractionState{S, I} <: AbstractUserInteractionState
+    hot_widget::WidgetID{S, I}
+    active_widget::WidgetID{S, I}
+    null_widget::WidgetID{S, I}
 end
 
 const NULL_WIDGET_ID = WidgetID("", 0, 0)
