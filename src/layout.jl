@@ -5,91 +5,91 @@ mutable struct BoxLayout{I} <: AbstractLayout
 end
 
 @enum Alignment begin
-    UP2_LEFT2
-    UP1_LEFT2
-    LEFT2
-    DOWN1_LEFT2
-    DOWN2_LEFT2
+    UP_OUT_LEFT_OUT
+    UP_IN_LEFT_OUT
+    LEFT_OUT
+    DOWN_IN_LEFT_OUT
+    DOWN_OUT_LEFT_OUT
 
-    UP2_LEFT1
-    UP1_LEFT1
-    LEFT1
-    DOWN1_LEFT1
-    DOWN2_LEFT1
+    UP_OUT_LEFT_IN
+    UP_IN_LEFT_IN
+    LEFT_IN
+    DOWN_IN_LEFT_IN
+    DOWN_OUT_LEFT_IN
 
-    UP2
-    UP1
+    UP_OUT
+    UP_IN
     CENTER
-    DOWN1
-    DOWN2
+    DOWN_IN
+    DOWN_OUT
 
-    UP2_RIGHT1
-    UP1_RIGHT1
-    RIGHT1
-    DOWN1_RIGHT1
-    DOWN2_RIGHT1
+    UP_OUT_RIGHT_IN
+    UP_IN_RIGHT_IN
+    RIGHT_IN
+    DOWN_IN_RIGHT_IN
+    DOWN_OUT_RIGHT_IN
 
-    UP2_RIGHT2
-    UP1_RIGHT2
-    RIGHT2
-    DOWN1_RIGHT2
-    DOWN2_RIGHT2
+    UP_OUT_RIGHT_OUT
+    UP_IN_RIGHT_OUT
+    RIGHT_OUT
+    DOWN_IN_RIGHT_OUT
+    DOWN_OUT_RIGHT_OUT
 end
 
 function get_alignment_offset(total_height, total_width, content_height, content_width, alignment, padding)
     I = typeof(total_height)
 
-    if alignment == UP2_LEFT2
+    if alignment == UP_OUT_LEFT_OUT
         return (convert(I, -content_height - padding), convert(I, -content_width - padding))
-    elseif alignment == UP1_LEFT2
+    elseif alignment == UP_IN_LEFT_OUT
         return (zero(I), convert(I, -content_width - padding))
-    elseif alignment == LEFT2
+    elseif alignment == LEFT_OUT
         return (convert(I, (total_height - content_height) ÷ 2), convert(I, -content_width - padding))
-    elseif alignment == DOWN1_LEFT2
+    elseif alignment == DOWN_IN_LEFT_OUT
         return (convert(I, total_height - content_height), convert(I, -content_width - padding))
-    elseif alignment == DOWN2_LEFT2
+    elseif alignment == DOWN_OUT_LEFT_OUT
         return (convert(I, total_height + padding), convert(I, -content_width - padding))
 
-    elseif alignment == UP2_LEFT1
+    elseif alignment == UP_OUT_LEFT_IN
         return (convert(I, -content_height - padding), zero(I))
-    elseif alignment == UP1_LEFT1
+    elseif alignment == UP_IN_LEFT_IN
         return (convert(I, padding), convert(I, padding + 1))
-    elseif alignment == LEFT1
+    elseif alignment == LEFT_IN
         return (convert(I, (total_height - content_height) ÷ 2), convert(I, padding + 1))
-    elseif alignment == DOWN1_LEFT1
+    elseif alignment == DOWN_IN_LEFT_IN
         return (convert(I, total_height - content_height - padding - 1), convert(I, padding + 1))
-    elseif alignment == DOWN2_LEFT1
+    elseif alignment == DOWN_OUT_LEFT_IN
         return (convert(I, total_height + padding), zero(I))
 
-    elseif alignment == UP2
+    elseif alignment == UP_OUT
         return (convert(I, -content_height - padding), convert(I, (total_width - content_width) ÷ 2))
-    elseif alignment == UP1
+    elseif alignment == UP_IN
         return (convert(I, padding + 1), convert(I, (total_width - content_width) ÷ 2))
     elseif alignment == CENTER
         return (convert(I, (total_height - content_height) ÷ 2), convert(I, (total_width - content_width) ÷ 2))
-    elseif alignment == DOWN1
+    elseif alignment == DOWN_IN
         return (convert(I, total_height - content_height - padding - 1), convert(I, (total_width - content_width) ÷ 2))
-    elseif alignment == DOWN2
+    elseif alignment == DOWN_OUT
         return (convert(I, total_height + padding), convert(I, (total_width - content_width) ÷ 2))
 
-    elseif alignment == UP2_RIGHT1
+    elseif alignment == UP_OUT_RIGHT_IN
         return (convert(I, -content_height - padding), convert(I, total_width - content_width))
-    elseif alignment == UP1_RIGHT1
+    elseif alignment == UP_IN_RIGHT_IN
         return (convert(I, padding + 1), convert(I, total_width - content_width - padding - 1))
-    elseif alignment == RIGHT1
+    elseif alignment == RIGHT_IN
         return (convert(I, (total_height - content_height) ÷ 2), convert(I, total_width - content_width - padding - 1))
-    elseif alignment == DOWN1_RIGHT1
+    elseif alignment == DOWN_IN_RIGHT_IN
         return (convert(I, total_height - content_height - padding - 1), convert(I, total_width - content_width - padding - 1))
-    elseif alignment == DOWN2_RIGHT1
+    elseif alignment == DOWN_OUT_RIGHT_IN
         return (convert(I, total_height + padding), convert(I, total_width - content_width))
 
-    elseif alignment == UP2_RIGHT2
+    elseif alignment == UP_OUT_RIGHT_OUT
         return (convert(I, -content_height - padding), convert(I, total_width + padding))
-    elseif alignment == UP1_RIGHT2
+    elseif alignment == UP_IN_RIGHT_OUT
         return (zero(I), convert(I, total_width + padding))
-    elseif alignment == RIGHT2
+    elseif alignment == RIGHT_OUT
         return (convert(I, (total_height - content_height) ÷ 2), convert(I, total_width + padding))
-    elseif alignment == DOWN1_RIGHT2
+    elseif alignment == DOWN_IN_RIGHT_OUT
         return (convert(I, total_height - content_height), convert(I, total_width + padding))
     else
         return (convert(I, total_height + padding), convert(I, total_width + padding))

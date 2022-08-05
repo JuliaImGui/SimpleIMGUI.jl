@@ -18,15 +18,15 @@ mutable struct UserInputState{I1, I2} <: AbstractUserInputState
     characters::Vector{Char}
 end
 
-went_down(ended_down, num_transitions) = (num_transitions >= 2) || ((num_transitions == 1) && ended_down)
-went_up(ended_down, num_transitions) = (num_transitions >= 2) || ((num_transitions == 1) && !ended_down)
+went_down(ended_down, num_transitions) = (num_transitions >= 2) || (isone(num_transitions) && ended_down)
+went_up(ended_down, num_transitions) = (num_transitions >= 2) || (isone(num_transitions) && !ended_down)
 
 went_down(input_button) = went_down(input_button.ended_down, input_button.num_transitions)
 went_up(input_button) = went_up(input_button.ended_down, input_button.num_transitions)
 
-press(input_button) = InputButton(true, input_button.num_transitions + one(input_button.num_transitions))
-release(input_button) = InputButton(false, input_button.num_transitions + one(input_button.num_transitions))
-reset(input_button) = InputButton(input_button.ended_down, zero(input_button.num_transitions))
+press(input_button) = typeof(input_button)(true, input_button.num_transitions + one(input_button.num_transitions))
+release(input_button) = typeof(input_button)(false, input_button.num_transitions + one(input_button.num_transitions))
+reset(input_button) = typeof(input_button)(input_button.ended_down, zero(input_button.num_transitions))
 
 function reset!(user_input_state)
     user_input_state.key_escape = reset(user_input_state.key_escape)

@@ -93,7 +93,7 @@ do_widget!!(widget_type::Button, args...; kwargs...) = do_widget(widget_type, ar
 ##### Slider
 #####
 
-function get_widget_value(::Slider, hot_widget, active_widget, this_widget, potential_next_widget_value, widget_value)
+function get_widget_value(::Slider, hot_widget, active_widget, this_widget, widget_value, potential_next_widget_value)
     if (hot_widget == this_widget) && (active_widget == this_widget)
         return potential_next_widget_value
     else
@@ -110,7 +110,7 @@ function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, 
 
     active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget && mouse_went_down)
 
-    widget_value = get_widget_value(widget_type, hot_widget, active_widget, this_widget, clamp(j_mouse - j_min + one(j_min), zero(j_min), j_max - j_min + one(j_min)), widget_value)
+    widget_value = get_widget_value(widget_type, hot_widget, active_widget, this_widget, widget_value, clamp(j_mouse - j_min + one(j_min), zero(j_min), j_max - j_min + one(j_min)))
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_went_up)
 
@@ -184,34 +184,6 @@ function do_widget(widget_type::CheckBox, hot_widget, active_widget, null_widget
 end
 
 do_widget!!(widget_type::CheckBox, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
-
-function do_widget!(
-        widget_type::CheckBox,
-        user_interaction_state::AbstractUserInteractionState,
-        this_widget,
-        widget_value,
-        cursor,
-        input_button,
-        layout,
-        alignment,
-        padding,
-        widget_height,
-        widget_width,
-        image,
-        text,
-        font,
-        colors,
-    )
-
-    widget_bounding_box = get_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
-    layout.reference_bounding_box = widget_bounding_box
-
-    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
-
-    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, widget_value, text, font, colors)
-
-    return widget_value
-end
 
 #####
 ##### RadioButton
