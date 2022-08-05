@@ -60,7 +60,7 @@ function draw_text_line_with_slider_in_a_box!(image, bounding_box, slider_value,
     return nothing
 end
 
-function SD.draw!(image::AbstractMatrix, bounding_box::SD.Rectangle, widget_type::AbstractWidgetType, args...; kwargs...)
+function draw_widget_cropped!(image::AbstractMatrix, bounding_box::SD.Rectangle, widget_type::AbstractWidgetType, args...; kwargs...)
     if SD.is_outbounds(image, bounding_box)
         return nothing
     end
