@@ -16,17 +16,7 @@ function get_color(user_interaction_state, this_widget, color::ContextualColor)
     end
 end
 
-function get_num_printable_characters(text)
-    num_printable = 0
-
-    for character in text
-        if isprint(character)
-            num_printable += 1
-        end
-    end
-
-    return num_printable
-end
+get_num_printable_characters(text) = sum(isprint, text)
 
 function get_intersection_extrema(image, shape)
     i_min_shape, i_max_shape = SD.get_i_extrema(shape)
