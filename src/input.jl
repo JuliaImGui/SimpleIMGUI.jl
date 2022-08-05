@@ -18,8 +18,8 @@ mutable struct UserInputState{I1, I2} <: AbstractUserInputState
     characters::Vector{Char}
 end
 
-went_down(ended_down, num_transitions) = (num_transitions >= 2) || ((num_transitions == 1) && ended_down)
-went_up(ended_down, num_transitions) = (num_transitions >= 2) || ((num_transitions == 1) && !ended_down)
+went_down(ended_down, num_transitions) = (num_transitions >= 2) || (isone(num_transitions) && ended_down)
+went_up(ended_down, num_transitions) = (num_transitions >= 2) || (isone(num_transitions) && !ended_down)
 
 went_down(input_button) = went_down(input_button.ended_down, input_button.num_transitions)
 went_up(input_button) = went_up(input_button.ended_down, input_button.num_transitions)
