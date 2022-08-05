@@ -1,7 +1,7 @@
 abstract type AbstractLayout end
 
-mutable struct BoxLayout <: AbstractLayout
-    reference_bounding_box::SD.Rectangle{Int}
+mutable struct BoxLayout{I} <: AbstractLayout
+    reference_bounding_box::SD.Rectangle{I}
 end
 
 @enum Alignment begin
