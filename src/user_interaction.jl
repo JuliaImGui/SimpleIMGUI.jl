@@ -6,6 +6,8 @@ struct WidgetID{S, I} <: AbstractWidgetID
     instance::I
 end
 
+const NULL_WIDGET_ID = WidgetID("", 0, 0)
+
 abstract type AbstractUserInteractionState end
 
 mutable struct UserInteractionState{S, I} <: AbstractUserInteractionState
@@ -13,5 +15,3 @@ mutable struct UserInteractionState{S, I} <: AbstractUserInteractionState
     active_widget::WidgetID{S, I}
     null_widget::WidgetID{S, I}
 end
-
-const NULL_WIDGET_ID = WidgetID("", 0, 0)
