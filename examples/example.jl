@@ -467,6 +467,7 @@ function start()
         )
         reference_bounding_box = layout.reference_bounding_box
 
+        text = "Show debug text"
         show_debug_text = SI.do_widget!(
             SI.CHECK_BOX,
             user_interaction_state,
@@ -478,11 +479,11 @@ function start()
             SI.RIGHT_OUT,
             padding,
             SD.get_height(font),
-            360,
+            SD.get_width(font) * (SI.get_num_printable_characters(text) + 2),
             image,
             SI.LEFT_IN,
             -1,
-            "Show debug text",
+            text,
             font,
             0x00cccccc,
             0x00cccccc,
