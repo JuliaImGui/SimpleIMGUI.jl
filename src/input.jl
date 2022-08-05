@@ -28,7 +28,7 @@ press(input_button) = InputButton(true, input_button.num_transitions + one(input
 release(input_button) = InputButton(false, input_button.num_transitions + one(input_button.num_transitions))
 reset(input_button) = InputButton(input_button.ended_down, zero(input_button.num_transitions))
 
-function reset!(user_input_state::UserInputState)
+function reset!(user_input_state)
     user_input_state.key_escape = reset(user_input_state.key_escape)
     user_input_state.key_up = reset(user_input_state.key_up)
     user_input_state.key_down = reset(user_input_state.key_down)
