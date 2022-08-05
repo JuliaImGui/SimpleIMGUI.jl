@@ -28,17 +28,11 @@ function start()
     GLFW.MakeContextCurrent(window)
 
     user_input_state = SI.UserInputState(
-                                      SD.Point(1, 1),
-                                      SI.InputButton(false, 0),
-                                      SI.InputButton(false, 0),
-                                      SI.InputButton(false, 0),
-                                      SI.InputButton(false, 0),
-                                      SI.InputButton(false, 0),
-                                      SI.InputButton(false, 0),
-                                      SI.InputButton(false, 0),
-                                      SI.InputButton(false, 0),
-                                      Char[],
-                                     )
+        SD.Point(1, 1),
+        fill(SI.InputButton(false, 0), 512),
+        fill(SI.InputButton(false, 0), 8),
+        Char[],
+    )
 
     function cursor_position_callback(window, x, y)::Cvoid
         user_input_state.cursor = SD.Point(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
@@ -47,31 +41,21 @@ function start()
     end
 
     function key_callback(window, key, scancode, action, mods)::Cvoid
-        if key == GLFW.KEY_ESCAPE
-            user_input_state.key_escape = update_button(user_input_state.key_escape, action)
-        elseif key == GLFW.KEY_UP
-            user_input_state.key_up = update_button(user_input_state.key_up, action)
-        elseif key == GLFW.KEY_DOWN
-            user_input_state.key_down = update_button(user_input_state.key_down, action)
-        elseif key == GLFW.KEY_LEFT
-            user_input_state.key_left = update_button(user_input_state.key_left, action)
-        elseif key == GLFW.KEY_RIGHT
-            user_input_state.key_right = update_button(user_input_state.key_right, action)
-        elseif key == GLFW.KEY_BACKSPACE && (action == GLFW.PRESS || action == GLFW.REPEAT)
-            push!(user_input_state.characters, '\b')
+        if key == GLFW.KEY_UNKNOWN
+            @error "Unknown key pressed"
+        else
+            if key == GLFW.KEY_BACKSPACE && (action == GLFW.PRESS || action == GLFW.REPEAT)
+                push!(user_input_state.characters, '\b')
+            end
+
+            user_input_state.keyboard_buttons[Int(key) + 1] = update_button(user_input_state.keyboard_buttons[Int(key) + 1], action)
         end
 
         return nothing
     end
 
     function mouse_button_callback(window, button, action, mods)::Cvoid
-        if button == GLFW.MOUSE_BUTTON_LEFT
-            user_input_state.mouse_left = update_button(user_input_state.mouse_left, action)
-        elseif button == GLFW.MOUSE_BUTTON_RIGHT
-            user_input_state.mouse_right = update_button(user_input_state.mouse_right, action)
-        elseif button == GLFW.MOUSE_BUTTON_MIDDLE
-            user_input_state.mouse_middle = update_button(user_input_state.mouse_middle, action)
-        end
+        user_input_state.mouse_buttons[Int(button) + 1] = update_button(user_input_state.mouse_buttons[Int(button) + 1], action)
 
         return nothing
     end
@@ -125,7 +109,7 @@ function start()
     push!(compute_time_buffer, zero(UInt))
 
     while !GLFW.WindowShouldClose(window)
-        if SI.went_down(user_input_state.key_escape)
+        if SI.went_down(user_input_state.keyboard_buttons[Int(GLFW.KEY_ESCAPE) + 1])
             GLFW.SetWindowShouldClose(window, true)
             break
         end
@@ -143,7 +127,7 @@ function start()
             user_interaction_state,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             layout,
             SI.UP_IN_LEFT_IN,
             padding,
@@ -164,7 +148,7 @@ function start()
             user_interaction_state,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             layout,
             SI.DOWN_OUT_LEFT_IN,
             padding,
@@ -186,7 +170,7 @@ function start()
             user_interaction_state,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             layout,
             SI.RIGHT_OUT,
             padding,
@@ -211,7 +195,7 @@ function start()
             user_interaction_state,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             layout,
             SI.DOWN_OUT_LEFT_IN,
             padding,
@@ -234,7 +218,7 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             slider_value,
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             layout,
             SI.RIGHT_OUT,
             padding,
@@ -257,7 +241,7 @@ function start()
             user_interaction_state,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             layout,
             SI.DOWN_OUT_LEFT_IN,
             padding,
@@ -280,7 +264,7 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             text_box_value,
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             user_input_state.characters,
             layout,
             SI.RIGHT_OUT,
@@ -300,9 +284,9 @@ function start()
         push!(debug_text, "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
         push!(debug_text, "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms")
         push!(debug_text, "cursor: $(user_input_state.cursor)")
-        push!(debug_text, "mouse_left: $(user_input_state.mouse_left)")
-        push!(debug_text, "mouse_right: $(user_input_state.mouse_right)")
-        push!(debug_text, "mouse_middle: $(user_input_state.mouse_middle)")
+        push!(debug_text, "mouse_left: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1])")
+        push!(debug_text, "mouse_right: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_RIGHT) + 1])")
+        push!(debug_text, "mouse_middle: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_MIDDLE) + 1])")
         push!(debug_text, "hot_widget: $(user_interaction_state.hot_widget)")
         push!(debug_text, "active_widget: $(user_interaction_state.active_widget)")
 
@@ -312,7 +296,7 @@ function start()
             user_interaction_state,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             layout,
             SI.DOWN_OUT_LEFT_IN,
             padding,
@@ -341,7 +325,7 @@ function start()
                 SI.WidgetID(@__FILE__, @__LINE__, j),
                 radio_button_value == j,
                 user_input_state.cursor,
-                user_input_state.mouse_left,
+                user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
                 layout,
                 SI.RIGHT_OUT,
                 padding,
@@ -368,7 +352,7 @@ function start()
             user_interaction_state,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             layout,
             SI.DOWN_OUT_LEFT_IN,
             padding,
@@ -396,7 +380,7 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             drop_down_value,
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             layout,
             SI.RIGHT_OUT,
             padding,
@@ -422,7 +406,7 @@ function start()
                     SI.WidgetID(@__FILE__, @__LINE__, j),
                     drop_down_selected_item == j,
                     user_input_state.cursor,
-                    user_input_state.mouse_left,
+                    user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
                     layout,
                     SI.DOWN_OUT_LEFT_IN,
                     padding,
@@ -450,7 +434,7 @@ function start()
             user_interaction_state,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             layout,
             SI.DOWN_OUT_LEFT_IN,
             padding,
@@ -474,7 +458,7 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             show_debug_text,
             user_input_state.cursor,
-            user_input_state.mouse_left,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
             layout,
             SI.RIGHT_OUT,
             padding,
@@ -499,7 +483,7 @@ function start()
                     user_interaction_state,
                     SI.WidgetID(@__FILE__, @__LINE__, j),
                     user_input_state.cursor,
-                    user_input_state.mouse_left,
+                    user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
                     layout,
                     SI.DOWN_OUT_LEFT_IN,
                     padding,

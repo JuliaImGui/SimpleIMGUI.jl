@@ -7,14 +7,8 @@ abstract type AbstractUserInputState end
 
 mutable struct UserInputState{I1, I2} <: AbstractUserInputState
     cursor::SD.Point{I1}
-    key_escape::InputButton{I2}
-    key_up::InputButton{I2}
-    key_down::InputButton{I2}
-    key_left::InputButton{I2}
-    key_right::InputButton{I2}
-    mouse_left::InputButton{I2}
-    mouse_right::InputButton{I2}
-    mouse_middle::InputButton{I2}
+    keyboard_buttons::Vector{InputButton{I2}}
+    mouse_buttons::Vector{InputButton{I2}}
     characters::Vector{Char}
 end
 
@@ -29,14 +23,14 @@ release(input_button) = typeof(input_button)(false, input_button.num_transitions
 reset(input_button) = typeof(input_button)(input_button.ended_down, zero(input_button.num_transitions))
 
 function reset!(user_input_state)
-    user_input_state.key_escape = reset(user_input_state.key_escape)
-    user_input_state.key_up = reset(user_input_state.key_up)
-    user_input_state.key_down = reset(user_input_state.key_down)
-    user_input_state.key_left = reset(user_input_state.key_left)
-    user_input_state.key_right = reset(user_input_state.key_right)
-    user_input_state.mouse_left = reset(user_input_state.mouse_left)
-    user_input_state.mouse_right = reset(user_input_state.mouse_right)
-    user_input_state.mouse_middle = reset(user_input_state.mouse_middle)
+    for (i, input_button) in enumerate(user_input_state.keyboard_buttons)
+        user_input_state.keyboard_buttons[i] = reset(input_button)
+    end
+
+    for (i, input_button) in enumerate(user_input_state.mouse_buttons)
+        user_input_state.mouse_buttons[i] = reset(input_button)
+    end
+
     empty!(user_input_state.characters)
 
     return nothing
