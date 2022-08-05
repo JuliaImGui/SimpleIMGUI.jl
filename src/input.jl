@@ -1,20 +1,20 @@
-struct InputButton
+struct InputButton{I}
     ended_down::Bool
-    num_transitions::Int
+    num_transitions::I
 end
 
 abstract type AbstractUserInputState end
 
-mutable struct UserInputState{I} <: AbstractUserInputState
-    cursor::SD.Point{I}
-    key_escape::InputButton
-    key_up::InputButton
-    key_down::InputButton
-    key_left::InputButton
-    key_right::InputButton
-    mouse_left::InputButton
-    mouse_right::InputButton
-    mouse_middle::InputButton
+mutable struct UserInputState{I1, I2} <: AbstractUserInputState
+    cursor::SD.Point{I1}
+    key_escape::InputButton{I2}
+    key_up::InputButton{I2}
+    key_down::InputButton{I2}
+    key_left::InputButton{I2}
+    key_right::InputButton{I2}
+    mouse_left::InputButton{I2}
+    mouse_right::InputButton{I2}
+    mouse_middle::InputButton{I2}
     characters::Vector{Char}
 end
 
