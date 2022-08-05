@@ -120,7 +120,7 @@ end
 
 function draw_widget!(image, bounding_box, widget_type::TextBox, user_interaction_state, this_widget, text, alignment, padding, font, background_color, border_color, text_color)
     if get_num_printable_characters(text) * SD.get_width(font) > bounding_box.width
-        alignment = RIGHT1
+        alignment = RIGHT_IN
     end
 
     draw_text_line_in_a_box!(
