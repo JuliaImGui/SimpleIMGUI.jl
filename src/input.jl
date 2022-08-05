@@ -5,8 +5,8 @@ end
 
 abstract type AbstractUserInputState end
 
-mutable struct UserInputState <: AbstractUserInputState
-    cursor::SD.Point
+mutable struct UserInputState{I} <: AbstractUserInputState
+    cursor::SD.Point{I}
     key_escape::InputButton
     key_up::InputButton
     key_down::InputButton
