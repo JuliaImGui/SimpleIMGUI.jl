@@ -73,12 +73,12 @@ function draw_widget_cropped!(image::AbstractMatrix, bounding_box::SD.Rectangle,
 
     view_box_bounding_box = SD.Rectangle(SD.Point(bounding_box.position.i - i_min + one(i_min), bounding_box.position.j - j_min + one(j_min)), bounding_box.height, bounding_box.width)
 
-    draw_widget!(view_box_image, view_box_bounding_box, widget_type, args...; kwargs...)
+    draw_widget_unclipped!(view_box_image, view_box_bounding_box, widget_type, args...; kwargs...)
 
     return nothing
 end
 
-function draw_widget!(image, bounding_box, widget_type::Button, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
+function draw_widget_unclipped!(image, bounding_box, widget_type::Button, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
     draw_text_line_in_a_box!(
         image,
         bounding_box,
@@ -92,7 +92,7 @@ function draw_widget!(image, bounding_box, widget_type::Button, user_interaction
     )
 end
 
-function draw_widget!(image, bounding_box, widget_type::Slider, user_interaction_state, this_widget, slider_value, alignment, padding, text, font, background_color, border_color, text_color, bar_color)
+function draw_widget_unclipped!(image, bounding_box, widget_type::Slider, user_interaction_state, this_widget, slider_value, alignment, padding, text, font, background_color, border_color, text_color, bar_color)
     draw_text_line_with_slider_in_a_box!(
         image,
         bounding_box,
@@ -108,7 +108,7 @@ function draw_widget!(image, bounding_box, widget_type::Slider, user_interaction
     )
 end
 
-function draw_widget!(image, bounding_box, widget_type::TextBox, user_interaction_state, this_widget, text, alignment, padding, font, background_color, border_color, text_color)
+function draw_widget_unclipped!(image, bounding_box, widget_type::TextBox, user_interaction_state, this_widget, text, alignment, padding, font, background_color, border_color, text_color)
     if get_num_printable_characters(text) * SD.get_width(font) > bounding_box.width
         alignment = RIGHT_IN
     end
@@ -134,9 +134,9 @@ function draw_widget!(image, bounding_box, widget_type::TextBox, user_interactio
     return nothing
 end
 
-draw_widget!(image, bounding_box, widget_type::Text, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color) = draw_widget!(image, bounding_box, BUTTON, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
+draw_widget_unclipped!(image, bounding_box, widget_type::Text, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color) = draw_widget_unclipped!(image, bounding_box, BUTTON, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
 
-function draw_widget!(image, bounding_box, widget_type::CheckBox, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
+function draw_widget_unclipped!(image, bounding_box, widget_type::CheckBox, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
     font_width = SD.get_width(font)
     box_width = oftype(font_width, 2) * font_width
     x = box_width ÷ oftype(box_width, 8)
@@ -160,7 +160,7 @@ function draw_widget!(image, bounding_box, widget_type::CheckBox, user_interacti
     return nothing
 end
 
-function draw_widget!(image, bounding_box, widget_type::RadioButton, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
+function draw_widget_unclipped!(image, bounding_box, widget_type::RadioButton, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
 
     font_width = SD.get_width(font)
     indicator_width = oftype(font_width, 2) * font_width
@@ -185,7 +185,7 @@ function draw_widget!(image, bounding_box, widget_type::RadioButton, user_intera
     return nothing
 end
 
-function draw_widget!(image, bounding_box, widget_type::DropDown, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
+function draw_widget_unclipped!(image, bounding_box, widget_type::DropDown, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
     font_width = SD.get_width(font)
     indicator_width = oftype(font_width, 2) * font_width
     x = indicator_width ÷ oftype(indicator_width, 8)
