@@ -306,7 +306,7 @@ function do_widget!(
 
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
 
-    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, text, font, content_alignment, content_padding, background_color, border_color, text_color)
+    draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, text, font, content_alignment, content_padding, background_color, border_color, text_color)
 
     return widget_value
 end
@@ -339,7 +339,7 @@ function do_widget!(
 
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
 
-    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, text, font, background_color, border_color, text_color, indicator_color)
+    draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, text, font, background_color, border_color, text_color, indicator_color)
 
     return widget_value
 end
@@ -371,7 +371,7 @@ function do_widget!(
 
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, characters, widget_bounding_box)
 
-    SD.draw!(image, widget_bounding_box, widget_type, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, font, background_color, border_color, text_color)
+    draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, font, background_color, border_color, text_color)
 
     return widget_value
 end
