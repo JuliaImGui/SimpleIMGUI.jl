@@ -12,4 +12,4 @@ julia --project=examples -e 'import Pkg; Pkg.develop(path="."); Pkg.instantiate(
 
 This will open a window and you can interact with the widgets present in it. Here is an example (note that the screenshot might not be up to date with `examples/example.jl`):
 
-<img src="https://user-images.githubusercontent.com/32610387/181818018-d6a466f6-e52c-4a37-8545-39b64427a6cb.png">
+<img src="https://user-images.githubusercontent.com/32610387/183238950-21bd6da7-9da3-42e5-a00b-a8db62909948.png">
