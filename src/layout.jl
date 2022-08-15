@@ -99,7 +99,7 @@ function get_alignment_offset(total_height::I, total_width::I, alignment, paddin
     end
 end
 
-function get_bounding_box(shapes...)
+function get_enclosing_bounding_box(shapes...)
     shape1 = shapes[1]
     i_min = SD.get_i_min(shape1)
     j_min = SD.get_j_min(shape1)
@@ -116,7 +116,7 @@ function get_bounding_box(shapes...)
     return SD.Rectangle(SD.Point(i_min, j_min), i_max - i_min + one(i_min), j_max - j_min + one(j_min))
 end
 
-function get_bounding_box(bounding_box::SD.Rectangle, alignment::Alignment, padding, height, width)
+function get_alignment_bounding_box(bounding_box::SD.Rectangle, alignment::Alignment, padding, height, width)
     i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, alignment, padding, height, width)
     return SD.Rectangle(SD.move(bounding_box.position, i_offset, j_offset), height, width)
 end
