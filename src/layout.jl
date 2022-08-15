@@ -36,12 +36,12 @@ end
     DOWN_OUT_RIGHT_OUT
 end
 
-function get_alignment_offset(total_height, total_width, content_height, content_width, alignment, padding)
+function get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width)
     total_height_promoted, total_width_promoted, content_height_promoted, content_width_promoted, padding_promoted = promote(total_height, total_width, content_height, content_width, padding)
-    return get_alignment_offset(total_width_promoted, total_width_promoted, content_height_promoted, content_width_promoted, alignment, padding_promoted)
+    return get_alignment_offset(total_width_promoted, total_width_promoted, alignment, padding_promoted, content_height_promoted, content_width_promoted)
 end
 
-function get_alignment_offset(total_height::I, total_width::I, content_height::I, content_width::I, alignment, padding::I) where {I}
+function get_alignment_offset(total_height::I, total_width::I, alignment, padding::I, content_height::I, content_width::I) where {I}
     if alignment == UP_OUT_LEFT_OUT
         return (-content_height - padding, -content_width - padding)
     elseif alignment == UP_IN_LEFT_OUT
@@ -117,6 +117,6 @@ function get_bounding_box(shapes...)
 end
 
 function get_bounding_box(bounding_box::SD.Rectangle, alignment::Alignment, padding, height, width)
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, height, width, alignment, padding)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, alignment, padding, height, width)
     return SD.Rectangle(SD.move(bounding_box.position, i_offset, j_offset), height, width)
 end
