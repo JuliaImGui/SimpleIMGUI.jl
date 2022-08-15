@@ -37,62 +37,65 @@ end
 end
 
 function get_alignment_offset(total_height, total_width, content_height, content_width, alignment, padding)
-    I = typeof(total_height)
+    total_height_promoted, total_width_promoted, content_height_promoted, content_width_promoted, padding_promoted = promote(total_height, total_width, content_height, content_width, padding)
+    return get_alignment_offset(total_width_promoted, total_width_promoted, content_height_promoted, content_width_promoted, alignment, padding_promoted)
+end
 
+function get_alignment_offset(total_height::I, total_width::I, content_height::I, content_width::I, alignment, padding::I) where {I}
     if alignment == UP_OUT_LEFT_OUT
-        return (convert(I, -content_height - padding), convert(I, -content_width - padding))
+        return (-content_height - padding, -content_width - padding)
     elseif alignment == UP_IN_LEFT_OUT
-        return (zero(I), convert(I, -content_width - padding))
+        return (zero(I), -content_width - padding)
     elseif alignment == LEFT_OUT
-        return (convert(I, (total_height - content_height) ÷ 2), convert(I, -content_width - padding))
+        return ((total_height - content_height) ÷ convert(I, 2), -content_width - padding)
     elseif alignment == DOWN_IN_LEFT_OUT
-        return (convert(I, total_height - content_height), convert(I, -content_width - padding))
+        return (total_height - content_height, -content_width - padding)
     elseif alignment == DOWN_OUT_LEFT_OUT
-        return (convert(I, total_height + padding), convert(I, -content_width - padding))
+        return (total_height + padding, -content_width - padding)
 
     elseif alignment == UP_OUT_LEFT_IN
-        return (convert(I, -content_height - padding), zero(I))
+        return (-content_height - padding, zero(I))
     elseif alignment == UP_IN_LEFT_IN
-        return (convert(I, padding), convert(I, padding + 1))
+        return (padding, padding + one(I))
     elseif alignment == LEFT_IN
-        return (convert(I, (total_height - content_height) ÷ 2), convert(I, padding + 1))
+        return ((total_height - content_height) ÷ convert(I, 2), padding + one(I))
     elseif alignment == DOWN_IN_LEFT_IN
-        return (convert(I, total_height - content_height - padding - 1), convert(I, padding + 1))
+        return (total_height - content_height - padding - one(I), padding + one(I))
     elseif alignment == DOWN_OUT_LEFT_IN
-        return (convert(I, total_height + padding), zero(I))
+        return (total_height + padding, zero(I))
 
     elseif alignment == UP_OUT
-        return (convert(I, -content_height - padding), convert(I, (total_width - content_width) ÷ 2))
+        return (-content_height - padding, (total_width - content_width) ÷ convert(I, 2))
     elseif alignment == UP_IN
-        return (convert(I, padding + 1), convert(I, (total_width - content_width) ÷ 2))
+        return (padding + one(I), (total_width - content_width) ÷ convert(I, 2))
     elseif alignment == CENTER
-        return (convert(I, (total_height - content_height) ÷ 2), convert(I, (total_width - content_width) ÷ 2))
+        return ((total_height - content_height) ÷ convert(I, 2), (total_width - content_width) ÷ convert(I, 2))
     elseif alignment == DOWN_IN
-        return (convert(I, total_height - content_height - padding - 1), convert(I, (total_width - content_width) ÷ 2))
+        return (total_height - content_height - padding - one(I), (total_width - content_width) ÷ convert(I, 2))
     elseif alignment == DOWN_OUT
-        return (convert(I, total_height + padding), convert(I, (total_width - content_width) ÷ 2))
+        return (total_height + padding, (total_width - content_width) ÷ convert(I, 2))
 
     elseif alignment == UP_OUT_RIGHT_IN
-        return (convert(I, -content_height - padding), convert(I, total_width - content_width))
+        return (-content_height - padding, total_width - content_width)
     elseif alignment == UP_IN_RIGHT_IN
-        return (convert(I, padding + 1), convert(I, total_width - content_width - padding - 1))
+        return (padding + one(I), total_width - content_width - padding - one(I))
     elseif alignment == RIGHT_IN
-        return (convert(I, (total_height - content_height) ÷ 2), convert(I, total_width - content_width - padding - 1))
+        return ((total_height - content_height) ÷ convert(I, 2), total_width - content_width - padding - one(I))
     elseif alignment == DOWN_IN_RIGHT_IN
-        return (convert(I, total_height - content_height - padding - 1), convert(I, total_width - content_width - padding - 1))
+        return (total_height - content_height - padding - one(I), total_width - content_width - padding - one(I))
     elseif alignment == DOWN_OUT_RIGHT_IN
-        return (convert(I, total_height + padding), convert(I, total_width - content_width))
+        return (total_height + padding, total_width - content_width)
 
     elseif alignment == UP_OUT_RIGHT_OUT
-        return (convert(I, -content_height - padding), convert(I, total_width + padding))
+        return (-content_height - padding, total_width + padding)
     elseif alignment == UP_IN_RIGHT_OUT
-        return (zero(I), convert(I, total_width + padding))
+        return (zero(I), total_width + padding)
     elseif alignment == RIGHT_OUT
-        return (convert(I, (total_height - content_height) ÷ 2), convert(I, total_width + padding))
+        return ((total_height - content_height) ÷ convert(I, 2), total_width + padding)
     elseif alignment == DOWN_IN_RIGHT_OUT
-        return (convert(I, total_height - content_height), convert(I, total_width + padding))
+        return (total_height - content_height, total_width + padding)
     else
-        return (convert(I, total_height + padding), convert(I, total_width + padding))
+        return (total_height + padding, total_width + padding)
     end
 end
 
