@@ -343,7 +343,7 @@ function start()
             )
                 radio_button_value = j
             end
-            reference_bounding_box = SI.get_bounding_box(reference_bounding_box, layout.reference_bounding_box)
+            reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
         end
 
         layout.reference_bounding_box = reference_bounding_box
@@ -396,7 +396,7 @@ function start()
             0x00000000,
             0x00000000,
         )
-        reference_bounding_box = SI.get_bounding_box(reference_bounding_box, layout.reference_bounding_box)
+        reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
 
         if drop_down_value
             for (j, item) in enumerate(drop_down_item_list)
@@ -424,7 +424,7 @@ function start()
                 )
                     drop_down_selected_item = j
                 end
-                reference_bounding_box = SI.get_bounding_box(reference_bounding_box, layout.reference_bounding_box)
+                reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
             end
         end
 
