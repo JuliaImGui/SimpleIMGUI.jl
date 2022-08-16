@@ -5,11 +5,11 @@ end
 
 abstract type AbstractUserInputState end
 
-mutable struct UserInputState{I1, I2} <: AbstractUserInputState
-    cursor::SD.Point{I1}
-    keyboard_buttons::Vector{InputButton{I2}}
-    mouse_buttons::Vector{InputButton{I2}}
-    characters::Vector{Char}
+mutable struct UserInputState{I, T, C} <: AbstractUserInputState
+    cursor::SD.Point{I}
+    keyboard_buttons::Vector{T}
+    mouse_buttons::Vector{T}
+    characters::Vector{C}
 end
 
 went_down(ended_down, num_transitions) = (num_transitions >= 2) || (isone(num_transitions) && ended_down)
