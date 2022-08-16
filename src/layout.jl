@@ -56,7 +56,7 @@ function get_alignment_offset(total_height::I, total_width::I, alignment, paddin
     elseif alignment == UP_OUT_LEFT_IN
         return (-content_height - padding, zero(I))
     elseif alignment == UP_IN_LEFT_IN
-        return (padding, padding + one(I))
+        return (padding + one(I), padding + one(I))
     elseif alignment == LEFT_IN
         return ((total_height - content_height) ÷ convert(I, 2), padding + one(I))
     elseif alignment == DOWN_IN_LEFT_IN
