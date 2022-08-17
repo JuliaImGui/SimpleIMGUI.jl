@@ -25,6 +25,13 @@ const DROP_DOWN = DropDown()
 ##### utils
 #####
 
+"""
+    try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, condition)
+
+Return the next hot widget. It could either be `hot_widget` or `this_widget` depending upon the state of `this_widget` and the `condition`.
+
+See also [`try_set_active_widget`](@ref), [`try_reset_active_widget`](@ref), [`try_reset_hot_widget`](@ref).
+"""
 function try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, condition)
     if (hot_widget == null_widget) && (active_widget == null_widget) && condition
         return this_widget
@@ -33,6 +40,13 @@ function try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget,
     end
 end
 
+"""
+    try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, condition)
+
+Return the next active widget. It could either be `active_widget` or `this_widget` depending upon the state of `this_widget` and the `condition`.
+
+See also [`try_set_hot_widget`](@ref), [`try_reset_active_widget`](@ref), [`try_reset_hot_widget`](@ref).
+"""
 function try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, condition)
     if (hot_widget == this_widget) && (active_widget == null_widget) && condition
         return this_widget
@@ -41,6 +55,13 @@ function try_set_active_widget(hot_widget, active_widget, null_widget, this_widg
     end
 end
 
+"""
+    try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, condition)
+
+Return the next hot widget. It could either be `hot_widget` or `null_widget` depending upon the state of `this_widget` and the `condition`.
+
+See also [`try_set_hot_widget`](@ref), [`try_set_active_widget`](@ref), [`try_reset_active_widget`](@ref).
+"""
 function try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, condition)
     if (hot_widget == this_widget) && (active_widget == null_widget) && condition
         return null_widget
@@ -49,6 +70,13 @@ function try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widge
     end
 end
 
+"""
+    try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, condition)
+
+Return the next active widget. It could either be `active_widget` or `null_widget` depending upon the state of `this_widget` and the `condition`.
+
+See also [`try_set_hot_widget`](@ref), [`try_set_active_widget`](@ref), [`try_reset_hot_widget`](@ref).
+"""
 function try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, condition)
     if (hot_widget == this_widget) && (active_widget == this_widget) && condition
         return null_widget
