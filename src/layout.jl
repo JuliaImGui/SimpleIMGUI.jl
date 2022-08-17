@@ -208,7 +208,7 @@ julia> SimpleIMGUI.get_alignment_bounding_box(bounding_box, alignment, padding, 
 SimpleDraw.Rectangle{Int64}(SimpleDraw.Point{Int64}(9, 22), 3, 6)
 ```
 """
-function get_alignment_bounding_box(bounding_box::SD.Rectangle, alignment::Alignment, padding, height, width)
+function get_alignment_bounding_box(bounding_box, alignment, padding, height, width)
     i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, alignment, padding, height, width)
     return SD.Rectangle(SD.move(bounding_box.position, i_offset, j_offset), height, width)
 end
