@@ -141,59 +141,59 @@ Test.@testset "SimpleIMGUI.jl" begin
 32▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
 =#
 
-        alignment = SI.UP_OUT_LEFT_OUT
+        alignment = SI.UP2_LEFT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (-5, -8)
-        alignment = SI.UP_IN_LEFT_OUT
+        alignment = SI.UP1_LEFT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (0, -8)
-        alignment = SI.LEFT_OUT
+        alignment = SI.LEFT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (9, -8)
-        alignment = SI.DOWN_IN_LEFT_OUT
+        alignment = SI.DOWN1_LEFT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (18, -8)
-        alignment = SI.DOWN_OUT_LEFT_OUT
+        alignment = SI.DOWN2_LEFT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (23, -8)
 
-        alignment = SI.UP_OUT_LEFT_IN
+        alignment = SI.UP2_LEFT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (-5, 0)
-        alignment = SI.UP_IN_LEFT_IN
+        alignment = SI.UP1_LEFT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (3, 3)
-        alignment = SI.LEFT_IN
+        alignment = SI.LEFT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (9, 3)
-        alignment = SI.DOWN_IN_LEFT_IN
+        alignment = SI.DOWN1_LEFT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (15, 3)
-        alignment = SI.DOWN_OUT_LEFT_IN
+        alignment = SI.DOWN2_LEFT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (23, 0)
 
-        alignment = SI.UP_OUT
+        alignment = SI.UP2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (-5, 13)
-        alignment = SI.UP_IN
+        alignment = SI.UP1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (3, 13)
         alignment = SI.CENTER
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (9, 13)
-        alignment = SI.DOWN_IN
+        alignment = SI.DOWN1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (15, 13)
-        alignment = SI.DOWN_OUT
+        alignment = SI.DOWN2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (23, 13)
 
-        alignment = SI.UP_OUT_RIGHT_IN
+        alignment = SI.UP2_RIGHT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (-5, 26)
-        alignment = SI.UP_IN_RIGHT_IN
+        alignment = SI.UP1_RIGHT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (3, 23)
-        alignment = SI.RIGHT_IN
+        alignment = SI.RIGHT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (9, 23)
-        alignment = SI.DOWN_IN_RIGHT_IN
+        alignment = SI.DOWN1_RIGHT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (15, 23)
-        alignment = SI.DOWN_OUT_RIGHT_IN
+        alignment = SI.DOWN2_RIGHT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (23, 26)
 
-        alignment = SI.UP_OUT_RIGHT_OUT
+        alignment = SI.UP2_RIGHT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (-5, 34)
-        alignment = SI.UP_IN_RIGHT_OUT
+        alignment = SI.UP1_RIGHT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (0, 34)
-        alignment = SI.RIGHT_OUT
+        alignment = SI.RIGHT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (9, 34)
-        alignment = SI.DOWN_IN_RIGHT_OUT
+        alignment = SI.DOWN1_RIGHT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (18, 34)
-        alignment = SI.DOWN_OUT_RIGHT_OUT
+        alignment = SI.DOWN2_RIGHT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (23, 34)
 
 
@@ -281,59 +281,59 @@ Test.@testset "SimpleIMGUI.jl" begin
 32████████████▒▒░░████████████▒▒░░▒▒░░▒▒░░▒▒████████████░░▒▒░░▒▒░░▒▒░░▒▒████████████░░▒▒████████████░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
 =#
 
-        alignment = SI.UP_OUT_LEFT_OUT
+        alignment = SI.UP2_LEFT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (-5, -8)
-        alignment = SI.UP_IN_LEFT_OUT
+        alignment = SI.UP1_LEFT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (0, -8)
-        alignment = SI.LEFT_OUT
+        alignment = SI.LEFT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (9, -8)
-        alignment = SI.DOWN_IN_LEFT_OUT
+        alignment = SI.DOWN1_LEFT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (19, -8)
-        alignment = SI.DOWN_OUT_LEFT_OUT
+        alignment = SI.DOWN2_LEFT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (24, -8)
 
-        alignment = SI.UP_OUT_LEFT_IN
+        alignment = SI.UP2_LEFT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (-5, 0)
-        alignment = SI.UP_IN_LEFT_IN
+        alignment = SI.UP1_LEFT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (3, 3)
-        alignment = SI.LEFT_IN
+        alignment = SI.LEFT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (9, 3)
-        alignment = SI.DOWN_IN_LEFT_IN
+        alignment = SI.DOWN1_LEFT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (16, 3)
-        alignment = SI.DOWN_OUT_LEFT_IN
+        alignment = SI.DOWN2_LEFT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (24, 0)
 
-        alignment = SI.UP_OUT
+        alignment = SI.UP2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (-5, 13)
-        alignment = SI.UP_IN
+        alignment = SI.UP1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (3, 13)
         alignment = SI.CENTER
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (9, 13)
-        alignment = SI.DOWN_IN
+        alignment = SI.DOWN1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (16, 13)
-        alignment = SI.DOWN_OUT
+        alignment = SI.DOWN2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (24, 13)
 
-        alignment = SI.UP_OUT_RIGHT_IN
+        alignment = SI.UP2_RIGHT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (-5, 27)
-        alignment = SI.UP_IN_RIGHT_IN
+        alignment = SI.UP1_RIGHT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (3, 24)
-        alignment = SI.RIGHT_IN
+        alignment = SI.RIGHT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (9, 24)
-        alignment = SI.DOWN_IN_RIGHT_IN
+        alignment = SI.DOWN1_RIGHT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (16, 24)
-        alignment = SI.DOWN_OUT_RIGHT_IN
+        alignment = SI.DOWN2_RIGHT1
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (24, 27)
 
-        alignment = SI.UP_OUT_RIGHT_OUT
+        alignment = SI.UP2_RIGHT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (-5, 35)
-        alignment = SI.UP_IN_RIGHT_OUT
+        alignment = SI.UP1_RIGHT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (0, 35)
-        alignment = SI.RIGHT_OUT
+        alignment = SI.RIGHT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (9, 35)
-        alignment = SI.DOWN_IN_RIGHT_OUT
+        alignment = SI.DOWN1_RIGHT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (19, 35)
-        alignment = SI.DOWN_OUT_RIGHT_OUT
+        alignment = SI.DOWN2_RIGHT2
         Test.@test SI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width) == (24, 35)
     end
 
