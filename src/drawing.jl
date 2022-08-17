@@ -1,9 +1,48 @@
+"""
+    struct ContextualColor{C}
+        neutral_color::C
+        hot_color::C
+        active_color::C
+    end
+
+Store 3 different colors for some part of a widget. Actual color for drawing depends upon whether the widget in question is hot, active or neutral. If widget is active, then `active_color` is used, if widget is hot, then `hot_color` is used, and if widget is neutral, then `neutral_color` is used.
+
+See also [`get_color`](@ref).
+"""
 struct ContextualColor{C}
     neutral_color::C
     hot_color::C
     active_color::C
 end
 
+"""
+    get_color(user_interaction_state, this_widget, color)
+
+Return the actual color for drawing some part of a widget depending upon the state of the widget, that is, whether it is neutral, hot, or active.
+
+See also [`ContextualColor`](@ref).
+
+# Examples
+```julia-repl
+julia> this_widget = SimpleIMGUI.WidgetID("/path/to/file.jl", 123, 1)
+SimpleIMGUI.WidgetID{String, Int64}("/path/to/file.jl", 123, 1)
+
+julia> user_interaction_state = SimpleIMGUI.UserInteractionState(this_widget, SimpleIMGUI.NULL_WIDGET_ID, SimpleIMGUI.NULL_WIDGET_ID) # this_widget is the hot widget
+SimpleIMGUI.UserInteractionState{String, Int64}(SimpleIMGUI.WidgetID{String, Int64}("/path/to/file.jl", 123, 1), SimpleIMGUI.WidgetID{String, Int64}("", 0, 0), SimpleIMGUI.WidgetID{String, Int64}("", 0, 0))
+
+julia> color = 0x00b0b0b0
+0x00b0b0b0
+
+julia> SimpleIMGUI.get_color(user_interaction_state, this_widget, color)
+0x00b0b0b0
+
+julia> contextual_color = SimpleIMGUI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf)
+SimpleIMGUI.ContextualColor{UInt32}(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf)
+
+julia> SimpleIMGUI.get_color(user_interaction_state, this_widget, contextual_color)
+0x00b7b7b7
+```
+"""
 get_color(user_interaction_state, this_widget, color) = color
 
 function get_color(user_interaction_state, this_widget, color::ContextualColor)
@@ -16,6 +55,17 @@ function get_color(user_interaction_state, this_widget, color::ContextualColor)
     end
 end
 
+"""
+    get_num_printable_characters(text)
+
+Return the number of printable characters in text.
+
+# Examples
+```julia-repl
+julia> SimpleIMGUI.get_num_printable_characters("hello █\n")
+7
+```
+"""
 get_num_printable_characters(text) = count(isprint, text)
 
 function get_intersection_extrema(image, shape)
