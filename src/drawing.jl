@@ -110,7 +110,7 @@ function draw_text_line_with_slider_in_a_box!(image, bounding_box, slider_value,
     return nothing
 end
 
-function draw_widget!(image::AbstractMatrix, widget_type::AbstractWidgetType, bounding_box::SD.Rectangle, args...; kwargs...)
+function draw_widget!(image, widget_type, bounding_box, args...; kwargs...)
     if SD.is_outbounds(image, bounding_box)
         return nothing
     end
