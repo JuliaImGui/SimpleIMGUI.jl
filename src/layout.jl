@@ -228,6 +228,25 @@ function get_alignment_offset(total_height::I, total_width::I, alignment, paddin
     end
 end
 
+"""
+    get_enclosing_bounding_box(shapes...)
+
+Return a bounding box (preferably the smallest one) that encloses all the shapes in `shapes`.
+
+# Examples
+```julia-repl
+julia> import SimpleDraw
+
+julia> shape1 = SimpleDraw.Rectangle(SimpleDraw.Point(2, 3), 4, 5)
+SimpleDraw.Rectangle{Int64}(SimpleDraw.Point{Int64}(2, 3), 4, 5)
+
+julia> shape2 = SimpleDraw.Rectangle(SimpleDraw.Point(4, 5), 6, 7)
+SimpleDraw.Rectangle{Int64}(SimpleDraw.Point{Int64}(4, 5), 6, 7)
+
+julia> SimpleIMGUI.get_enclosing_bounding_box(shape1, shape2)
+SimpleDraw.Rectangle{Int64}(SimpleDraw.Point{Int64}(2, 3), 8, 9)
+```
+"""
 function get_enclosing_bounding_box(shapes...)
     shape1 = shapes[1]
     i_min = SD.get_i_min(shape1)
