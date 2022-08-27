@@ -361,25 +361,13 @@ function do_widget!(widget_type, user_interaction_state::AbstractUserInteraction
 end
 
 function do_widget!(widget_type::ScrollBar, user_interaction_state::AbstractUserInteractionState, this_widget, widget_value, cursor::SD.Point, input_button::InputButton, widget_bounding_box::SD.Rectangle)
-    i_slider_value = widget_value[1]
-    j_slider_value = widget_value[2]
-    height_slider = widget_value[3]
-    width_slider = widget_value[4]
-    i_slider_relative_mouse = widget_value[5]
-    j_slider_relative_mouse = widget_value[6]
-
     hot_widget, active_widget, null_widget, widget_value = do_widget!!(
                                                               widget_type,
                                                               user_interaction_state.hot_widget,
                                                               user_interaction_state.active_widget,
                                                               user_interaction_state.null_widget,
                                                               this_widget,
-                                                              i_slider_value,
-                                                              j_slider_value,
-                                                              height_slider,
-                                                              width_slider,
-                                                              i_slider_relative_mouse,
-                                                              j_slider_relative_mouse,
+                                                              widget_value...,
                                                               cursor.i,
                                                               cursor.j,
                                                               input_button.ended_down,
