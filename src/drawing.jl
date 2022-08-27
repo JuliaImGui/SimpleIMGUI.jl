@@ -259,3 +259,20 @@ function draw_widget_unclipped!(image, widget_type::DropDown, bounding_box, user
 
     return nothing
 end
+
+function draw_widget_unclipped!(image, widget_type::ScrollBar, bounding_box, user_interaction_state, this_widget, widget_value, background_color, border_color, bar_color)
+    i_slider_value = widget_value[1]
+    j_slider_value = widget_value[2]
+    height_slider = widget_value[3]
+    width_slider = widget_value[4]
+    i_slider_relative_mouse = widget_value[5]
+    j_slider_relative_mouse = widget_value[6]
+
+    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), get_color(user_interaction_state, this_widget, background_color))
+
+    SD.draw!(image, bounding_box, get_color(user_interaction_state, this_widget, border_color))
+
+    SD.draw!(image, SD.FilledRectangle(SD.move(bounding_box.position, i_slider_value, j_slider_value), height_slider, width_slider), get_color(user_interaction_state, this_widget, bar_color))
+
+    return nothing
+end
