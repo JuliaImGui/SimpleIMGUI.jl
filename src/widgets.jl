@@ -21,6 +21,9 @@ const RADIO_BUTTON = RadioButton()
 struct DropDown <: AbstractWidgetType end
 const DROP_DOWN = DropDown()
 
+struct ScrollBar <: AbstractWidgetType end
+const SCROLL_BAR = ScrollBar()
+
 #####
 ##### utils
 #####
@@ -230,6 +233,55 @@ do_widget(widget_type::DropDown, hot_widget, active_widget, null_widget, this_wi
 do_widget!!(widget_type::DropDown, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
 #####
+##### ScrollBar
+#####
+
+function get_widget_value(widget_type, hot_widget, active_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, i_min, j_min, i_max, j_max)
+    if (hot_widget == this_widget) && (active_widget == this_widget)
+        i_slider_value = i_mouse + i_slider_relative_mouse - i_min
+        j_slider_value = j_mouse + j_slider_relative_mouse - j_min
+
+        i_slider_value = clamp(i_slider_value, zero(i_slider_value), i_max - i_min + one(i_min) - height_slider)
+        j_slider_value = clamp(j_slider_value, zero(j_slider_value), j_max - j_min + one(j_min) - width_slider)
+
+        return i_slider_value, j_slider_value
+    else
+        return i_slider_value, j_slider_value
+    end
+end
+
+function do_widget(widget_type::ScrollBar, hot_widget, active_widget, null_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+    i_min_slider = i_min + i_slider_value
+    j_min_slider = j_min + j_slider_value
+
+    i_max_slider = i_min_slider + height_slider - one(height_slider)
+    j_max_slider = j_min_slider + width_slider - one(height_slider)
+
+    mouse_over_slider = (i_min_slider <= i_mouse <= i_max_slider) && (j_min_slider <= j_mouse <= j_max_slider)
+    mouse_went_down = went_down(ended_down, num_transitions)
+    mouse_went_up = went_up(ended_down, num_transitions)
+
+    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_slider)
+
+    if (hot_widget == this_widget) && (active_widget == null_widget)
+        i_slider_relative_mouse = i_min_slider - i_mouse
+        j_slider_relative_mouse = j_min_slider - j_mouse
+    end
+
+    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_slider && mouse_went_down)
+
+    i_slider_value, j_slider_value = get_widget_value(widget_type, hot_widget, active_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, i_min, j_min, i_max, j_max)
+
+    active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_went_up)
+
+    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_slider)
+
+    return hot_widget, active_widget, null_widget, (i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse)
+end
+
+do_widget!!(widget_type::ScrollBar, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
+
+#####
 ##### helper functions
 #####
 
@@ -295,6 +347,43 @@ function do_widget!(widget_type, user_interaction_state::AbstractUserInteraction
                                                               input_button.ended_down,
                                                               input_button.num_transitions,
                                                               characters,
+                                                              SD.get_i_min(widget_bounding_box),
+                                                              SD.get_j_min(widget_bounding_box),
+                                                              SD.get_i_max(widget_bounding_box),
+                                                              SD.get_j_max(widget_bounding_box),
+                                                             )
+
+    user_interaction_state.hot_widget = hot_widget
+    user_interaction_state.active_widget = active_widget
+    user_interaction_state.null_widget = null_widget
+
+    return widget_value
+end
+
+function do_widget!(widget_type::ScrollBar, user_interaction_state::AbstractUserInteractionState, this_widget, widget_value, cursor::SD.Point, input_button::InputButton, widget_bounding_box::SD.Rectangle)
+    i_slider_value = widget_value[1]
+    j_slider_value = widget_value[2]
+    height_slider = widget_value[3]
+    width_slider = widget_value[4]
+    i_slider_relative_mouse = widget_value[5]
+    j_slider_relative_mouse = widget_value[6]
+
+    hot_widget, active_widget, null_widget, widget_value = do_widget!!(
+                                                              widget_type,
+                                                              user_interaction_state.hot_widget,
+                                                              user_interaction_state.active_widget,
+                                                              user_interaction_state.null_widget,
+                                                              this_widget,
+                                                              i_slider_value,
+                                                              j_slider_value,
+                                                              height_slider,
+                                                              width_slider,
+                                                              i_slider_relative_mouse,
+                                                              j_slider_relative_mouse,
+                                                              cursor.i,
+                                                              cursor.j,
+                                                              input_button.ended_down,
+                                                              input_button.num_transitions,
                                                               SD.get_i_min(widget_bounding_box),
                                                               SD.get_j_min(widget_bounding_box),
                                                               SD.get_i_max(widget_bounding_box),
@@ -400,6 +489,34 @@ function do_widget!(
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, characters, widget_bounding_box)
 
     draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, font, background_color, border_color, text_color)
+
+    return widget_value
+end
+
+function do_widget!(
+        widget_type,
+        user_interaction_state::AbstractUserInteractionState,
+        this_widget,
+        widget_value,
+        cursor,
+        input_button,
+        layout,
+        alignment,
+        padding,
+        widget_height,
+        widget_width,
+        image,
+        background_color,
+        border_color,
+        indicator_color,
+    )
+
+    widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
+    layout.reference_bounding_box = widget_bounding_box
+
+    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
+
+    draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, widget_value, background_color, border_color, indicator_color)
 
     return widget_value
 end

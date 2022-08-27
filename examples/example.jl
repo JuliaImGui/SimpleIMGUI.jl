@@ -92,6 +92,7 @@ function start()
     debug_text = String[]
     show_debug_text = false
     slider_value = 0
+    scroll_bar_value = (0, 0, 20, 40, 0, 0)
     text_box_value = collect("Enter text")
     num_button_clicks = 0
     padding = 8
@@ -250,6 +251,47 @@ function start()
             image,
             SI.UP1_LEFT1,
             -1,
+            "ScrollBar",
+            font,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
+        )
+        reference_bounding_box = layout.reference_bounding_box
+
+        scroll_bar_value = SI.do_widget!(
+            SI.SCROLL_BAR,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            scroll_bar_value,
+            user_input_state.cursor,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
+            layout,
+            SI.RIGHT2,
+            padding,
+            SD.get_height(font),
+            240,
+            image,
+            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
+            0x00000000,
+            0x00909090,
+        )
+
+        layout.reference_bounding_box = reference_bounding_box
+        SI.do_widget!(
+            SI.TEXT,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            user_input_state.cursor,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
+            layout,
+            SI.DOWN2_LEFT1,
+            padding,
+            SD.get_height(font),
+            SD.get_width(font) * 12,
+            image,
+            SI.UP1_LEFT1,
+            -1,
             "TextBox",
             font,
             0x00cccccc,
@@ -284,6 +326,7 @@ function start()
         push!(debug_text, "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
         push!(debug_text, "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms")
         push!(debug_text, "cursor: $(user_input_state.cursor)")
+        push!(debug_text, "scroll_bar_value: $(scroll_bar_value)")
         push!(debug_text, "mouse_left: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1])")
         push!(debug_text, "mouse_right: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_RIGHT) + 1])")
         push!(debug_text, "mouse_middle: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_MIDDLE) + 1])")
