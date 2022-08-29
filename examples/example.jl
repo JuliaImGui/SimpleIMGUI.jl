@@ -93,6 +93,15 @@ function start()
     show_debug_text = false
     slider_value = 0
     scroll_bar_value = (0, 0, 20, 40, 0, 0)
+    image_shape = SD.Image(SD.Point(1, 1), rand(UInt32, 120, 360))
+    min_bar_size = 10
+    image_scroll_bar_width = 240
+    image_scroll_bar_height = 20
+    image_scroll_bar_bar_size = (240 * 240) ÷ 360
+    image_scroll_bar_value = (0, 0, 20, image_scroll_bar_bar_size, 0, 0)
+    image_shape = SD.Image(SD.move(SD.Point(1, 1), -image_scroll_bar_value[1], -image_scroll_bar_value[2]), image_shape.image)
+    SD.draw!(image_shape.image, SD.Background(), 0x00ffffff)
+    SD.draw!(image_shape.image, SD.ThickRectangle(SD.Point(20, 20), 80, 320, 20), 0x00000000)
     text_box_value = collect("Enter text")
     num_button_clicks = 0
     padding = 8
@@ -321,6 +330,69 @@ function start()
             0x00000000,
             0x00000000,
         )
+
+        layout.reference_bounding_box = reference_bounding_box
+        SI.do_widget!(
+            SI.TEXT,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            user_input_state.cursor,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
+            layout,
+            SI.DOWN2_LEFT1,
+            padding,
+            SD.get_height(font),
+            SD.get_width(font) * 12,
+            image,
+            SI.UP1_LEFT1,
+            -1,
+            "Image",
+            font,
+            0x00cccccc,
+            0x00cccccc,
+            0x00000000,
+        )
+        reference_bounding_box = layout.reference_bounding_box
+
+        _ = SI.do_widget!(
+            SI.IMAGE,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            user_input_state.cursor,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
+            layout,
+            SI.UP1_RIGHT2,
+            padding,
+            SD.get_height(image_shape),
+            240,
+            image,
+            SI.UP1_LEFT1,
+            -1,
+            image_shape,
+            0x00000000,
+        )
+        reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
+
+        image_scroll_bar_value = SI.do_widget!(
+            SI.SCROLL_BAR,
+            user_interaction_state,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            image_scroll_bar_value,
+            user_input_state.cursor,
+            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
+            layout,
+            SI.DOWN2_LEFT1,
+            padding,
+            20,
+            240,
+            image,
+            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
+            0x00000000,
+            0x00909090,
+        )
+        delta_j_image = (image_scroll_bar_value[2] * (SD.get_width(image_shape) - 240)) ÷ (240 - max(image_scroll_bar_value[4], min_bar_size))
+        image_shape = SD.Image(SD.move(SD.Point(1, 1), 0, -delta_j_image), image_shape.image)
+        reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
 
         push!(debug_text, "previous frame number: $(i)")
         push!(debug_text, "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")

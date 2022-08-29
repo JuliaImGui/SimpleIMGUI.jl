@@ -24,6 +24,9 @@ const DROP_DOWN = DropDown()
 struct ScrollBar <: AbstractWidgetType end
 const SCROLL_BAR = ScrollBar()
 
+struct Image <: AbstractWidgetType end
+const IMAGE = Image()
+
 #####
 ##### utils
 #####
@@ -282,6 +285,14 @@ end
 do_widget!!(widget_type::ScrollBar, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
 #####
+##### Image
+#####
+
+do_widget(widget_type::Image, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max) = do_widget(BUTTON, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+
+do_widget!!(widget_type::Image, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
+
+#####
 ##### helper functions
 #####
 
@@ -505,6 +516,34 @@ function do_widget!(
     widget_value = do_widget!(widget_type, user_interaction_state, this_widget, widget_value, cursor, input_button, widget_bounding_box)
 
     draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, widget_value, background_color, border_color, indicator_color)
+
+    return widget_value
+end
+
+function do_widget!(
+        widget_type::Image,
+        user_interaction_state::AbstractUserInteractionState,
+        this_widget,
+        cursor,
+        input_button,
+        layout,
+        alignment,
+        padding,
+        widget_height,
+        widget_width,
+        image,
+        content_alignment,
+        content_padding,
+        content,
+        border_color,
+    )
+
+    widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
+    layout.reference_bounding_box = widget_bounding_box
+
+    widget_value = do_widget!(widget_type, user_interaction_state, this_widget, cursor, input_button, widget_bounding_box)
+
+    draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, content, content_alignment, content_padding, border_color)
 
     return widget_value
 end
