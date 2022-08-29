@@ -215,7 +215,7 @@ do_widget!!(widget_type::Union{CheckBox, RadioButton, DropDown}, args...; kwargs
 ##### ScrollBar
 #####
 
-function get_widget_value(widget_type, hot_widget, active_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, i_min, j_min, i_max, j_max)
+function get_widget_value(widget_type::ScrollBar, hot_widget, active_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, i_min, j_min, i_max, j_max)
     if (hot_widget == this_widget) && (active_widget == this_widget)
         i_slider_value = i_mouse + i_slider_relative_mouse - i_min
         j_slider_value = j_mouse + j_slider_relative_mouse - j_min
