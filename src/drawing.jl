@@ -276,3 +276,11 @@ function draw_widget_unclipped!(image, widget_type::ScrollBar, bounding_box, use
 
     return nothing
 end
+
+function draw_widget_unclipped!(image, widget_type::Image, bounding_box, user_interaction_state, this_widget, content, alignment, padding, border_color)
+    SD.draw!(image, content)
+
+    SD.draw!(image, bounding_box, get_color(user_interaction_state, this_widget, border_color))
+
+    return nothing
+end
