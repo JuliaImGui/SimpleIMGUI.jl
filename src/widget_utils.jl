@@ -1,4 +1,4 @@
-function do_widget!(widget_type, user_interaction_state::AbstractUserInteractionState, this_widget, cursor::SD.Point, input_button::InputButton, widget_bounding_box::SD.Rectangle)
+function do_widget!(widget_type::Union{Button, Text, Image}, user_interaction_state::AbstractUserInteractionState, this_widget, cursor::SD.Point, input_button::InputButton, widget_bounding_box::SD.Rectangle)
     hot_widget, active_widget, null_widget, widget_value = do_widget!!(
                                                               widget_type,
                                                               user_interaction_state.hot_widget,
@@ -22,7 +22,7 @@ function do_widget!(widget_type, user_interaction_state::AbstractUserInteraction
     return widget_value
 end
 
-function do_widget!(widget_type, user_interaction_state::AbstractUserInteractionState, this_widget, widget_value, cursor::SD.Point, input_button::InputButton, widget_bounding_box::SD.Rectangle)
+function do_widget!(widget_type::Union{Slider, CheckBox, RadioButton, DropDown}, user_interaction_state::AbstractUserInteractionState, this_widget, widget_value, cursor::SD.Point, input_button::InputButton, widget_bounding_box::SD.Rectangle)
     hot_widget, active_widget, null_widget, widget_value = do_widget!!(
                                                               widget_type,
                                                               user_interaction_state.hot_widget,
@@ -47,7 +47,7 @@ function do_widget!(widget_type, user_interaction_state::AbstractUserInteraction
     return widget_value
 end
 
-function do_widget!(widget_type, user_interaction_state::AbstractUserInteractionState, this_widget, widget_value, cursor::SD.Point, input_button::InputButton, characters::Vector, widget_bounding_box::SD.Rectangle)
+function do_widget!(widget_type::TextBox, user_interaction_state::AbstractUserInteractionState, this_widget, widget_value, cursor::SD.Point, input_button::InputButton, characters::Vector, widget_bounding_box::SD.Rectangle)
     hot_widget, active_widget, null_widget, widget_value = do_widget!!(
                                                               widget_type,
                                                               user_interaction_state.hot_widget,
