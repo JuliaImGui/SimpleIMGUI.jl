@@ -95,7 +95,7 @@ end
 ##### Button
 #####
 
-function get_widget_value(::Button, hot_widget, active_widget, this_widget, condition)
+function get_widget_value(::Union{Button, Text, Image}, hot_widget, active_widget, this_widget, condition)
     if (hot_widget == this_widget) && (active_widget == this_widget) && condition
         return true
     else
@@ -103,7 +103,7 @@ function get_widget_value(::Button, hot_widget, active_widget, this_widget, cond
     end
 end
 
-function do_widget(widget_type::Button, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+function do_widget(widget_type::Union{Button, Text, Image}, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)
@@ -121,7 +121,7 @@ function do_widget(widget_type::Button, hot_widget, active_widget, null_widget, 
     return hot_widget, active_widget, null_widget, widget_value
 end
 
-do_widget!!(widget_type::Button, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
+do_widget!!(widget_type::Union{Button, Text, Image}, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
 #####
 ##### Slider
@@ -196,18 +196,10 @@ end
 do_widget!!(widget_type::TextBox, args...; kwargs...) = do_widget!(widget_type, args...; kwargs...)
 
 #####
-##### Text
-#####
-
-do_widget(widget_type::Text, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max) = do_widget(BUTTON, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
-
-do_widget!!(widget_type::Text, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
-
-#####
 ##### CheckBox
 #####
 
-function do_widget(widget_type::CheckBox, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+function do_widget(widget_type::Union{CheckBox, RadioButton, DropDown}, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
     hot_widget, active_widget, null_widget, button_value = do_widget(BUTTON, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
 
     if button_value
@@ -217,23 +209,7 @@ function do_widget(widget_type::CheckBox, hot_widget, active_widget, null_widget
     return hot_widget, active_widget, null_widget, widget_value
 end
 
-do_widget!!(widget_type::CheckBox, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
-
-#####
-##### RadioButton
-#####
-
-do_widget(widget_type::RadioButton, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max) = do_widget(CHECK_BOX, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
-
-do_widget!!(widget_type::RadioButton, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
-
-#####
-##### DropDown
-#####
-
-do_widget(widget_type::DropDown, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max) = do_widget(CHECK_BOX, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
-
-do_widget!!(widget_type::DropDown, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
+do_widget!!(widget_type::Union{CheckBox, RadioButton, DropDown}, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
 #####
 ##### ScrollBar
@@ -283,14 +259,6 @@ function do_widget(widget_type::ScrollBar, hot_widget, active_widget, null_widge
 end
 
 do_widget!!(widget_type::ScrollBar, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
-
-#####
-##### Image
-#####
-
-do_widget(widget_type::Image, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max) = do_widget(BUTTON, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
-
-do_widget!!(widget_type::Image, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
 #####
 ##### helper functions
