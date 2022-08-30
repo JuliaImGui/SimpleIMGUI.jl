@@ -4,11 +4,11 @@
 
 function do_widget!(
         widget_type::Union{Button, Text, Image},
-        user_interaction_state::AbstractUserInteractionState,
+        user_interaction_state,
         this_widget,
-        cursor::SD.Point,
-        input_button::InputButton,
-        widget_bounding_box::SD.Rectangle,
+        cursor,
+        input_button,
+        widget_bounding_box,
     )
 
     hot_widget, active_widget, null_widget, new_widget_value = do_widget!!(
@@ -36,12 +36,12 @@ end
 
 function do_widget!(
         widget_type::Union{Slider, CheckBox, RadioButton, DropDown},
-        user_interaction_state::AbstractUserInteractionState,
+        user_interaction_state,
         this_widget,
         widget_value,
-        cursor::SD.Point,
-        input_button::InputButton,
-        widget_bounding_box::SD.Rectangle,
+        cursor,
+        input_button,
+        widget_bounding_box,
     )
 
     hot_widget, active_widget, null_widget, new_widget_value = do_widget!!(
@@ -70,13 +70,13 @@ end
 
 function do_widget!(
         widget_type::TextBox,
-        user_interaction_state::AbstractUserInteractionState,
+        user_interaction_state,
         this_widget,
         widget_value,
-        cursor::SD.Point,
-        input_button::InputButton,
-        characters::Vector,
-        widget_bounding_box::SD.Rectangle,
+        cursor,
+        input_button,
+        characters,
+        widget_bounding_box,
     )
 
     hot_widget, active_widget, null_widget, new_widget_value = do_widget!!(
@@ -106,12 +106,12 @@ end
 
 function do_widget!(
         widget_type::ScrollBar,
-        user_interaction_state::AbstractUserInteractionState,
+        user_interaction_state,
         this_widget,
         widget_value,
-        cursor::SD.Point,
-        input_button::InputButton,
-        widget_bounding_box::SD.Rectangle,
+        cursor,
+        input_button,
+        widget_bounding_box,
     )
 
     hot_widget, active_widget, null_widget, new_widget_value = do_widget!!(
@@ -138,9 +138,13 @@ function do_widget!(
     return new_widget_value
 end
 
+#####
+##### helper methods that also do the widget layouting and drawing
+#####
+
 function do_widget!(
-        widget_type,
-        user_interaction_state::AbstractUserInteractionState,
+        widget_type::Union{Button, Text},
+        user_interaction_state,
         this_widget,
         cursor,
         input_button,
@@ -170,8 +174,8 @@ function do_widget!(
 end
 
 function do_widget!(
-        widget_type,
-        user_interaction_state::AbstractUserInteractionState,
+        widget_type::Union{Slider, CheckBox, RadioButton, DropDown},
+        user_interaction_state,
         this_widget,
         widget_value,
         cursor,
@@ -203,8 +207,8 @@ function do_widget!(
 end
 
 function do_widget!(
-        widget_type,
-        user_interaction_state::AbstractUserInteractionState,
+        widget_type::TextBox,
+        user_interaction_state,
         this_widget,
         widget_value,
         cursor,
@@ -235,8 +239,8 @@ function do_widget!(
 end
 
 function do_widget!(
-        widget_type,
-        user_interaction_state::AbstractUserInteractionState,
+        widget_type::ScrollBar,
+        user_interaction_state,
         this_widget,
         widget_value,
         cursor,
@@ -264,7 +268,7 @@ end
 
 function do_widget!(
         widget_type::Image,
-        user_interaction_state::AbstractUserInteractionState,
+        user_interaction_state,
         this_widget,
         cursor,
         input_button,
