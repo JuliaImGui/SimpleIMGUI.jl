@@ -104,8 +104,8 @@ function start()
     SD.draw!(image_shape.image, SD.ThickRectangle(SD.Point(20, 20), 80, 320, 20), 0x00000000)
     text_box_value = collect("Enter text")
     num_button_clicks = 0
-    padding = 8
     font = SD.TERMINUS_BOLD_24_12
+    padding = SD.get_height(font) ÷ 4
     sliding_window_size = 30
     i = 0
     radio_button_value = 1
