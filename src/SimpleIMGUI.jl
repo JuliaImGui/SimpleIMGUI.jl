@@ -4,6 +4,7 @@ import SimpleDraw as SD
 
 include("user_input.jl")
 include("layout.jl")
+include("colors.jl")
 include("user_interaction.jl")
 include("widget_core.jl")
 include("widget_utils.jl")
