@@ -92,7 +92,7 @@ function start()
     debug_text = String[]
     show_debug_text = false
     slider_value = 0
-    scroll_bar_value = (0, 0, 20, 40, 0, 0)
+    scroll_bar_value = (0, 0, 16, 40, 0, 0)
     image_shape = SD.Image(SD.Point(1, 1), rand(UInt32, 120, 360))
     min_bar_size = 10
     image_scroll_bar_width = 240
