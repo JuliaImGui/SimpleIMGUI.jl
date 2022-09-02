@@ -97,8 +97,8 @@ function start()
     min_bar_size = 10
     image_scroll_bar_width = 240
     image_scroll_bar_height = 20
-    image_scroll_bar_bar_size = (240 * 240) ÷ 360
-    image_scroll_bar_value = (0, 0, 20, image_scroll_bar_bar_size, 0, 0)
+    image_scroll_bar_bar_size = (image_scroll_bar_height, (image_scroll_bar_width * image_scroll_bar_width) ÷ SD.get_width(image_shape))
+    image_scroll_bar_value = (0, 0, image_scroll_bar_bar_size..., 0, 0)
     image_shape = SD.Image(SD.move(SD.Point(1, 1), -image_scroll_bar_value[1], -image_scroll_bar_value[2]), image_shape.image)
     SD.draw!(image_shape.image, SD.Background(), 0x00ffffff)
     SD.draw!(image_shape.image, SD.ThickRectangle(SD.Point(20, 20), 80, 320, 20), 0x00000000)
