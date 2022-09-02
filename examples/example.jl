@@ -368,7 +368,7 @@ function start()
                     SI.WidgetID(@__FILE__, @__LINE__, j),
                     drop_down_selected_item == j,
                     SI.DOWN2_LEFT1,
-                    widget_gap,
+                    0,
                     SD.get_height(font),
                     SD.get_width(font) * (max_num_chars + 2),
                     "$(item)",
