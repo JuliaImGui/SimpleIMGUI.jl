@@ -257,7 +257,7 @@ function start()
         )
         reference_bounding_box = layout.reference_bounding_box
 
-        _ = SI.do_widget!(
+        SI.do_widget!(
             SI.IMAGE,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
