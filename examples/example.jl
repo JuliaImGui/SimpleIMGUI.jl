@@ -105,7 +105,7 @@ function start()
     text_box_value = collect("Enter text")
     num_button_clicks = 0
     padding = 8
-    font = SD.TERMINUS_32_16
+    font = SD.TERMINUS_BOLD_24_12
     sliding_window_size = 30
     i = 0
     radio_button_value = 1
