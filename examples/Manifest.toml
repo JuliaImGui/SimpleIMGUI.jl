@@ -181,7 +181,9 @@ deps = ["Distributed", "Mmap", "Random", "Serialization"]
 uuid = "1a1011a3-84de-559e-8e89-a11a2f7dc383"
 
 [[deps.SimpleDraw]]
-git-tree-sha1 = "0fe04590acbc1a3de2c0556a946d04e20c9f4c2a"
+git-tree-sha1 = "693744d7ec6a8bbfbab0c7d207b978242ae00ff0"
+repo-rev = "831370cdc1fc1bbd2f0eefb906c54badd2a28765"
+repo-url = "https://github.com/Sid-Bhatia-0/SimpleDraw.jl.git"
 uuid = "d1acf6f4-8553-480e-80ae-3c883f0a995a"
 version = "0.4.0"
 
