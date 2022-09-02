@@ -112,6 +112,8 @@ function start()
     drop_down_selected_item = 1
     drop_down_value = false
 
+    ui_context = SI.UIContext(user_interaction_state, user_input_state, layout, image, font, SI.COLORS)
+
     time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(time_stamp_buffer, time_ns())
 
@@ -134,66 +136,36 @@ function start()
         text = "Press the escape key to quit"
         SI.do_widget!(
             SI.TEXT,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.UP1_LEFT1,
             padding,
             SD.get_height(font),
             SD.get_width(font) * SI.get_num_printable_characters(text),
-            image,
-            SI.UP1_LEFT1,
-            -1,
             text,
-            font,
-            0x00cccccc,
-            0x00cccccc,
-            0x00000000,
         )
 
         SI.do_widget!(
             SI.TEXT,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
             SD.get_width(font) * 12,
-            image,
-            SI.UP1_LEFT1,
-            -1,
             "Button",
-            font,
-            0x00cccccc,
-            0x00cccccc,
-            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
         button_value = SI.do_widget!(
             SI.BUTTON,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.RIGHT2,
             padding,
             SD.get_height(font),
             240,
-            image,
-            SI.CENTER,
-            -1,
             "$(num_button_clicks)",
-            font,
-            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
-            SI.ContextualColor(0x00000000, 0x00000000, 0x00000000),
-            SI.ContextualColor(0x00000000, 0x00000000, 0x00000000),
         )
         if button_value
             num_button_clicks += 1
@@ -202,193 +174,110 @@ function start()
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
             SI.TEXT,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
             SD.get_width(font) * 12,
-            image,
-            SI.UP1_LEFT1,
-            -1,
             "Slider",
-            font,
-            0x00cccccc,
-            0x00cccccc,
-            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
         slider_value = SI.do_widget!(
             SI.SLIDER,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             slider_value,
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.RIGHT2,
             padding,
             SD.get_height(font),
             240,
-            image,
-            SI.CENTER,
-            -1,
             "$(slider_value)",
-            font,
-            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
-            0x00000000,
-            0x00000000,
-            0x00909090,
         )
 
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
             SI.TEXT,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
             SD.get_width(font) * 12,
-            image,
-            SI.UP1_LEFT1,
-            -1,
             "ScrollBar",
-            font,
-            0x00cccccc,
-            0x00cccccc,
-            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
         scroll_bar_value = SI.do_widget!(
             SI.SCROLL_BAR,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             scroll_bar_value,
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.RIGHT2,
             padding,
             SD.get_height(font),
             240,
-            image,
-            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
-            0x00000000,
-            0x00909090,
         )
 
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
             SI.TEXT,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
             SD.get_width(font) * 12,
-            image,
-            SI.UP1_LEFT1,
-            -1,
             "TextBox",
-            font,
-            0x00cccccc,
-            0x00cccccc,
-            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
         text_box_value = SI.do_widget!(
             SI.TEXT_BOX,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             text_box_value,
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            user_input_state.characters,
-            layout,
             SI.RIGHT2,
             padding,
             SD.get_height(font),
             240,
-            image,
-            SI.LEFT1,
-            -1,
-            font,
-            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
-            0x00000000,
-            0x00000000,
         )
 
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
             SI.TEXT,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
             SD.get_width(font) * 12,
-            image,
-            SI.UP1_LEFT1,
-            -1,
             "Image",
-            font,
-            0x00cccccc,
-            0x00cccccc,
-            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
         _ = SI.do_widget!(
             SI.IMAGE,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.UP1_RIGHT2,
             padding,
             SD.get_height(image_shape),
             240,
-            image,
-            SI.UP1_LEFT1,
-            -1,
             image_shape,
-            0x00000000,
         )
         reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
 
         image_scroll_bar_value = SI.do_widget!(
             SI.SCROLL_BAR,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             image_scroll_bar_value,
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.DOWN2_LEFT1,
             padding,
             20,
             240,
-            image,
-            SI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf),
-            0x00000000,
-            0x00909090,
         )
         delta_j_image = (image_scroll_bar_value[2] * (SD.get_width(image_shape) - 240)) ÷ (240 - max(image_scroll_bar_value[4], min_bar_size))
         image_shape = SD.Image(SD.move(SD.Point(1, 1), 0, -delta_j_image), image_shape.image)
@@ -408,23 +297,13 @@ function start()
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
             SI.TEXT,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
             SD.get_width(font) * 12,
-            image,
-            SI.UP1_LEFT1,
-            -1,
             "RadioButton",
-            font,
-            0x00cccccc,
-            0x00cccccc,
-            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -436,25 +315,14 @@ function start()
         for (j, item) in enumerate(radio_button_item_list)
             if SI.do_widget!(
                 SI.RADIO_BUTTON,
-                user_interaction_state,
+                ui_context,
                 SI.WidgetID(@__FILE__, @__LINE__, j),
                 radio_button_value == j,
-                user_input_state.cursor,
-                user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-                layout,
                 SI.RIGHT2,
                 padding,
                 SD.get_height(font),
                 SD.get_width(font) * (max_num_chars + 2),
-                image,
-                SI.LEFT1,
-                -1,
-                item,
-                font,
-                0x00cccccc,
-                0x00cccccc,
-                0x00000000,
-                0x00000000,
+                "$(item)",
             )
                 radio_button_value = j
             end
@@ -464,23 +332,13 @@ function start()
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
             SI.TEXT,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
             SD.get_width(font) * 12,
-            image,
-            SI.UP1_LEFT1,
-            -1,
             "DropDown",
-            font,
-            0x00cccccc,
-            0x00cccccc,
-            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
@@ -491,25 +349,14 @@ function start()
         end
         drop_down_value = SI.do_widget!(
             SI.DROP_DOWN,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             drop_down_value,
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.RIGHT2,
             padding,
             SD.get_height(font),
             SD.get_width(font) * (max_num_chars + 2),
-            image,
-            SI.LEFT1,
-            -1,
             drop_down_item_list[drop_down_selected_item],
-            font,
-            0x00cccccc,
-            0x00cccccc,
-            0x00000000,
-            0x00000000,
         )
         reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
 
@@ -517,25 +364,14 @@ function start()
             for (j, item) in enumerate(drop_down_item_list)
                 if SI.do_widget!(
                     SI.RADIO_BUTTON,
-                    user_interaction_state,
+                    ui_context,
                     SI.WidgetID(@__FILE__, @__LINE__, j),
                     drop_down_selected_item == j,
-                    user_input_state.cursor,
-                    user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-                    layout,
                     SI.DOWN2_LEFT1,
                     padding,
                     SD.get_height(font),
                     SD.get_width(font) * (max_num_chars + 2),
-                    image,
-                    SI.LEFT1,
-                    -1,
-                    item,
-                    font,
-                    0x00cccccc,
-                    0x00cccccc,
-                    0x00000000,
-                    0x00000000,
+                    "$(item)",
                 )
                     drop_down_selected_item = j
                 end
@@ -546,48 +382,27 @@ function start()
         layout.reference_bounding_box = reference_bounding_box
         SI.do_widget!(
             SI.TEXT,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.DOWN2_LEFT1,
             padding,
             SD.get_height(font),
             SD.get_width(font) * 12,
-            image,
-            SI.UP1_LEFT1,
-            -1,
             "CheckBox",
-            font,
-            0x00cccccc,
-            0x00cccccc,
-            0x00000000,
         )
         reference_bounding_box = layout.reference_bounding_box
 
         text = "Show debug text"
         show_debug_text = SI.do_widget!(
             SI.CHECK_BOX,
-            user_interaction_state,
+            ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             show_debug_text,
-            user_input_state.cursor,
-            user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-            layout,
             SI.RIGHT2,
             padding,
             SD.get_height(font),
             SD.get_width(font) * (SI.get_num_printable_characters(text) + 2),
-            image,
-            SI.LEFT1,
-            -1,
             text,
-            font,
-            0x00cccccc,
-            0x00cccccc,
-            0x00000000,
-            0x00000000,
         )
 
         if show_debug_text
@@ -595,24 +410,14 @@ function start()
             for (j, text) in enumerate(debug_text)
                 SI.do_widget!(
                     SI.TEXT,
-                    user_interaction_state,
+                    ui_context,
                     SI.WidgetID(@__FILE__, @__LINE__, j),
-                    user_input_state.cursor,
-                    user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1],
-                    layout,
                     SI.DOWN2_LEFT1,
                     padding,
                     SD.get_height(font),
                     SD.get_width(font) * SI.get_num_printable_characters(text),
-                    image,
-                    SI.UP1_LEFT1,
-                    -1,
                     text,
-                    font,
-                    0x00cccccc,
-                    0x00cccccc,
-                    0x00000000,
-                   )
+                )
             end
         end
 
