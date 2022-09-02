@@ -155,7 +155,7 @@ function start()
             SD.get_width(font) * 12,
             "Button",
         )
-        reference_bounding_box = layout.reference_bounding_box
+        temp_bounding_box = layout.reference_bounding_box
 
         button_value = SI.do_widget!(
             SI.BUTTON,
@@ -171,7 +171,7 @@ function start()
             num_button_clicks += 1
         end
 
-        layout.reference_bounding_box = reference_bounding_box
+        layout.reference_bounding_box = temp_bounding_box
         SI.do_widget!(
             SI.TEXT,
             ui_context,
@@ -182,7 +182,7 @@ function start()
             SD.get_width(font) * 12,
             "Slider",
         )
-        reference_bounding_box = layout.reference_bounding_box
+        temp_bounding_box = layout.reference_bounding_box
 
         slider_value = SI.do_widget!(
             SI.SLIDER,
@@ -196,7 +196,7 @@ function start()
             "$(slider_value)",
         )
 
-        layout.reference_bounding_box = reference_bounding_box
+        layout.reference_bounding_box = temp_bounding_box
         SI.do_widget!(
             SI.TEXT,
             ui_context,
@@ -207,7 +207,7 @@ function start()
             SD.get_width(font) * 12,
             "ScrollBar",
         )
-        reference_bounding_box = layout.reference_bounding_box
+        temp_bounding_box = layout.reference_bounding_box
 
         scroll_bar_value = SI.do_widget!(
             SI.SCROLL_BAR,
@@ -220,7 +220,7 @@ function start()
             240,
         )
 
-        layout.reference_bounding_box = reference_bounding_box
+        layout.reference_bounding_box = temp_bounding_box
         SI.do_widget!(
             SI.TEXT,
             ui_context,
@@ -231,7 +231,7 @@ function start()
             SD.get_width(font) * 12,
             "TextBox",
         )
-        reference_bounding_box = layout.reference_bounding_box
+        temp_bounding_box = layout.reference_bounding_box
 
         text_box_value = SI.do_widget!(
             SI.TEXT_BOX,
@@ -244,7 +244,7 @@ function start()
             240,
         )
 
-        layout.reference_bounding_box = reference_bounding_box
+        layout.reference_bounding_box = temp_bounding_box
         SI.do_widget!(
             SI.TEXT,
             ui_context,
@@ -255,7 +255,7 @@ function start()
             SD.get_width(font) * 12,
             "Image",
         )
-        reference_bounding_box = layout.reference_bounding_box
+        temp_bounding_box = layout.reference_bounding_box
 
         SI.do_widget!(
             SI.IMAGE,
@@ -267,7 +267,7 @@ function start()
             240,
             image_shape,
         )
-        reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
+        temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
         image_scroll_bar_value = SI.do_widget!(
             SI.SCROLL_BAR,
@@ -281,7 +281,7 @@ function start()
         )
         delta_j_image = (image_scroll_bar_value[2] * (SD.get_width(image_shape) - 240)) ÷ (240 - max(image_scroll_bar_value[4], min_bar_size))
         image_shape = SD.Image(SD.move(SD.Point(1, 1), 0, -delta_j_image), image_shape.image)
-        reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
+        temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
         push!(debug_text, "previous frame number: $(i)")
         push!(debug_text, "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
@@ -294,7 +294,7 @@ function start()
         push!(debug_text, "hot_widget: $(user_interaction_state.hot_widget)")
         push!(debug_text, "active_widget: $(user_interaction_state.active_widget)")
 
-        layout.reference_bounding_box = reference_bounding_box
+        layout.reference_bounding_box = temp_bounding_box
         SI.do_widget!(
             SI.TEXT,
             ui_context,
@@ -305,7 +305,7 @@ function start()
             SD.get_width(font) * 12,
             "RadioButton",
         )
-        reference_bounding_box = layout.reference_bounding_box
+        temp_bounding_box = layout.reference_bounding_box
 
         radio_button_item_list = ("item a", "item b", "item c")
         max_num_chars = length(first(radio_button_item_list))
@@ -326,10 +326,10 @@ function start()
             )
                 radio_button_value = j
             end
-            reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
+            temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
         end
 
-        layout.reference_bounding_box = reference_bounding_box
+        layout.reference_bounding_box = temp_bounding_box
         SI.do_widget!(
             SI.TEXT,
             ui_context,
@@ -340,7 +340,7 @@ function start()
             SD.get_width(font) * 12,
             "DropDown",
         )
-        reference_bounding_box = layout.reference_bounding_box
+        temp_bounding_box = layout.reference_bounding_box
 
         drop_down_item_list = ("item 1", "item 2", "item 3")
         max_num_chars = length(first(drop_down_item_list))
@@ -358,7 +358,7 @@ function start()
             SD.get_width(font) * (max_num_chars + 2),
             drop_down_item_list[drop_down_selected_item],
         )
-        reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
+        temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
         if drop_down_value
             for (j, item) in enumerate(drop_down_item_list)
@@ -375,11 +375,11 @@ function start()
                 )
                     drop_down_selected_item = j
                 end
-                reference_bounding_box = SI.get_enclosing_bounding_box(reference_bounding_box, layout.reference_bounding_box)
+                temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
             end
         end
 
-        layout.reference_bounding_box = reference_bounding_box
+        layout.reference_bounding_box = temp_bounding_box
         SI.do_widget!(
             SI.TEXT,
             ui_context,
@@ -390,7 +390,7 @@ function start()
             SD.get_width(font) * 12,
             "CheckBox",
         )
-        reference_bounding_box = layout.reference_bounding_box
+        temp_bounding_box = layout.reference_bounding_box
 
         text = "Show debug text"
         show_debug_text = SI.do_widget!(
@@ -406,7 +406,7 @@ function start()
         )
 
         if show_debug_text
-            layout.reference_bounding_box = reference_bounding_box
+            layout.reference_bounding_box = temp_bounding_box
             for (j, text) in enumerate(debug_text)
                 SI.do_widget!(
                     SI.TEXT,
