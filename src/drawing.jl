@@ -229,7 +229,7 @@ function draw_widget_unclipped!(image, widget_type::DropDown, bounding_box, user
     return nothing
 end
 
-function draw_widget_unclipped!(image, widget_type::ScrollBar, bounding_box, user_interaction_state, this_widget, widget_value, background_color, border_color, bar_color)
+function draw_widget_unclipped!(image, widget_type::Slider, bounding_box, user_interaction_state, this_widget, widget_value, background_color, border_color, bar_color)
     i_slider_value = widget_value[1]
     j_slider_value = widget_value[2]
     height_slider = widget_value[3]
