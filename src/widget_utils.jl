@@ -379,13 +379,10 @@ end
 
 function get_colors(widget_type::Image, user_interaction_state, this_widget, colors)
     if this_widget == user_interaction_state.active_widget
-        # return (colors[Integer(COLOR_ACTIVE_IMAGE_BACKGROUND)], colors[Integer(COLOR_ACTIVE_IMAGE_BORDER)])
         return (colors[Integer(COLOR_ACTIVE_IMAGE_BORDER)],)
     elseif this_widget == user_interaction_state.hot_widget
-        # return (colors[Integer(COLOR_HOT_IMAGE_BACKGROUND)], colors[Integer(COLOR_HOT_IMAGE_BORDER)])
         return (colors[Integer(COLOR_HOT_IMAGE_BORDER)],)
     else
-        # return (colors[Integer(COLOR_NEUTRAL_IMAGE_BACKGROUND)], colors[Integer(COLOR_NEUTRAL_IMAGE_BORDER)])
         return (colors[Integer(COLOR_NEUTRAL_IMAGE_BORDER)],)
     end
 end
