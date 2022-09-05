@@ -89,36 +89,62 @@ function start()
     user_interaction_state = SI.UserInteractionState(SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID)
 
     layout = SI.BoxLayout(SD.Rectangle(SD.Point(1, 1), image_height, image_width))
-    debug_text = String[]
-    show_debug_text = false
-    slider_value = 0
-    scroll_bar_value = (0, 0, 16, 40, 0, 0)
-    image_shape = SD.Image(SD.Point(1, 1), rand(UInt32, 120, 360))
-    min_bar_size = 10
-    image_scroll_bar_width = 240
-    image_scroll_bar_height = 20
-    image_scroll_bar_bar_size = (image_scroll_bar_height, (image_scroll_bar_width * image_scroll_bar_width) ÷ SD.get_width(image_shape))
-    image_scroll_bar_value = (0, 0, image_scroll_bar_bar_size..., 0, 0)
-    image_shape = SD.Image(SD.move(SD.Point(1, 1), -image_scroll_bar_value[1], -image_scroll_bar_value[2]), image_shape.image)
-    SD.draw!(image_shape.image, SD.Background(), 0x00ffffff)
-    SD.draw!(image_shape.image, SD.ThickRectangle(SD.Point(20, 20), 80, 320, 20), 0x00000000)
-    text_box_value = collect("Enter text")
-    num_button_clicks = 0
+
     font = SD.TERMINUS_BOLD_24_12
-    widget_gap = SD.get_height(font) ÷ 4
-    sliding_window_size = 30
-    i = 0
+    font_height = SD.get_height(font)
+    font_width = SD.get_width(font)
+
+    widget_gap = font_width ÷ 2
+
+    # widget: button
+    button_num_clicks = 0
+
+    # widget: slider
+    slider_value = 0
+
+    # widget: scroll_bar
+    scroll_bar_value = (0, 0, font_height ÷ 2, 4 * font_width, 0, 0)
+
+    # widget: image
+    image_widget_height = 5 * font_height
+    image_widget_width = 60 * font_width
+    image_widget_shape = SD.Image(SD.Point(1, 1), rand(UInt32, image_widget_height, image_widget_width))
+    image_scroll_bar_min_bar_size = font_width
+    image_scroll_bar_height = font_height
+    image_scroll_bar_width = 20 * font_width
+    image_scroll_bar_bar_size = (image_scroll_bar_height, (image_scroll_bar_width * image_scroll_bar_width) ÷ SD.get_width(image_widget_shape))
+    image_scroll_bar_value = (0, 0, image_scroll_bar_bar_size..., 0, 0)
+    image_widget_shape = SD.Image(SD.move(SD.Point(1, 1), -image_scroll_bar_value[1], -image_scroll_bar_value[2]), image_widget_shape.image)
+    SD.draw!(image_widget_shape.image, SD.Background(), 0x00ffffff)
+    SD.draw!(image_widget_shape.image, SD.ThickRectangle(SD.Point(image_widget_height ÷ 4, image_widget_height ÷ 4), image_widget_height ÷ 2, image_widget_width - image_widget_height ÷ 2, image_widget_height ÷ 8), 0x00000000)
+
+    # widget: text_box
+    text_box_value = collect("Enter text")
+
+    # widget: radio_button
     radio_button_value = 1
+
+    # widget: drop_down
     drop_down_selected_item = 1
     drop_down_value = false
 
-    ui_context = SI.UIContext(user_interaction_state, user_input_state, layout, image, font, SI.COLORS)
+    # widget: check_box
+    check_box_value = false
+    debug_text_list = String[]
 
-    time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(time_stamp_buffer, time_ns())
+    colors = SI.COLORS
 
-    compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
-    push!(compute_time_buffer, zero(UInt))
+    ui_context = SI.UIContext(user_interaction_state, user_input_state, layout, image, font, colors)
+
+    i = 0
+
+    sliding_window_size = 30
+
+    frame_time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(frame_time_stamp_buffer, time_ns())
+
+    frame_compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(frame_compute_time_buffer, zero(UInt))
 
     while !GLFW.WindowShouldClose(window)
         if SI.went_down(user_input_state.keyboard_buttons[Int(GLFW.KEY_ESCAPE) + 1])
@@ -127,7 +153,7 @@ function start()
         end
 
         layout.reference_bounding_box = SD.Rectangle(SD.Point(1, 1), image_height, image_width)
-        empty!(debug_text)
+        empty!(debug_text_list)
 
         compute_time_start = time_ns()
 
@@ -140,8 +166,8 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             SI.UP1_LEFT1,
             widget_gap,
-            SD.get_height(font),
-            SD.get_width(font) * SI.get_num_printable_characters(text),
+            font_height,
+            SI.get_num_printable_characters(text) * font_width,
             text,
         )
 
@@ -151,8 +177,8 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             SI.DOWN2_LEFT1,
             widget_gap,
-            SD.get_height(font),
-            SD.get_width(font) * 12,
+            font_height,
+            12 * font_width,
             "Button",
         )
         temp_bounding_box = layout.reference_bounding_box
@@ -163,12 +189,12 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             SI.UP1_RIGHT2,
             widget_gap,
-            SD.get_height(font),
-            240,
-            "$(num_button_clicks)",
+            font_height,
+            20 * font_width,
+            "$(button_num_clicks)",
         )
         if button_value
-            num_button_clicks += 1
+            button_num_clicks += 1
         end
 
         layout.reference_bounding_box = temp_bounding_box
@@ -178,8 +204,8 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             SI.DOWN2_LEFT1,
             widget_gap,
-            SD.get_height(font),
-            SD.get_width(font) * 12,
+            font_height,
+            12 * font_width,
             "Slider",
         )
         temp_bounding_box = layout.reference_bounding_box
@@ -191,8 +217,8 @@ function start()
             slider_value,
             SI.UP1_RIGHT2,
             widget_gap,
-            SD.get_height(font),
-            240,
+            font_height,
+            20 * font_width,
             "$(slider_value)",
         )
 
@@ -203,8 +229,8 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             SI.DOWN2_LEFT1,
             widget_gap,
-            SD.get_height(font),
-            SD.get_width(font) * 12,
+            font_height,
+            12 * font_width,
             "ScrollBar",
         )
         temp_bounding_box = layout.reference_bounding_box
@@ -216,8 +242,8 @@ function start()
             scroll_bar_value,
             SI.UP1_RIGHT2,
             widget_gap,
-            SD.get_height(font),
-            240,
+            font_height,
+            20 * font_width,
         )
 
         layout.reference_bounding_box = temp_bounding_box
@@ -227,8 +253,8 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             SI.DOWN2_LEFT1,
             widget_gap,
-            SD.get_height(font),
-            SD.get_width(font) * 12,
+            font_height,
+            12 * font_width,
             "TextBox",
         )
         temp_bounding_box = layout.reference_bounding_box
@@ -240,8 +266,8 @@ function start()
             text_box_value,
             SI.UP1_RIGHT2,
             widget_gap,
-            SD.get_height(font),
-            240,
+            font_height,
+            20 * font_width,
         )
 
         layout.reference_bounding_box = temp_bounding_box
@@ -251,8 +277,8 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             SI.DOWN2_LEFT1,
             widget_gap,
-            SD.get_height(font),
-            SD.get_width(font) * 12,
+            font_height,
+            12 * font_width,
             "Image",
         )
         temp_bounding_box = layout.reference_bounding_box
@@ -263,9 +289,9 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             SI.UP1_RIGHT2,
             widget_gap,
-            SD.get_height(image_shape),
-            240,
-            image_shape,
+            SD.get_height(image_widget_shape),
+            20 * font_width,
+            image_widget_shape,
         )
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
@@ -276,22 +302,22 @@ function start()
             image_scroll_bar_value,
             SI.DOWN2_LEFT1,
             widget_gap,
-            20,
-            240,
+            font_height,
+            20 * font_width,
         )
-        delta_j_image = (image_scroll_bar_value[2] * (SD.get_width(image_shape) - 240)) ÷ (240 - max(image_scroll_bar_value[4], min_bar_size))
-        image_shape = SD.Image(SD.move(SD.Point(1, 1), 0, -delta_j_image), image_shape.image)
+        delta_j_image = (image_scroll_bar_value[2] * (SD.get_width(image_widget_shape) - 20 * font_width)) ÷ (20 * font_width  - max(image_scroll_bar_value[4], image_scroll_bar_min_bar_size))
+        image_widget_shape = SD.Image(SD.move(SD.Point(1, 1), 0, -delta_j_image), image_widget_shape.image)
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
-        push!(debug_text, "previous frame number: $(i)")
-        push!(debug_text, "average total time spent per frame (averaged over previous $(length(time_stamp_buffer)) frames): $(round((last(time_stamp_buffer) - first(time_stamp_buffer)) / (1e6 * length(time_stamp_buffer)), digits = 2)) ms")
-        push!(debug_text, "average compute time spent per frame (averaged over previous $(length(compute_time_buffer)) frames): $(round(sum(compute_time_buffer) / (1e6 * length(compute_time_buffer)), digits = 2)) ms")
-        push!(debug_text, "cursor: $(user_input_state.cursor)")
-        push!(debug_text, "mouse_left: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1])")
-        push!(debug_text, "mouse_right: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_RIGHT) + 1])")
-        push!(debug_text, "mouse_middle: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_MIDDLE) + 1])")
-        push!(debug_text, "hot_widget: $(user_interaction_state.hot_widget)")
-        push!(debug_text, "active_widget: $(user_interaction_state.active_widget)")
+        push!(debug_text_list, "previous frame number: $(i)")
+        push!(debug_text_list, "average total time spent per frame (averaged over previous $(length(frame_time_stamp_buffer)) frames): $(round((last(frame_time_stamp_buffer) - first(frame_time_stamp_buffer)) / (1e6 * length(frame_time_stamp_buffer)), digits = 2)) ms")
+        push!(debug_text_list, "average compute time spent per frame (averaged over previous $(length(frame_compute_time_buffer)) frames): $(round(sum(frame_compute_time_buffer) / (1e6 * length(frame_compute_time_buffer)), digits = 2)) ms")
+        push!(debug_text_list, "cursor: $(user_input_state.cursor)")
+        push!(debug_text_list, "mouse_left: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1])")
+        push!(debug_text_list, "mouse_right: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_RIGHT) + 1])")
+        push!(debug_text_list, "mouse_middle: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_MIDDLE) + 1])")
+        push!(debug_text_list, "hot_widget: $(user_interaction_state.hot_widget)")
+        push!(debug_text_list, "active_widget: $(user_interaction_state.active_widget)")
 
         layout.reference_bounding_box = temp_bounding_box
         SI.do_widget!(
@@ -300,8 +326,8 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             SI.DOWN2_LEFT1,
             widget_gap,
-            SD.get_height(font),
-            SD.get_width(font) * 12,
+            font_height,
+            12 * font_width,
             "RadioButton",
         )
         temp_bounding_box = layout.reference_bounding_box
@@ -319,8 +345,8 @@ function start()
                 radio_button_value == j,
                 SI.UP1_RIGHT2,
                 widget_gap,
-                SD.get_height(font),
-                SD.get_width(font) * (max_num_chars + 2),
+                font_height,
+                (max_num_chars + 2) * font_width,
                 "$(item)",
             )
                 radio_button_value = j
@@ -335,8 +361,8 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             SI.DOWN2_LEFT1,
             widget_gap,
-            SD.get_height(font),
-            SD.get_width(font) * 12,
+            font_height,
+            12 * font_width,
             "DropDown",
         )
         temp_bounding_box = layout.reference_bounding_box
@@ -353,8 +379,8 @@ function start()
             drop_down_value,
             SI.UP1_RIGHT2,
             widget_gap,
-            SD.get_height(font),
-            SD.get_width(font) * (max_num_chars + 2),
+            font_height,
+            (max_num_chars + 2) * font_width,
             drop_down_item_list[drop_down_selected_item],
         )
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
@@ -368,8 +394,8 @@ function start()
                     drop_down_selected_item == j,
                     SI.DOWN2_LEFT1,
                     0,
-                    SD.get_height(font),
-                    SD.get_width(font) * (max_num_chars + 2),
+                    font_height,
+                    (max_num_chars + 2) * font_width,
                     "$(item)",
                 )
                     drop_down_selected_item = j
@@ -385,43 +411,43 @@ function start()
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             SI.DOWN2_LEFT1,
             widget_gap,
-            SD.get_height(font),
-            SD.get_width(font) * 12,
+            font_height,
+            12 * font_width,
             "CheckBox",
         )
         temp_bounding_box = layout.reference_bounding_box
 
         text = "Show debug text"
-        show_debug_text = SI.do_widget!(
+        check_box_value = SI.do_widget!(
             SI.CHECK_BOX,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            show_debug_text,
+            check_box_value,
             SI.UP1_RIGHT2,
             widget_gap,
-            SD.get_height(font),
-            SD.get_width(font) * (SI.get_num_printable_characters(text) + 2),
+            font_height,
+            (SI.get_num_printable_characters(text) + 2) * font_width,
             text,
         )
 
-        if show_debug_text
+        if check_box_value
             layout.reference_bounding_box = temp_bounding_box
-            for (j, text) in enumerate(debug_text)
+            for (j, text) in enumerate(debug_text_list)
                 SI.do_widget!(
                     SI.TEXT,
                     ui_context,
                     SI.WidgetID(@__FILE__, @__LINE__, j),
                     SI.DOWN2_LEFT1,
                     widget_gap,
-                    SD.get_height(font),
-                    SD.get_width(font) * SI.get_num_printable_characters(text),
+                    font_height,
+                    SI.get_num_printable_characters(text) * font_width,
                     text,
                 )
             end
         end
 
         compute_time_end = time_ns()
-        push!(compute_time_buffer, compute_time_end - compute_time_start)
+        push!(frame_compute_time_buffer, compute_time_end - compute_time_start)
 
         update_back_buffer(image)
 
@@ -433,7 +459,7 @@ function start()
 
         i = i + 1
 
-        push!(time_stamp_buffer, time_ns())
+        push!(frame_time_stamp_buffer, time_ns())
     end
 
     MGL.glDeleteVertexArrays(1, VAO_ref)
