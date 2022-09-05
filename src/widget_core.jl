@@ -3,9 +3,6 @@ abstract type AbstractWidgetType end
 struct Button <: AbstractWidgetType end
 const BUTTON = Button()
 
-struct Slider <: AbstractWidgetType end
-const SLIDER = Slider()
-
 struct TextBox <: AbstractWidgetType end
 const TEXT_BOX = TextBox()
 
@@ -21,8 +18,8 @@ const RADIO_BUTTON = RadioButton()
 struct DropDown <: AbstractWidgetType end
 const DROP_DOWN = DropDown()
 
-struct ScrollBar <: AbstractWidgetType end
-const SCROLL_BAR = ScrollBar()
+struct Slider <: AbstractWidgetType end
+const SLIDER = Slider()
 
 struct Image <: AbstractWidgetType end
 const IMAGE = Image()
@@ -124,38 +121,6 @@ end
 do_widget!!(widget_type::Union{Button, Text, Image}, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
 #####
-##### Slider
-#####
-
-function get_widget_value(::Slider, hot_widget, active_widget, this_widget, widget_value, potential_next_widget_value)
-    if (hot_widget == this_widget) && (active_widget == this_widget)
-        return potential_next_widget_value
-    else
-        return widget_value
-    end
-end
-
-function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
-    mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
-    mouse_went_down = went_down(ended_down, num_transitions)
-    mouse_went_up = went_up(ended_down, num_transitions)
-
-    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget)
-
-    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget && mouse_went_down)
-
-    widget_value = get_widget_value(widget_type, hot_widget, active_widget, this_widget, widget_value, clamp(j_mouse - j_min + one(j_min), zero(j_min), j_max - j_min + one(j_min)))
-
-    active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_went_up)
-
-    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_widget)
-
-    return hot_widget, active_widget, null_widget, widget_value
-end
-
-do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
-
-#####
 ##### TextBox
 #####
 
@@ -212,10 +177,10 @@ end
 do_widget!!(widget_type::Union{CheckBox, RadioButton, DropDown}, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
 #####
-##### ScrollBar
+##### Slider
 #####
 
-function get_widget_value(widget_type::ScrollBar, hot_widget, active_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, i_min, j_min, i_max, j_max)
+function get_widget_value(widget_type::Slider, hot_widget, active_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, i_min, j_min, i_max, j_max)
     if (hot_widget == this_widget) && (active_widget == this_widget)
         i_slider_value = i_mouse + i_slider_relative_mouse - i_min
         j_slider_value = j_mouse + j_slider_relative_mouse - j_min
@@ -229,7 +194,7 @@ function get_widget_value(widget_type::ScrollBar, hot_widget, active_widget, thi
     end
 end
 
-function do_widget(widget_type::ScrollBar, hot_widget, active_widget, null_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
     i_min_slider = i_min + i_slider_value
     j_min_slider = j_min + j_slider_value
 
@@ -258,4 +223,4 @@ function do_widget(widget_type::ScrollBar, hot_widget, active_widget, null_widge
     return hot_widget, active_widget, null_widget, (i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse)
 end
 
-do_widget!!(widget_type::ScrollBar, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
+do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)

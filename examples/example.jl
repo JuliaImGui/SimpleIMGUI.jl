@@ -100,21 +100,18 @@ function start()
     button_num_clicks = 0
 
     # widget: slider
-    slider_value = 0
-
-    # widget: scroll_bar
-    scroll_bar_value = (0, 0, font_height ÷ 2, 4 * font_width, 0, 0)
+    slider_value = (0, 0, font_height ÷ 2, 4 * font_width, 0, 0)
 
     # widget: image
     image_widget_height = 5 * font_height
     image_widget_width = 60 * font_width
     image_widget_shape = SD.Image(SD.Point(1, 1), rand(UInt32, image_widget_height, image_widget_width))
-    image_scroll_bar_min_bar_size = font_width
-    image_scroll_bar_height = font_height
-    image_scroll_bar_width = 20 * font_width
-    image_scroll_bar_bar_size = (image_scroll_bar_height, (image_scroll_bar_width * image_scroll_bar_width) ÷ SD.get_width(image_widget_shape))
-    image_scroll_bar_value = (0, 0, image_scroll_bar_bar_size..., 0, 0)
-    image_widget_shape = SD.Image(SD.move(SD.Point(1, 1), -image_scroll_bar_value[1], -image_scroll_bar_value[2]), image_widget_shape.image)
+    image_slider_min_bar_size = font_width
+    image_slider_height = font_height
+    image_slider_width = 20 * font_width
+    image_slider_bar_size = (image_slider_height, (image_slider_width * image_slider_width) ÷ SD.get_width(image_widget_shape))
+    image_slider_value = (0, 0, image_slider_bar_size..., 0, 0)
+    image_widget_shape = SD.Image(SD.move(SD.Point(1, 1), -image_slider_value[1], -image_slider_value[2]), image_widget_shape.image)
     SD.draw!(image_widget_shape.image, SD.Background(), 0x00ffffff)
     SD.draw!(image_widget_shape.image, SD.ThickRectangle(SD.Point(image_widget_height ÷ 4, image_widget_height ÷ 4), image_widget_height ÷ 2, image_widget_width - image_widget_height ÷ 2, image_widget_height ÷ 8), 0x00000000)
 
@@ -219,31 +216,6 @@ function start()
             widget_gap,
             font_height,
             20 * font_width,
-            "$(slider_value)",
-        )
-
-        layout.reference_bounding_box = temp_bounding_box
-        SI.do_widget!(
-            SI.TEXT,
-            ui_context,
-            SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "ScrollBar",
-        )
-        temp_bounding_box = layout.reference_bounding_box
-
-        scroll_bar_value = SI.do_widget!(
-            SI.SCROLL_BAR,
-            ui_context,
-            SI.WidgetID(@__FILE__, @__LINE__, 1),
-            scroll_bar_value,
-            SI.UP1_RIGHT2,
-            widget_gap,
-            font_height,
-            20 * font_width,
         )
 
         layout.reference_bounding_box = temp_bounding_box
@@ -295,17 +267,17 @@ function start()
         )
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
-        image_scroll_bar_value = SI.do_widget!(
-            SI.SCROLL_BAR,
+        image_slider_value = SI.do_widget!(
+            SI.SLIDER,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            image_scroll_bar_value,
+            image_slider_value,
             SI.DOWN2_LEFT1,
             widget_gap,
             font_height,
             20 * font_width,
         )
-        delta_j_image = (image_scroll_bar_value[2] * (SD.get_width(image_widget_shape) - 20 * font_width)) ÷ (20 * font_width  - max(image_scroll_bar_value[4], image_scroll_bar_min_bar_size))
+        delta_j_image = (image_slider_value[2] * (SD.get_width(image_widget_shape) - 20 * font_width)) ÷ (20 * font_width  - max(image_slider_value[4], image_slider_min_bar_size))
         image_widget_shape = SD.Image(SD.move(SD.Point(1, 1), 0, -delta_j_image), image_widget_shape.image)
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
