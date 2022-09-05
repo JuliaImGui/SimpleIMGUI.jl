@@ -3,9 +3,6 @@ abstract type AbstractWidgetType end
 struct Button <: AbstractWidgetType end
 const BUTTON = Button()
 
-struct Slider <: AbstractWidgetType end
-const SLIDER = Slider()
-
 struct TextBox <: AbstractWidgetType end
 const TEXT_BOX = TextBox()
 
@@ -122,38 +119,6 @@ function do_widget(widget_type::Union{Button, Text, Image}, hot_widget, active_w
 end
 
 do_widget!!(widget_type::Union{Button, Text, Image}, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
-
-#####
-##### Slider
-#####
-
-function get_widget_value(::Slider, hot_widget, active_widget, this_widget, widget_value, potential_next_widget_value)
-    if (hot_widget == this_widget) && (active_widget == this_widget)
-        return potential_next_widget_value
-    else
-        return widget_value
-    end
-end
-
-function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
-    mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
-    mouse_went_down = went_down(ended_down, num_transitions)
-    mouse_went_up = went_up(ended_down, num_transitions)
-
-    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget)
-
-    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget && mouse_went_down)
-
-    widget_value = get_widget_value(widget_type, hot_widget, active_widget, this_widget, widget_value, clamp(j_mouse - j_min + one(j_min), zero(j_min), j_max - j_min + one(j_min)))
-
-    active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_went_up)
-
-    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_widget)
-
-    return hot_widget, active_widget, null_widget, widget_value
-end
-
-do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
 #####
 ##### TextBox

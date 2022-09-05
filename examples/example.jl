@@ -99,9 +99,6 @@ function start()
     # widget: button
     button_num_clicks = 0
 
-    # widget: slider
-    slider_value = 0
-
     # widget: scroll_bar
     scroll_bar_value = (0, 0, font_height ÷ 2, 4 * font_width, 0, 0)
 
@@ -196,31 +193,6 @@ function start()
         if button_value
             button_num_clicks += 1
         end
-
-        layout.reference_bounding_box = temp_bounding_box
-        SI.do_widget!(
-            SI.TEXT,
-            ui_context,
-            SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "Slider",
-        )
-        temp_bounding_box = layout.reference_bounding_box
-
-        slider_value = SI.do_widget!(
-            SI.SLIDER,
-            ui_context,
-            SI.WidgetID(@__FILE__, @__LINE__, 1),
-            slider_value,
-            SI.UP1_RIGHT2,
-            widget_gap,
-            font_height,
-            20 * font_width,
-            "$(slider_value)",
-        )
 
         layout.reference_bounding_box = temp_bounding_box
         SI.do_widget!(

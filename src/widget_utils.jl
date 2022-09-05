@@ -44,7 +44,7 @@ function do_widget!(
 end
 
 function do_widget!(
-        widget_type::Union{Slider, CheckBox, RadioButton, DropDown},
+        widget_type::Union{CheckBox, RadioButton, DropDown},
         user_interaction_state,
         this_widget,
         widget_value,
@@ -183,7 +183,7 @@ function do_widget!(
 end
 
 function do_widget!(
-        widget_type::Union{Slider, CheckBox, RadioButton, DropDown},
+        widget_type::Union{CheckBox, RadioButton, DropDown},
         user_interaction_state,
         this_widget,
         widget_value,
@@ -317,16 +317,6 @@ function get_colors(widget_type::Button, user_interaction_state, this_widget, co
     end
 end
 
-function get_colors(widget_type::Slider, user_interaction_state, this_widget, colors)
-    if this_widget == user_interaction_state.active_widget
-        return (colors[Integer(COLOR_ACTIVE_SLIDER_BACKGROUND)], colors[Integer(COLOR_ACTIVE_SLIDER_BORDER)], colors[Integer(COLOR_ACTIVE_SLIDER_TEXT)], colors[Integer(COLOR_ACTIVE_SLIDER_INDICATOR)])
-    elseif this_widget == user_interaction_state.hot_widget
-        return (colors[Integer(COLOR_HOT_SLIDER_BACKGROUND)], colors[Integer(COLOR_HOT_SLIDER_BORDER)], colors[Integer(COLOR_HOT_SLIDER_TEXT)], colors[Integer(COLOR_HOT_SLIDER_INDICATOR)])
-    else
-        return (colors[Integer(COLOR_NEUTRAL_SLIDER_BACKGROUND)], colors[Integer(COLOR_NEUTRAL_SLIDER_BORDER)], colors[Integer(COLOR_NEUTRAL_SLIDER_TEXT)], colors[Integer(COLOR_NEUTRAL_SLIDER_INDICATOR)])
-    end
-end
-
 function get_colors(widget_type::TextBox, user_interaction_state, this_widget, colors)
     if this_widget == user_interaction_state.active_widget
         return (colors[Integer(COLOR_ACTIVE_TEXT_BOX_BACKGROUND)], colors[Integer(COLOR_ACTIVE_TEXT_BOX_BORDER)], colors[Integer(COLOR_ACTIVE_TEXT_BOX_TEXT)])
@@ -402,7 +392,6 @@ end
 
 get_content_alignment(::AbstractWidgetType) = UP1_LEFT1
 get_content_alignment(::Button) = CENTER
-get_content_alignment(::Slider) = CENTER
 
 get_content_padding(::AbstractWidgetType) = -1
 
@@ -438,7 +427,7 @@ function do_widget!(
 end
 
 function do_widget!(
-        widget_type::Union{Slider, CheckBox, RadioButton, DropDown},
+        widget_type::Union{CheckBox, RadioButton, DropDown},
         ui_context::UIContext,
         this_widget,
         widget_value,

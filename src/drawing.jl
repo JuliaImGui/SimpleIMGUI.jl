@@ -95,21 +95,6 @@ function draw_text_line_in_a_box!(image, bounding_box, text, font, alignment, pa
     return nothing
 end
 
-function draw_text_line_with_slider_in_a_box!(image, bounding_box, slider_value, text, font, alignment, padding, background_color, border_color, text_color, bar_color)
-    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), background_color)
-
-    if slider_value > zero(slider_value)
-        SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, slider_value), bar_color)
-    end
-
-    SD.draw!(image, bounding_box, border_color)
-
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, alignment, padding, SD.get_height(font), SD.get_width(font) * get_num_printable_characters(text))
-    SD.draw!(image, SD.TextLine(SD.move(bounding_box.position, i_offset, j_offset), text, font), text_color)
-
-    return nothing
-end
-
 function draw_widget!(image, widget_type, bounding_box, args...; kwargs...)
     if SD.is_outbounds(image, bounding_box)
         return nothing
@@ -139,22 +124,6 @@ function draw_widget_unclipped!(image, widget_type::Button, bounding_box, user_i
         get_color(user_interaction_state, this_widget, background_color),
         get_color(user_interaction_state, this_widget, border_color),
         get_color(user_interaction_state, this_widget, text_color),
-    )
-end
-
-function draw_widget_unclipped!(image, widget_type::Slider, bounding_box, user_interaction_state, this_widget, slider_value, alignment, padding, text, font, background_color, border_color, text_color, bar_color)
-    draw_text_line_with_slider_in_a_box!(
-        image,
-        bounding_box,
-        slider_value,
-        text,
-        font,
-        alignment,
-        padding,
-        get_color(user_interaction_state, this_widget, background_color),
-        get_color(user_interaction_state, this_widget, border_color),
-        get_color(user_interaction_state, this_widget, text_color),
-        get_color(user_interaction_state, this_widget, bar_color),
     )
 end
 
