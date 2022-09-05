@@ -309,16 +309,6 @@ function start()
         image_widget_shape = SD.Image(SD.move(SD.Point(1, 1), 0, -delta_j_image), image_widget_shape.image)
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
-        push!(debug_text_list, "previous frame number: $(i)")
-        push!(debug_text_list, "average total time spent per frame (averaged over previous $(length(frame_time_stamp_buffer)) frames): $(round((last(frame_time_stamp_buffer) - first(frame_time_stamp_buffer)) / (1e6 * length(frame_time_stamp_buffer)), digits = 2)) ms")
-        push!(debug_text_list, "average compute time spent per frame (averaged over previous $(length(frame_compute_time_buffer)) frames): $(round(sum(frame_compute_time_buffer) / (1e6 * length(frame_compute_time_buffer)), digits = 2)) ms")
-        push!(debug_text_list, "cursor: $(user_input_state.cursor)")
-        push!(debug_text_list, "mouse_left: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1])")
-        push!(debug_text_list, "mouse_right: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_RIGHT) + 1])")
-        push!(debug_text_list, "mouse_middle: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_MIDDLE) + 1])")
-        push!(debug_text_list, "hot_widget: $(user_interaction_state.hot_widget)")
-        push!(debug_text_list, "active_widget: $(user_interaction_state.active_widget)")
-
         layout.reference_bounding_box = temp_bounding_box
         SI.do_widget!(
             SI.TEXT,
@@ -416,6 +406,16 @@ function start()
             "CheckBox",
         )
         temp_bounding_box = layout.reference_bounding_box
+
+        push!(debug_text_list, "previous frame number: $(i)")
+        push!(debug_text_list, "average total time spent per frame (averaged over previous $(length(frame_time_stamp_buffer)) frames): $(round((last(frame_time_stamp_buffer) - first(frame_time_stamp_buffer)) / (1e6 * length(frame_time_stamp_buffer)), digits = 2)) ms")
+        push!(debug_text_list, "average compute time spent per frame (averaged over previous $(length(frame_compute_time_buffer)) frames): $(round(sum(frame_compute_time_buffer) / (1e6 * length(frame_compute_time_buffer)), digits = 2)) ms")
+        push!(debug_text_list, "cursor: $(user_input_state.cursor)")
+        push!(debug_text_list, "mouse_left: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1])")
+        push!(debug_text_list, "mouse_right: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_RIGHT) + 1])")
+        push!(debug_text_list, "mouse_middle: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_MIDDLE) + 1])")
+        push!(debug_text_list, "hot_widget: $(user_interaction_state.hot_widget)")
+        push!(debug_text_list, "active_widget: $(user_interaction_state.active_widget)")
 
         text = "Show debug text"
         check_box_value = SI.do_widget!(
