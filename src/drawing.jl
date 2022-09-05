@@ -1,61 +1,4 @@
 """
-    struct ContextualColor{C}
-        neutral_color::C
-        hot_color::C
-        active_color::C
-    end
-
-Store 3 different colors for some part of a widget. Actual color for drawing depends upon whether the widget in question is hot, active or neutral. If widget is active, then `active_color` is used, if widget is hot, then `hot_color` is used, and if widget is neutral, then `neutral_color` is used.
-
-See also [`get_color`](@ref).
-"""
-struct ContextualColor{C}
-    neutral_color::C
-    hot_color::C
-    active_color::C
-end
-
-"""
-    get_color(user_interaction_state, this_widget, color)
-
-Return the actual color for drawing some part of a widget depending upon the state of the widget, that is, whether it is neutral, hot, or active.
-
-See also [`ContextualColor`](@ref).
-
-# Examples
-```julia-repl
-julia> this_widget = SimpleIMGUI.WidgetID("/path/to/file.jl", 123, 1)
-SimpleIMGUI.WidgetID{String, Int64}("/path/to/file.jl", 123, 1)
-
-julia> user_interaction_state = SimpleIMGUI.UserInteractionState(this_widget, SimpleIMGUI.NULL_WIDGET_ID, SimpleIMGUI.NULL_WIDGET_ID) # this_widget is the hot widget
-SimpleIMGUI.UserInteractionState{String, Int64}(SimpleIMGUI.WidgetID{String, Int64}("/path/to/file.jl", 123, 1), SimpleIMGUI.WidgetID{String, Int64}("", 0, 0), SimpleIMGUI.WidgetID{String, Int64}("", 0, 0))
-
-julia> color = 0x00b0b0b0
-0x00b0b0b0
-
-julia> SimpleIMGUI.get_color(user_interaction_state, this_widget, color)
-0x00b0b0b0
-
-julia> contextual_color = SimpleIMGUI.ContextualColor(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf)
-SimpleIMGUI.ContextualColor{UInt32}(0x00b0b0b0, 0x00b7b7b7, 0x00bfbfbf)
-
-julia> SimpleIMGUI.get_color(user_interaction_state, this_widget, contextual_color)
-0x00b7b7b7
-```
-"""
-get_color(user_interaction_state, this_widget, color) = color
-
-function get_color(user_interaction_state, this_widget, color::ContextualColor)
-    if this_widget == user_interaction_state.active_widget
-        return color.active_color
-    elseif this_widget == user_interaction_state.hot_widget
-        return color.hot_color
-    else
-        return color.neutral_color
-    end
-end
-
-"""
     get_num_printable_characters(text)
 
 Return the number of printable characters in text.
@@ -121,9 +64,9 @@ function draw_widget_unclipped!(image, widget_type::Button, bounding_box, user_i
         font,
         alignment,
         padding,
-        get_color(user_interaction_state, this_widget, background_color),
-        get_color(user_interaction_state, this_widget, border_color),
-        get_color(user_interaction_state, this_widget, text_color),
+        background_color,
+        border_color,
+        text_color,
     )
 end
 
@@ -139,15 +82,15 @@ function draw_widget_unclipped!(image, widget_type::TextBox, bounding_box, user_
         font,
         alignment,
         padding,
-        get_color(user_interaction_state, this_widget, background_color),
-        get_color(user_interaction_state, this_widget, border_color),
-        get_color(user_interaction_state, this_widget, text_color),
+        background_color,
+        border_color,
+        text_color,
     )
 
     if this_widget == user_interaction_state.active_widget
         num_printable_characters = get_num_printable_characters(text)
         _, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, alignment, padding, SD.get_height(font), SD.get_width(font) * num_printable_characters)
-        SD.draw!(image, SD.FilledRectangle(SD.move_j(bounding_box.position, j_offset + num_printable_characters * SD.get_width(font) - one(j_offset)), bounding_box.height, oftype(bounding_box.width, 2)), get_color(user_interaction_state, this_widget, text_color))
+        SD.draw!(image, SD.FilledRectangle(SD.move_j(bounding_box.position, j_offset + num_printable_characters * SD.get_width(font) - one(j_offset)), bounding_box.height, oftype(bounding_box.width, 2)), text_color)
     end
 
     return nothing
@@ -159,9 +102,9 @@ function draw_widget_unclipped!(image, widget_type::CheckBox, bounding_box, user
     font_width = SD.get_width(font)
     box_width = oftype(font_width, 2) * font_width
     x = box_width ÷ oftype(box_width, 8)
-    SD.draw!(image, SD.ThickRectangle(SD.move(bounding_box.position, x, x), oftype(x, 6) * x, oftype(x, 6) * x, x), get_color(user_interaction_state, this_widget, indicator_color))
+    SD.draw!(image, SD.ThickRectangle(SD.move(bounding_box.position, x, x), oftype(x, 6) * x, oftype(x, 6) * x, x), indicator_color)
     if widget_value
-        SD.draw!(image, SD.FilledRectangle(SD.move(bounding_box.position, oftype(x, 3) * x, oftype(x, 3) * x), oftype(x, 2) * x, oftype(x, 2) * x), get_color(user_interaction_state, this_widget, indicator_color))
+        SD.draw!(image, SD.FilledRectangle(SD.move(bounding_box.position, oftype(x, 3) * x, oftype(x, 3) * x), oftype(x, 2) * x, oftype(x, 2) * x), indicator_color)
     end
 
     draw_text_line_in_a_box!(
@@ -171,9 +114,9 @@ function draw_widget_unclipped!(image, widget_type::CheckBox, bounding_box, user
         font,
         alignment,
         padding,
-        get_color(user_interaction_state, this_widget, background_color),
-        get_color(user_interaction_state, this_widget, border_color),
-        get_color(user_interaction_state, this_widget, text_color),
+        background_color,
+        border_color,
+        text_color,
     )
 
     return nothing
@@ -184,9 +127,9 @@ function draw_widget_unclipped!(image, widget_type::RadioButton, bounding_box, u
     font_width = SD.get_width(font)
     indicator_width = oftype(font_width, 2) * font_width
     x = indicator_width ÷ oftype(indicator_width, 8)
-    SD.draw!(image, SD.ThickCircle(SD.move(bounding_box.position, x, x), oftype(x, 6) * x, x), get_color(user_interaction_state, this_widget, indicator_color))
+    SD.draw!(image, SD.ThickCircle(SD.move(bounding_box.position, x, x), oftype(x, 6) * x, x), indicator_color)
     if widget_value
-        SD.draw!(image, SD.FilledCircle(SD.move(bounding_box.position, oftype(x, 3) * x, oftype(x, 3) * x), oftype(x, 2) * x), get_color(user_interaction_state, this_widget, indicator_color))
+        SD.draw!(image, SD.FilledCircle(SD.move(bounding_box.position, oftype(x, 3) * x, oftype(x, 3) * x), oftype(x, 2) * x), indicator_color)
     end
 
     draw_text_line_in_a_box!(
@@ -196,9 +139,9 @@ function draw_widget_unclipped!(image, widget_type::RadioButton, bounding_box, u
         font,
         alignment,
         padding,
-        get_color(user_interaction_state, this_widget, background_color),
-        get_color(user_interaction_state, this_widget, border_color),
-        get_color(user_interaction_state, this_widget, text_color),
+        background_color,
+        border_color,
+        text_color,
     )
 
     return nothing
@@ -209,9 +152,9 @@ function draw_widget_unclipped!(image, widget_type::DropDown, bounding_box, user
     indicator_width = oftype(font_width, 2) * font_width
     x = indicator_width ÷ oftype(indicator_width, 8)
     if widget_value
-        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 4) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 6) * x)), get_color(user_interaction_state, this_widget, indicator_color))
+        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 4) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 6) * x)), indicator_color)
     else
-        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 6) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 4) * x)), get_color(user_interaction_state, this_widget, indicator_color))
+        SD.draw!(image, SD.FilledTriangle(SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 2) * x), SD.move(bounding_box.position, oftype(x, 2) * x, oftype(x, 6) * x), SD.move(bounding_box.position, oftype(x, 6) * x, oftype(x, 4) * x)), indicator_color)
     end
 
     draw_text_line_in_a_box!(
@@ -221,9 +164,9 @@ function draw_widget_unclipped!(image, widget_type::DropDown, bounding_box, user
         font,
         alignment,
         padding,
-        get_color(user_interaction_state, this_widget, background_color),
-        get_color(user_interaction_state, this_widget, border_color),
-        get_color(user_interaction_state, this_widget, text_color),
+        background_color,
+        border_color,
+        text_color,
     )
 
     return nothing
@@ -237,11 +180,11 @@ function draw_widget_unclipped!(image, widget_type::Slider, bounding_box, user_i
     i_slider_relative_mouse = widget_value[5]
     j_slider_relative_mouse = widget_value[6]
 
-    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), get_color(user_interaction_state, this_widget, background_color))
+    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), background_color)
 
-    SD.draw!(image, bounding_box, get_color(user_interaction_state, this_widget, border_color))
+    SD.draw!(image, bounding_box, border_color)
 
-    SD.draw!(image, SD.FilledRectangle(SD.move(bounding_box.position, i_slider_value, j_slider_value), height_slider, width_slider), get_color(user_interaction_state, this_widget, bar_color))
+    SD.draw!(image, SD.FilledRectangle(SD.move(bounding_box.position, i_slider_value, j_slider_value), height_slider, width_slider), bar_color)
 
     return nothing
 end
@@ -249,7 +192,7 @@ end
 function draw_widget_unclipped!(image, widget_type::Image, bounding_box, user_interaction_state, this_widget, content, alignment, padding, border_color)
     SD.draw!(image, content)
 
-    SD.draw!(image, bounding_box, get_color(user_interaction_state, this_widget, border_color))
+    SD.draw!(image, bounding_box, border_color)
 
     return nothing
 end
