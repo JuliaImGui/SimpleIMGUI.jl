@@ -8,7 +8,7 @@ SimpleDraw = "d1acf6f4-8553-480e-80ae-3c883f0a995a"
 
 [compat]
 julia = "1"
-SimpleDraw = "0.4"
+SimpleDraw = "0.5"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
