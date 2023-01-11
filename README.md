@@ -4,12 +4,32 @@ Simple Immediate-Mode Graphical User Interface (IMGUI) library in Julia.
 
 # Getting Started
 
-To test an example, first clone the repository and then execute the following command inside the root directory of the cloned repository:
+To test the example
+
+1. Clone the repository
 
 ```
-julia --project=examples -e 'import Pkg; Pkg.develop(path="."); Pkg.instantiate(); include("examples/example.jl")'
+git clone https://github.com/Sid-Bhatia-0/SimpleIMGUI.jl.git
 ```
 
-This will open a window and you can interact with the widgets present in it. Here is an example (note that the screenshot might not be up to date with `examples/example.jl`):
+1. Go to the `examples` directory and run the julia REPL
+
+```
+julia --project=.
+```
+
+1. Instantiate the project after going into `Pkg` mode
+
+```
+(examples) pkg> instantiate
+```
+
+1. Exit the REPL and run `example.jl` with the Project.toml and Manifest.toml files in the `examples` directory
+
+```
+julia --project=. example.jl
+```
+
+This will open a window and you can interact with the widgets present in it. Here is a screenshot
 
 <img src="https://user-images.githubusercontent.com/32610387/211919302-a3b08e41-4966-4bcb-985d-5d7c82323571.png">
