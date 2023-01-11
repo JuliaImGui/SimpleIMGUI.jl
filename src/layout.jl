@@ -110,7 +110,7 @@ julia> SimpleDraw.visualize(image)
 ```
 """
 @enum Alignment begin
-    UP2_LEFT2
+    UP2_LEFT2 = 1
     UP1_LEFT2
     LEFT2
     DOWN1_LEFT2
