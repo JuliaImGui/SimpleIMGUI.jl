@@ -30,6 +30,95 @@ mutable struct UserInputState{I, T, C} <: AbstractUserInputState
     characters::Vector{C}
 end
 
+
+"""
+    count_went_down(ended_down, num_transitions)
+
+Works similar to `count_went_down(input_button)`, just that the arguments are not bundled together.
+
+See also [`count_went_up`](@ref).
+
+# Examples
+```julia-repl
+julia> SimpleIMGUI.count_went_down(true, 3)
+2
+
+julia> SimpleIMGUI.count_went_down(false, 3)
+1
+```
+"""
+function count_went_down(ended_down, num_transitions)
+    I = typeof(num_transitions)
+
+    if ended_down
+        return (num_transitions + one(I)) ÷ convert(I, 2)
+    else
+        return num_transitions ÷ convert(I, 2)
+    end
+end
+
+"""
+    count_went_down(input_button)
+
+Return the number of times a switch like input device (like a keyboard/mouse button) went down (was pressed) within a frame.
+
+See also [`count_went_up`](@ref).
+
+# Examples
+```julia-repl
+julia> SimpleIMGUI.count_went_down(SimpleIMGUI.InputButton(true, 3))
+2
+
+julia> SimpleIMGUI.count_went_down(SimpleIMGUI.InputButton(false, 3))
+1
+```
+"""
+count_went_down(input_button) = count_went_down(input_button.ended_down, input_button.num_transitions)
+
+"""
+    count_went_up(ended_down, num_transitions)
+
+Works similar to `count_went_up(input_button)`, just that the arguments are not bundled together.
+
+See also [`count_went_down`](@ref).
+
+# Examples
+```julia-repl
+julia> SimpleIMGUI.count_went_up(true, 3)
+1
+
+julia> SimpleIMGUI.count_went_up(false, 3)
+2
+```
+"""
+function count_went_up(ended_down, num_transitions)
+    I = typeof(num_transitions)
+
+    if ended_down
+        return num_transitions ÷ convert(I, 2)
+    else
+        return (num_transitions + one(I)) ÷ convert(I, 2)
+    end
+end
+
+"""
+    count_went_up(input_button)
+
+Return the number of times a switch like input device (like a keyboard/mouse button) went up (was released) within a frame.
+
+See also [`count_went_down`](@ref).
+
+# Examples
+```julia-repl
+julia> SimpleIMGUI.count_went_up(SimpleIMGUI.InputButton(true, 3))
+1
+
+julia> SimpleIMGUI.count_went_up(SimpleIMGUI.InputButton(false, 3))
+2
+```
+"""
+count_went_up(input_button) = count_went_up(input_button.ended_down, input_button.num_transitions)
+
 """
     went_down(ended_down, num_transitions)
 
