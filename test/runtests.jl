@@ -25,6 +25,19 @@ Test.@testset "SimpleIMGUI.jl" begin
             Test.@test SI.went_down(SI.InputButton(false, 2)) == true
         end
 
+        Test.@testset "count_went_down" begin
+            Test.@test SI.count_went_down(SI.InputButton(true, 0)) == 0
+            Test.@test SI.count_went_down(SI.InputButton(true, 1)) == 1
+            Test.@test SI.count_went_down(SI.InputButton(true, 2)) == 1
+            Test.@test SI.count_went_down(SI.InputButton(true, 3)) == 2
+            Test.@test SI.count_went_down(SI.InputButton(true, 4)) == 2
+            Test.@test SI.count_went_down(SI.InputButton(false, 0)) == 0
+            Test.@test SI.count_went_down(SI.InputButton(false, 1)) == 0
+            Test.@test SI.count_went_down(SI.InputButton(false, 2)) == 1
+            Test.@test SI.count_went_down(SI.InputButton(false, 3)) == 1
+            Test.@test SI.count_went_down(SI.InputButton(false, 4)) == 2
+        end
+
         Test.@testset "went_up" begin
             Test.@test SI.went_up(SI.InputButton(true, 0)) == false
             Test.@test SI.went_up(SI.InputButton(true, 1)) == false
@@ -32,6 +45,19 @@ Test.@testset "SimpleIMGUI.jl" begin
             Test.@test SI.went_up(SI.InputButton(false, 0)) == false
             Test.@test SI.went_up(SI.InputButton(false, 1)) == true
             Test.@test SI.went_up(SI.InputButton(false, 2)) == true
+        end
+
+        Test.@testset "count_went_up" begin
+            Test.@test SI.count_went_up(SI.InputButton(true, 0)) == 0
+            Test.@test SI.count_went_up(SI.InputButton(true, 1)) == 0
+            Test.@test SI.count_went_up(SI.InputButton(true, 2)) == 1
+            Test.@test SI.count_went_up(SI.InputButton(true, 3)) == 1
+            Test.@test SI.count_went_up(SI.InputButton(true, 4)) == 2
+            Test.@test SI.count_went_up(SI.InputButton(false, 0)) == 0
+            Test.@test SI.count_went_up(SI.InputButton(false, 1)) == 1
+            Test.@test SI.count_went_up(SI.InputButton(false, 2)) == 1
+            Test.@test SI.count_went_up(SI.InputButton(false, 3)) == 2
+            Test.@test SI.count_went_up(SI.InputButton(false, 4)) == 2
         end
 
         Test.@testset "press" begin
