@@ -390,7 +390,7 @@ end
 get_content_alignment(::AbstractWidgetType) = UP1_LEFT1
 get_content_alignment(::Button) = CENTER
 
-get_content_padding(::AbstractWidgetType) = -1
+get_content_padding(::AbstractWidgetType) = 0
 
 function do_widget!(
         widget_type::Union{Button, Text},
