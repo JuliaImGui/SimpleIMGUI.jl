@@ -82,24 +82,24 @@ julia> SimpleDraw.visualize(image)
  5░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
  6████████████▒▒░░██████████████████████████████████████████████████████████████████░░▒▒████████████░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
  7██▒▒░░▒▒░░██░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░██░░▒▒░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
- 8████████████▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒████████████░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
- 9░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░████████████▒▒░░▒▒░░████████████▒▒░░▒▒░░▒▒████████████░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
-10▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒██▒▒░░▒▒░░██░░▒▒░░▒▒██▒▒░░▒▒░░██░░▒▒░░▒▒░░██░░▒▒░░▒▒██▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
-11░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░████████████▒▒░░▒▒░░████████████▒▒░░▒▒░░▒▒████████████░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
+ 8████████████▒▒░░██░░████████████▒▒░░▒▒░░▒▒████████████░░▒▒░░▒▒░░▒▒████████████░░██░░▒▒████████████░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
+ 9░░▒▒░░▒▒░░▒▒░░▒▒██▒▒██▒▒░░▒▒░░██░░▒▒░░▒▒░░██░░▒▒░░▒▒██▒▒░░▒▒░░▒▒░░██░░▒▒░░▒▒██▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
+10▒▒░░▒▒░░▒▒░░▒▒░░██░░████████████▒▒░░▒▒░░▒▒████████████░░▒▒░░▒▒░░▒▒████████████░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
+11░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
 12▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
 13░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
 14▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
-15████████████░░▒▒██▒▒░░████████████▒▒░░▒▒░░████████████▒▒░░▒▒░░▒▒████████████░░▒▒██▒▒░░████████████▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
-16██░░▒▒░░▒▒██▒▒░░██░░▒▒██▒▒░░▒▒░░██░░▒▒░░▒▒██▒▒░░▒▒░░██░░▒▒░░▒▒░░██░░▒▒░░▒▒██▒▒░░██░░▒▒██▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
-17████████████░░▒▒██▒▒░░████████████▒▒░░▒▒░░████████████▒▒░░▒▒░░▒▒████████████░░▒▒██▒▒░░████████████▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
+15████████████░░▒▒██▒▒████████████░░▒▒░░▒▒░░████████████▒▒░░▒▒░░▒▒░░████████████▒▒██▒▒░░████████████▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
+16██░░▒▒░░▒▒██▒▒░░██░░██░░▒▒░░▒▒██▒▒░░▒▒░░▒▒██▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒██▒▒░░▒▒░░██░░██░░▒▒██▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
+17████████████░░▒▒██▒▒████████████░░▒▒░░▒▒░░████████████▒▒░░▒▒░░▒▒░░████████████▒▒██▒▒░░████████████▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
 18▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
 19░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
 20▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
 21░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
-22▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒████████████░░▒▒░░▒▒████████████░░▒▒░░▒▒░░████████████▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
-23░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░██░░▒▒░░▒▒██▒▒░░▒▒░░██░░▒▒░░▒▒██▒▒░░▒▒░░▒▒██▒▒░░▒▒░░██░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
-24▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒████████████░░▒▒░░▒▒████████████░░▒▒░░▒▒░░████████████▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
-25████████████░░▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒██▒▒░░████████████▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
+22▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
+23░░▒▒░░▒▒░░▒▒░░▒▒██▒▒████████████░░▒▒░░▒▒░░████████████▒▒░░▒▒░░▒▒░░████████████▒▒██▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
+24▒▒░░▒▒░░▒▒░░▒▒░░██░░██░░▒▒░░▒▒██▒▒░░▒▒░░▒▒██▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒██▒▒░░▒▒░░██░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
+25████████████░░▒▒██▒▒████████████░░▒▒░░▒▒░░████████████▒▒░░▒▒░░▒▒░░████████████▒▒██▒▒░░████████████▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
 26██░░▒▒░░▒▒██▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░██░░▒▒██▒▒░░▒▒░░██░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
 27████████████░░▒▒██████████████████████████████████████████████████████████████████▒▒░░████████████▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒
 28▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░▒▒░░
@@ -162,7 +162,7 @@ julia> alignment = SimpleIMGUI.UP1
 UP2_LEFT2::Alignment = 11
 
 julia> SimpleIMGUI.get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width)
-(3, 13)
+(2, 13)
 ```
 """
 function get_alignment_offset(total_height, total_width, alignment, padding, content_height, content_width)
@@ -185,33 +185,33 @@ function get_alignment_offset(total_height::I, total_width::I, alignment, paddin
     elseif alignment == UP2_LEFT1
         return (-content_height - padding, zero(I))
     elseif alignment == UP1_LEFT1
-        return (padding + one(I), padding + one(I))
+        return (padding, padding)
     elseif alignment == LEFT1
-        return ((total_height - content_height) ÷ convert(I, 2), padding + one(I))
+        return ((total_height - content_height) ÷ convert(I, 2), padding)
     elseif alignment == DOWN1_LEFT1
-        return (total_height - content_height - padding - one(I), padding + one(I))
+        return (total_height - content_height - padding, padding)
     elseif alignment == DOWN2_LEFT1
         return (total_height + padding, zero(I))
 
     elseif alignment == UP2
         return (-content_height - padding, (total_width - content_width) ÷ convert(I, 2))
     elseif alignment == UP1
-        return (padding + one(I), (total_width - content_width) ÷ convert(I, 2))
+        return (padding, (total_width - content_width) ÷ convert(I, 2))
     elseif alignment == CENTER
         return ((total_height - content_height) ÷ convert(I, 2), (total_width - content_width) ÷ convert(I, 2))
     elseif alignment == DOWN1
-        return (total_height - content_height - padding - one(I), (total_width - content_width) ÷ convert(I, 2))
+        return (total_height - content_height - padding, (total_width - content_width) ÷ convert(I, 2))
     elseif alignment == DOWN2
         return (total_height + padding, (total_width - content_width) ÷ convert(I, 2))
 
     elseif alignment == UP2_RIGHT1
         return (-content_height - padding, total_width - content_width)
     elseif alignment == UP1_RIGHT1
-        return (padding + one(I), total_width - content_width - padding - one(I))
+        return (padding, total_width - content_width - padding)
     elseif alignment == RIGHT1
-        return ((total_height - content_height) ÷ convert(I, 2), total_width - content_width - padding - one(I))
+        return ((total_height - content_height) ÷ convert(I, 2), total_width - content_width - padding)
     elseif alignment == DOWN1_RIGHT1
-        return (total_height - content_height - padding - one(I), total_width - content_width - padding - one(I))
+        return (total_height - content_height - padding, total_width - content_width - padding)
     elseif alignment == DOWN2_RIGHT1
         return (total_height + padding, total_width - content_width)
 
@@ -278,16 +278,17 @@ julia> import SimpleDraw
 julia> bounding_box = SimpleDraw.Rectangle(SimpleDraw.Point(6, 9), 21, 32); height = 3; width = 6; padding = 2;
 
 julia> alignment = SimpleIMGUI.UP2_LEFT2
-UP2_LEFT2::Alignment = 0
+UP2_LEFT2::Alignment = 1
 
 julia> SimpleIMGUI.get_alignment_bounding_box(bounding_box, alignment, padding, height, width)
 SimpleDraw.Rectangle{Int64}(SimpleDraw.Point{Int64}(1, 1), 3, 6)
 
 julia> alignment = SimpleIMGUI.UP1
-UP2_LEFT2::Alignment = 11
+UP1::Alignment = 12
 
 julia> SimpleIMGUI.get_alignment_bounding_box(bounding_box, alignment, padding, height, width)
-SimpleDraw.Rectangle{Int64}(SimpleDraw.Point{Int64}(9, 22), 3, 6)
+SimpleDraw.Rectangle{Int64}(SimpleDraw.Point{Int64}(8, 22), 3, 6)
+
 ```
 """
 function get_alignment_bounding_box(bounding_box, alignment, padding, height, width)
