@@ -1,10 +1,9 @@
-mutable struct UIContext{S, I1, I2, I3, A, F, C}
+mutable struct UIContext{S, I1, I2, I3, A, F}
     user_interaction_state::UserInteractionState{S, I1}
     user_input_state::UserInputState{I2}
     layout::BoxLayout{I3}
     image::A
     font::F
-    colors::Vector{C}
 end
 
 #####
