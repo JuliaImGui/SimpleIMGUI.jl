@@ -261,85 +261,15 @@ end
 ##### helper methods that take default values for some of the arguments and shorten usage of do_widget!
 #####
 
-function get_colors(widget_type::Button, user_interaction_state, this_widget, colors)
-    if this_widget == user_interaction_state.active_widget
-        return (colors[Integer(COLOR_ACTIVE_BUTTON_BACKGROUND)], colors[Integer(COLOR_ACTIVE_BUTTON_BORDER)], colors[Integer(COLOR_ACTIVE_BUTTON_TEXT)])
-    elseif this_widget == user_interaction_state.hot_widget
-        return (colors[Integer(COLOR_HOT_BUTTON_BACKGROUND)], colors[Integer(COLOR_HOT_BUTTON_BORDER)], colors[Integer(COLOR_HOT_BUTTON_TEXT)])
-    else
-        return (colors[Integer(COLOR_NEUTRAL_BUTTON_BACKGROUND)], colors[Integer(COLOR_NEUTRAL_BUTTON_BORDER)], colors[Integer(COLOR_NEUTRAL_BUTTON_TEXT)])
-    end
-end
-
-function get_colors(widget_type::TextBox, user_interaction_state, this_widget, colors)
-    if this_widget == user_interaction_state.active_widget
-        return (colors[Integer(COLOR_ACTIVE_TEXT_BOX_BACKGROUND)], colors[Integer(COLOR_ACTIVE_TEXT_BOX_BORDER)], colors[Integer(COLOR_ACTIVE_TEXT_BOX_TEXT)])
-    elseif this_widget == user_interaction_state.hot_widget
-        return (colors[Integer(COLOR_HOT_TEXT_BOX_BACKGROUND)], colors[Integer(COLOR_HOT_TEXT_BOX_BORDER)], colors[Integer(COLOR_HOT_TEXT_BOX_TEXT)])
-    else
-        return (colors[Integer(COLOR_NEUTRAL_TEXT_BOX_BACKGROUND)], colors[Integer(COLOR_NEUTRAL_TEXT_BOX_BORDER)], colors[Integer(COLOR_NEUTRAL_TEXT_BOX_TEXT)])
-    end
-end
-
-function get_colors(widget_type::Text, user_interaction_state, this_widget, colors)
-    if this_widget == user_interaction_state.active_widget
-        return (colors[Integer(COLOR_ACTIVE_TEXT_BACKGROUND)], colors[Integer(COLOR_ACTIVE_TEXT_BORDER)], colors[Integer(COLOR_ACTIVE_TEXT_TEXT)])
-    elseif this_widget == user_interaction_state.hot_widget
-        return (colors[Integer(COLOR_HOT_TEXT_BACKGROUND)], colors[Integer(COLOR_HOT_TEXT_BORDER)], colors[Integer(COLOR_HOT_TEXT_TEXT)])
-    else
-        return (colors[Integer(COLOR_NEUTRAL_TEXT_BACKGROUND)], colors[Integer(COLOR_NEUTRAL_TEXT_BORDER)], colors[Integer(COLOR_NEUTRAL_TEXT_TEXT)])
-    end
-end
-
-function get_colors(widget_type::CheckBox, user_interaction_state, this_widget, colors)
-    if this_widget == user_interaction_state.active_widget
-        return (colors[Integer(COLOR_ACTIVE_CHECK_BOX_BACKGROUND)], colors[Integer(COLOR_ACTIVE_CHECK_BOX_BORDER)], colors[Integer(COLOR_ACTIVE_CHECK_BOX_TEXT)], colors[Integer(COLOR_ACTIVE_CHECK_BOX_INDICATOR)])
-    elseif this_widget == user_interaction_state.hot_widget
-        return (colors[Integer(COLOR_HOT_CHECK_BOX_BACKGROUND)], colors[Integer(COLOR_HOT_CHECK_BOX_BORDER)], colors[Integer(COLOR_HOT_CHECK_BOX_TEXT)], colors[Integer(COLOR_HOT_CHECK_BOX_INDICATOR)])
-    else
-        return (colors[Integer(COLOR_NEUTRAL_CHECK_BOX_BACKGROUND)], colors[Integer(COLOR_NEUTRAL_CHECK_BOX_BORDER)], colors[Integer(COLOR_NEUTRAL_CHECK_BOX_TEXT)], colors[Integer(COLOR_NEUTRAL_CHECK_BOX_INDICATOR)])
-    end
-end
-
-function get_colors(widget_type::RadioButton, user_interaction_state, this_widget, colors)
-    if this_widget == user_interaction_state.active_widget
-        return (colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_BACKGROUND)], colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_BORDER)], colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_TEXT)], colors[Integer(COLOR_ACTIVE_RADIO_BUTTON_INDICATOR)])
-    elseif this_widget == user_interaction_state.hot_widget
-        return (colors[Integer(COLOR_HOT_RADIO_BUTTON_BACKGROUND)], colors[Integer(COLOR_HOT_RADIO_BUTTON_BORDER)], colors[Integer(COLOR_HOT_RADIO_BUTTON_TEXT)], colors[Integer(COLOR_HOT_RADIO_BUTTON_INDICATOR)])
-    else
-        return (colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_BACKGROUND)], colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_BORDER)], colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_TEXT)], colors[Integer(COLOR_NEUTRAL_RADIO_BUTTON_INDICATOR)])
-    end
-end
-
-function get_colors(widget_type::DropDown, user_interaction_state, this_widget, colors)
-    if this_widget == user_interaction_state.active_widget
-        return (colors[Integer(COLOR_ACTIVE_DROP_DOWN_BACKGROUND)], colors[Integer(COLOR_ACTIVE_DROP_DOWN_BORDER)], colors[Integer(COLOR_ACTIVE_DROP_DOWN_TEXT)], colors[Integer(COLOR_ACTIVE_DROP_DOWN_INDICATOR)])
-    elseif this_widget == user_interaction_state.hot_widget
-        return (colors[Integer(COLOR_HOT_DROP_DOWN_BACKGROUND)], colors[Integer(COLOR_HOT_DROP_DOWN_BORDER)], colors[Integer(COLOR_HOT_DROP_DOWN_TEXT)], colors[Integer(COLOR_HOT_DROP_DOWN_INDICATOR)])
-    else
-        return (colors[Integer(COLOR_NEUTRAL_DROP_DOWN_BACKGROUND)], colors[Integer(COLOR_NEUTRAL_DROP_DOWN_BORDER)], colors[Integer(COLOR_NEUTRAL_DROP_DOWN_TEXT)], colors[Integer(COLOR_NEUTRAL_DROP_DOWN_INDICATOR)])
-    end
-end
-
-function get_colors(widget_type::Slider, user_interaction_state, this_widget, colors)
-    if this_widget == user_interaction_state.active_widget
-        return (colors[Integer(COLOR_ACTIVE_SLIDER_BACKGROUND)], colors[Integer(COLOR_ACTIVE_SLIDER_BORDER)], colors[Integer(COLOR_ACTIVE_SLIDER_INDICATOR)])
-    elseif this_widget == user_interaction_state.hot_widget
-        return (colors[Integer(COLOR_HOT_SLIDER_BACKGROUND)], colors[Integer(COLOR_HOT_SLIDER_BORDER)], colors[Integer(COLOR_HOT_SLIDER_INDICATOR)])
-    else
-        return (colors[Integer(COLOR_NEUTRAL_SLIDER_BACKGROUND)], colors[Integer(COLOR_NEUTRAL_SLIDER_BORDER)], colors[Integer(COLOR_NEUTRAL_SLIDER_INDICATOR)])
-    end
-end
-
-function get_colors(widget_type::Image, user_interaction_state, this_widget, colors)
-    if this_widget == user_interaction_state.active_widget
-        return (colors[Integer(COLOR_ACTIVE_IMAGE_BORDER)],)
-    elseif this_widget == user_interaction_state.hot_widget
-        return (colors[Integer(COLOR_HOT_IMAGE_BORDER)],)
-    else
-        return (colors[Integer(COLOR_NEUTRAL_IMAGE_BORDER)],)
-    end
-end
+get_colors(widget_type, user_interaction_state, this_widget, colors) = get_colors(widget_type)
+get_colors(widget_type::Button) = (COLOR_BUTTON_BACKGROUND, COLOR_BUTTON_BORDER, COLOR_BUTTON_TEXT)
+get_colors(widget_type::TextBox) = (COLOR_TEXT_BOX_BACKGROUND, COLOR_TEXT_BOX_BORDER, COLOR_TEXT_BOX_TEXT)
+get_colors(widget_type::Text) = (COLOR_TEXT_BACKGROUND, COLOR_TEXT_BORDER, COLOR_TEXT_TEXT)
+get_colors(widget_type::CheckBox) = (COLOR_CHECK_BOX_BACKGROUND, COLOR_CHECK_BOX_BORDER, COLOR_CHECK_BOX_TEXT, COLOR_CHECK_BOX_INDICATOR)
+get_colors(widget_type::RadioButton) = (COLOR_RADIO_BUTTON_BACKGROUND, COLOR_RADIO_BUTTON_BORDER, COLOR_RADIO_BUTTON_TEXT, COLOR_RADIO_BUTTON_INDICATOR)
+get_colors(widget_type::DropDown) = (COLOR_DROP_DOWN_BACKGROUND, COLOR_DROP_DOWN_BORDER, COLOR_DROP_DOWN_TEXT, COLOR_DROP_DOWN_INDICATOR)
+get_colors(widget_type::Slider) = (COLOR_SLIDER_BACKGROUND, COLOR_SLIDER_BORDER, COLOR_SLIDER_INDICATOR)
+get_colors(widget_type::Image) = (COLOR_IMAGE_BORDER,)
 
 get_content_alignment(::AbstractWidgetType) = UP1_LEFT1
 get_content_alignment(::Button) = CENTER
