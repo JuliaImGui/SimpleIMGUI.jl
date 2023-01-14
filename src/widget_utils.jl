@@ -261,7 +261,6 @@ end
 ##### helper methods that take default values for some of the arguments and shorten usage of do_widget!
 #####
 
-get_colors(widget_type, user_interaction_state, this_widget, colors) = get_colors(widget_type)
 get_colors(widget_type::Button) = (COLOR_BUTTON_BACKGROUND, COLOR_BUTTON_BORDER, COLOR_BUTTON_TEXT)
 get_colors(widget_type::TextBox) = (COLOR_TEXT_BOX_BACKGROUND, COLOR_TEXT_BOX_BORDER, COLOR_TEXT_BOX_TEXT)
 get_colors(widget_type::Text) = (COLOR_TEXT_BACKGROUND, COLOR_TEXT_BORDER, COLOR_TEXT_TEXT)
@@ -303,7 +302,7 @@ function do_widget!(
         get_content_padding(widget_type),
         text,
         ui_context.font,
-        get_colors(widget_type, ui_context.user_interaction_state, this_widget, ui_context.colors)...,
+        get_colors(widget_type)...,
     )
 end
 
@@ -336,7 +335,7 @@ function do_widget!(
         get_content_padding(widget_type),
         text,
         ui_context.font,
-        get_colors(widget_type, ui_context.user_interaction_state, this_widget, ui_context.colors)...,
+        get_colors(widget_type)...,
     )
 end
 
@@ -368,7 +367,7 @@ function do_widget!(
         get_content_alignment(widget_type),
         get_content_padding(widget_type),
         ui_context.font,
-        get_colors(widget_type, ui_context.user_interaction_state, this_widget, ui_context.colors)...,
+        get_colors(widget_type)...,
     )
 end
 
@@ -396,7 +395,7 @@ function do_widget!(
         widget_height,
         widget_width,
         ui_context.image,
-        get_colors(widget_type, ui_context.user_interaction_state, this_widget, ui_context.colors)...,
+        get_colors(widget_type)...,
     )
 end
 
@@ -426,6 +425,6 @@ function do_widget!(
         get_content_alignment(widget_type),
         get_content_padding(widget_type),
         image,
-        get_colors(widget_type, ui_context.user_interaction_state, this_widget, ui_context.colors)...,
+        get_colors(widget_type)...,
     )
 end
