@@ -1,3 +1,7 @@
+abstract type AbstractInputButton end
+
+abstract type AbstractCursor end
+
 """
     struct InputButton{I} <: AbstractInputButton
         ended_down::Bool
