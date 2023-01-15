@@ -1,4 +1,6 @@
-struct UIContext{T, I1, I2, A, F}
+abstract type AbstractUIContext end
+
+struct UIContext{T, I1, I2, A, F} <: AbstractUIContext
     user_interaction_state::UserInteractionState{T}
     user_input_state::UserInputState{I1}
     layout::BoxLayout{I2}
