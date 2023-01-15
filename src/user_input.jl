@@ -340,6 +340,8 @@ Reset the input events tracked by `user_input_state` at the beginning of a frame
 ```
 """
 function reset!(user_input_state)
+    # note that cursor field is not reset every frame because the callback to update it is only called if the actual cursor position changes. so if we reset it here, it will stay like that until the mouse is moved and will thus take incorrect values
+
     for (i, input_button) in enumerate(user_input_state.keyboard_buttons)
         user_input_state.keyboard_buttons[i] = reset(input_button)
     end
