@@ -1,17 +1,21 @@
+abstract type AbstractInputButton end
+
+abstract type AbstractCursor end
+
 """
-    struct InputButton{I}
+    struct InputButton{I} <: AbstractInputButton
         ended_down::Bool
         num_transitions::I
     end
 
 Store the last state and number of transitions per frame for a switch-like input device. This can be used to keep track of input events corresponding to keyboard keys and mouse buttons.
 """
-struct InputButton{I}
+struct InputButton{I} <: AbstractInputButton
     ended_down::Bool
     num_transitions::I
 end
 
-mutable struct Cursor{I}
+mutable struct Cursor{I} <: AbstractCursor
     position::SD.Point{I}
 end
 
@@ -77,7 +81,7 @@ julia> SimpleIMGUI.count_went_down(SimpleIMGUI.InputButton(false, 3))
 1
 ```
 """
-count_went_down(input_button) = count_went_down(input_button.ended_down, input_button.num_transitions)
+count_went_down(input_button::AbstractInputButton) = count_went_down(input_button.ended_down, input_button.num_transitions)
 
 """
     count_went_up(ended_down, num_transitions)
@@ -121,7 +125,7 @@ julia> SimpleIMGUI.count_went_up(SimpleIMGUI.InputButton(false, 3))
 2
 ```
 """
-count_went_up(input_button) = count_went_up(input_button.ended_down, input_button.num_transitions)
+count_went_up(input_button::AbstractInputButton) = count_went_up(input_button.ended_down, input_button.num_transitions)
 
 """
     went_down(ended_down, num_transitions)
@@ -181,7 +185,7 @@ julia> SimpleIMGUI.went_down(SimpleIMGUI.InputButton(false, 2))
 true
 ```
 """
-went_down(input_button) = went_down(input_button.ended_down, input_button.num_transitions)
+went_down(input_button::AbstractInputButton) = went_down(input_button.ended_down, input_button.num_transitions)
 
 """
     went_up(input_button)
@@ -211,7 +215,7 @@ julia> SimpleIMGUI.went_up(SimpleIMGUI.InputButton(false, 2))
 true
 ```
 """
-went_up(input_button) = went_up(input_button.ended_down, input_button.num_transitions)
+went_up(input_button::AbstractInputButton) = went_up(input_button.ended_down, input_button.num_transitions)
 
 """
     press(ended_down, num_transitions)
@@ -280,7 +284,7 @@ julia> SimpleIMGUI.press(SimpleIMGUI.InputButton(false, 2))
 SimpleIMGUI.InputButton{Int64}(true, 3)
 ```
 """
-press(input_button) = typeof(input_button)(press(input_button.ended_down, input_button.num_transitions)...)
+press(input_button::AbstractInputButton) = typeof(input_button)(press(input_button.ended_down, input_button.num_transitions)...)
 
 """
     release(input_button)
@@ -301,7 +305,7 @@ julia> SimpleIMGUI.release(SimpleIMGUI.InputButton(true, 2))
 SimpleIMGUI.InputButton{Int64}(false, 3)
 ```
 """
-release(input_button) = typeof(input_button)(release(input_button.ended_down, input_button.num_transitions)...)
+release(input_button::AbstractInputButton) = typeof(input_button)(release(input_button.ended_down, input_button.num_transitions)...)
 
 """
     reset(input_button)
@@ -331,7 +335,7 @@ julia> SimpleIMGUI.reset(SimpleIMGUI.InputButton(false, 2))
 SimpleIMGUI.InputButton{Int64}(true, 0)
 ```
 """
-reset(input_button) = typeof(input_button)(reset(input_button.ended_down, input_button.num_transitions)...)
+reset(input_button::AbstractInputButton) = typeof(input_button)(reset(input_button.ended_down, input_button.num_transitions)...)
 
 """
     reset!(user_input_state)
@@ -339,7 +343,7 @@ reset(input_button) = typeof(input_button)(reset(input_button.ended_down, input_
 Reset the input events tracked by `user_input_state` at the beginning of a frame.
 ```
 """
-function reset!(user_input_state)
+function reset!(user_input_state::AbstractUserInputState)
     # note that cursor field is not reset every frame because the callback to update it is only called if the actual cursor position changes. so if we reset it here, it will stay like that until the mouse is moved and will thus take incorrect values
 
     for (i, input_button) in enumerate(user_input_state.keyboard_buttons)

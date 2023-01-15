@@ -1,4 +1,6 @@
-struct ContextualColor{T}
+abstract type AbstractContextualColor end
+
+struct ContextualColor{T} <: AbstractContextualColor
     neutral_color::T
     hot_color::T
     active_color::T

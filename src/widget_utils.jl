@@ -1,7 +1,9 @@
-struct UIContext{S, I1, I2, I3, A, F}
-    user_interaction_state::UserInteractionState{S, I1}
-    user_input_state::UserInputState{I2}
-    layout::BoxLayout{I3}
+abstract type AbstractUIContext end
+
+struct UIContext{T, I1, I2, A, F} <: AbstractUIContext
+    user_interaction_state::UserInteractionState{T}
+    user_input_state::UserInputState{I1}
+    layout::BoxLayout{I2}
     image::A
     font::F
 end
@@ -12,7 +14,7 @@ end
 
 function do_widget!(
         widget_type::Union{Button, Text},
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         cursor_position,
         input_button,
@@ -61,7 +63,7 @@ end
 
 function do_widget!(
         widget_type::Union{CheckBox, RadioButton, DropDown},
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         widget_value,
         cursor_position,
@@ -113,7 +115,7 @@ end
 
 function do_widget!(
         widget_type::TextBox,
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         widget_value,
         cursor_position,
@@ -165,7 +167,7 @@ end
 
 function do_widget!(
         widget_type::Slider,
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         widget_value,
         cursor_position,
@@ -212,7 +214,7 @@ end
 
 function do_widget!(
         widget_type::Image,
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         cursor_position,
         input_button,
@@ -276,7 +278,7 @@ get_content_padding(::AbstractWidgetType) = 0
 
 function do_widget!(
         widget_type::Union{Button, Text},
-        ui_context::UIContext,
+        ui_context::AbstractUIContext,
         this_widget,
         alignment,
         padding,
@@ -307,7 +309,7 @@ end
 
 function do_widget!(
         widget_type::Union{CheckBox, RadioButton, DropDown},
-        ui_context::UIContext,
+        ui_context::AbstractUIContext,
         this_widget,
         widget_value,
         alignment,
@@ -340,7 +342,7 @@ end
 
 function do_widget!(
         widget_type::TextBox,
-        ui_context::UIContext,
+        ui_context::AbstractUIContext,
         this_widget,
         widget_value,
         alignment,
@@ -372,7 +374,7 @@ end
 
 function do_widget!(
         widget_type::Slider,
-        ui_context::UIContext,
+        ui_context::AbstractUIContext,
         this_widget,
         widget_value,
         alignment,
@@ -400,7 +402,7 @@ end
 
 function do_widget!(
         widget_type::Image,
-        ui_context::UIContext,
+        ui_context::AbstractUIContext,
         this_widget,
         alignment,
         padding,
