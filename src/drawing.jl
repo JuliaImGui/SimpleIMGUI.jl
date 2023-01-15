@@ -38,7 +38,7 @@ function draw_text_line_in_a_box!(image, bounding_box, text, font, alignment, pa
     return nothing
 end
 
-function draw_widget!(image, widget_type, bounding_box, args...; kwargs...)
+function draw_widget!(widget_type, image, bounding_box, args...; kwargs...)
     if SD.is_outbounds(image, bounding_box)
         return nothing
     end
@@ -51,12 +51,12 @@ function draw_widget!(image, widget_type, bounding_box, args...; kwargs...)
 
     view_box_bounding_box = SD.Rectangle(SD.Point(bounding_box.position.i - i_min + one(i_min), bounding_box.position.j - j_min + one(j_min)), bounding_box.height, bounding_box.width)
 
-    draw_widget_unclipped!(view_box_image, widget_type, view_box_bounding_box, args...; kwargs...)
+    draw_widget_unclipped!(widget_type, view_box_image, view_box_bounding_box, args...; kwargs...)
 
     return nothing
 end
 
-function draw_widget_unclipped!(image, widget_type::Button, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color)
+function draw_widget_unclipped!(widget_type::Button, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color)
     if this_widget == user_interaction_state.active_widget
         background_color = background_contextual_color.active_color
         border_color = border_contextual_color.active_color
@@ -86,7 +86,7 @@ function draw_widget_unclipped!(image, widget_type::Button, bounding_box, user_i
     return nothing
 end
 
-function draw_widget_unclipped!(image, widget_type::TextBox, bounding_box, user_interaction_state, this_widget, text, alignment, padding, font, background_contextual_color, border_contextual_color, text_contextual_color)
+function draw_widget_unclipped!(widget_type::TextBox, image, bounding_box, user_interaction_state, this_widget, text, alignment, padding, font, background_contextual_color, border_contextual_color, text_contextual_color)
     if this_widget == user_interaction_state.active_widget
         background_color = background_contextual_color.active_color
         border_color = border_contextual_color.active_color
@@ -127,9 +127,9 @@ function draw_widget_unclipped!(image, widget_type::TextBox, bounding_box, user_
     return nothing
 end
 
-draw_widget_unclipped!(image, widget_type::Text, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color) = draw_widget_unclipped!(image, BUTTON, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color)
+draw_widget_unclipped!(widget_type::Text, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color) = draw_widget_unclipped!(BUTTON, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color)
 
-function draw_widget_unclipped!(image, widget_type::CheckBox, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color, indicator_contextual_color)
+function draw_widget_unclipped!(widget_type::CheckBox, image, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color, indicator_contextual_color)
     if this_widget == user_interaction_state.active_widget
         background_color = background_contextual_color.active_color
         border_color = border_contextual_color.active_color
@@ -171,7 +171,7 @@ function draw_widget_unclipped!(image, widget_type::CheckBox, bounding_box, user
     return nothing
 end
 
-function draw_widget_unclipped!(image, widget_type::RadioButton, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color, indicator_contextual_color)
+function draw_widget_unclipped!(widget_type::RadioButton, image, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color, indicator_contextual_color)
     if this_widget == user_interaction_state.active_widget
         background_color = background_contextual_color.active_color
         border_color = border_contextual_color.active_color
@@ -212,7 +212,7 @@ function draw_widget_unclipped!(image, widget_type::RadioButton, bounding_box, u
     return nothing
 end
 
-function draw_widget_unclipped!(image, widget_type::DropDown, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color, indicator_contextual_color)
+function draw_widget_unclipped!(widget_type::DropDown, image, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color, indicator_contextual_color)
     if this_widget == user_interaction_state.active_widget
         background_color = background_contextual_color.active_color
         border_color = border_contextual_color.active_color
@@ -254,7 +254,7 @@ function draw_widget_unclipped!(image, widget_type::DropDown, bounding_box, user
     return nothing
 end
 
-function draw_widget_unclipped!(image, widget_type::Slider, bounding_box, user_interaction_state, this_widget, widget_value, background_contextual_color, border_contextual_color, bar_contextual_color)
+function draw_widget_unclipped!(widget_type::Slider, image, bounding_box, user_interaction_state, this_widget, widget_value, background_contextual_color, border_contextual_color, bar_contextual_color)
     if this_widget == user_interaction_state.active_widget
         background_color = background_contextual_color.active_color
         border_color = border_contextual_color.active_color
@@ -285,7 +285,7 @@ function draw_widget_unclipped!(image, widget_type::Slider, bounding_box, user_i
     return nothing
 end
 
-function draw_widget_unclipped!(image, widget_type::Image, bounding_box, user_interaction_state, this_widget, content, alignment, padding, border_contextual_color)
+function draw_widget_unclipped!(widget_type::Image, image, bounding_box, user_interaction_state, this_widget, content, alignment, padding, border_contextual_color)
     if this_widget == user_interaction_state.active_widget
         border_color = border_contextual_color.active_color
     elseif this_widget == user_interaction_state.hot_widget
