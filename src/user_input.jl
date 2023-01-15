@@ -11,7 +11,7 @@ struct InputButton{I} <: AbstractInputButton
     num_transitions::I
 end
 
-mutable struct Cursor{I}
+mutable struct Cursor{I} <: AbstractCursor
     position::SD.Point{I}
 end
 
