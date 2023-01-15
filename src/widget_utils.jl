@@ -278,7 +278,7 @@ get_content_padding(::AbstractWidgetType) = 0
 
 function do_widget!(
         widget_type::Union{Button, Text},
-        ui_context::UIContext,
+        ui_context::AbstractUIContext,
         this_widget,
         alignment,
         padding,
@@ -309,7 +309,7 @@ end
 
 function do_widget!(
         widget_type::Union{CheckBox, RadioButton, DropDown},
-        ui_context::UIContext,
+        ui_context::AbstractUIContext,
         this_widget,
         widget_value,
         alignment,
@@ -342,7 +342,7 @@ end
 
 function do_widget!(
         widget_type::TextBox,
-        ui_context::UIContext,
+        ui_context::AbstractUIContext,
         this_widget,
         widget_value,
         alignment,
@@ -374,7 +374,7 @@ end
 
 function do_widget!(
         widget_type::Slider,
-        ui_context::UIContext,
+        ui_context::AbstractUIContext,
         this_widget,
         widget_value,
         alignment,
@@ -402,7 +402,7 @@ end
 
 function do_widget!(
         widget_type::Image,
-        ui_context::UIContext,
+        ui_context::AbstractUIContext,
         this_widget,
         alignment,
         padding,
