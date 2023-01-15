@@ -86,7 +86,7 @@ function start()
 
     clear_display()
 
-    user_interaction_state = SI.UserInteractionState(SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID, SI.NULL_WIDGET_ID)
+    user_interaction_state = SI.UserInteractionState(SI.NULL_WIDGET, SI.NULL_WIDGET, SI.NULL_WIDGET)
 
     layout = SI.BoxLayout(SD.Rectangle(SD.Point(1, 1), image_height, image_width))
 

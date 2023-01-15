@@ -15,7 +15,7 @@ struct WidgetID{S, I} <: AbstractWidgetID
     instance::I
 end
 
-const NULL_WIDGET_ID = WidgetID("", 0, 0)
+const NULL_WIDGET = WidgetID("", 0, 0)
 
 abstract type AbstractUserInteractionState end
 
