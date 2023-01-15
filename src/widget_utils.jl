@@ -55,7 +55,7 @@ function do_widget!(
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, text, font, content_alignment, content_padding, background_color, border_color, text_color)
+    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, text, font, content_alignment, content_padding, background_color, border_color, text_color)
 
     return widget_value
 end
@@ -107,7 +107,7 @@ function do_widget!(
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, text, font, background_color, border_color, text_color, indicator_color)
+    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, text, font, background_color, border_color, text_color, indicator_color)
 
     return widget_value
 end
@@ -159,7 +159,7 @@ function do_widget!(
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, font, background_color, border_color, text_color)
+    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, font, background_color, border_color, text_color)
 
     return widget_value
 end
@@ -206,7 +206,7 @@ function do_widget!(
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, widget_value, background_color, border_color, indicator_color)
+    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, background_color, border_color, indicator_color)
 
     return widget_value
 end
@@ -252,7 +252,7 @@ function do_widget!(
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    draw_widget!(image, widget_type, widget_bounding_box, user_interaction_state, this_widget, content, content_alignment, content_padding, border_color)
+    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, content, content_alignment, content_padding, border_color)
 
     return widget_value
 end
