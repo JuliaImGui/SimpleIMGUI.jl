@@ -14,7 +14,7 @@ end
 
 function do_widget!(
         widget_type::Union{Button, Text},
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         cursor_position,
         input_button,
@@ -63,7 +63,7 @@ end
 
 function do_widget!(
         widget_type::Union{CheckBox, RadioButton, DropDown},
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         widget_value,
         cursor_position,
@@ -115,7 +115,7 @@ end
 
 function do_widget!(
         widget_type::TextBox,
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         widget_value,
         cursor_position,
@@ -167,7 +167,7 @@ end
 
 function do_widget!(
         widget_type::Slider,
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         widget_value,
         cursor_position,
@@ -214,7 +214,7 @@ end
 
 function do_widget!(
         widget_type::Image,
-        user_interaction_state,
+        user_interaction_state::AbstractUserInteractionState,
         this_widget,
         cursor_position,
         input_button,
