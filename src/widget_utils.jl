@@ -261,15 +261,6 @@ end
 ##### helper methods that take default values for some of the arguments and shorten usage of do_widget!
 #####
 
-get_colors(widget_type::Button) = (COLOR_BUTTON_BACKGROUND, COLOR_BUTTON_BORDER, COLOR_BUTTON_TEXT)
-get_colors(widget_type::TextBox) = (COLOR_TEXT_BOX_BACKGROUND, COLOR_TEXT_BOX_BORDER, COLOR_TEXT_BOX_TEXT)
-get_colors(widget_type::Text) = (COLOR_TEXT_BACKGROUND, COLOR_TEXT_BORDER, COLOR_TEXT_TEXT)
-get_colors(widget_type::CheckBox) = (COLOR_CHECK_BOX_BACKGROUND, COLOR_CHECK_BOX_BORDER, COLOR_CHECK_BOX_TEXT, COLOR_CHECK_BOX_INDICATOR)
-get_colors(widget_type::RadioButton) = (COLOR_RADIO_BUTTON_BACKGROUND, COLOR_RADIO_BUTTON_BORDER, COLOR_RADIO_BUTTON_TEXT, COLOR_RADIO_BUTTON_INDICATOR)
-get_colors(widget_type::DropDown) = (COLOR_DROP_DOWN_BACKGROUND, COLOR_DROP_DOWN_BORDER, COLOR_DROP_DOWN_TEXT, COLOR_DROP_DOWN_INDICATOR)
-get_colors(widget_type::Slider) = (COLOR_SLIDER_BACKGROUND, COLOR_SLIDER_BORDER, COLOR_SLIDER_INDICATOR)
-get_colors(widget_type::Image) = (COLOR_IMAGE_BORDER,)
-
 get_content_alignment(::AbstractWidgetType) = UP1_LEFT1
 get_content_alignment(::Button) = CENTER
 
