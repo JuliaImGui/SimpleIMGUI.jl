@@ -1,11 +1,10 @@
 abstract type AbstractUIContext end
 
-struct UIContext{T, I1, I2, A, F} <: AbstractUIContext
+struct UIContext{T, I1, I2, A} <: AbstractUIContext
     user_interaction_state::UserInteractionState{T}
     user_input_state::UserInputState{I1}
     layout::BoxLayout{I2}
     image::A
-    font::F
 end
 
 #####
@@ -285,6 +284,7 @@ function do_widget!(
         widget_height,
         widget_width,
         text,
+        font,
     )
 
     do_widget!(
@@ -302,7 +302,7 @@ function do_widget!(
         get_content_alignment(widget_type),
         get_content_padding(widget_type),
         text,
-        ui_context.font,
+        font,
         get_colors(widget_type)...,
     )
 end
@@ -317,6 +317,7 @@ function do_widget!(
         widget_height,
         widget_width,
         text,
+        font,
     )
 
     do_widget!(
@@ -335,7 +336,7 @@ function do_widget!(
         get_content_alignment(widget_type),
         get_content_padding(widget_type),
         text,
-        ui_context.font,
+        font,
         get_colors(widget_type)...,
     )
 end
@@ -349,6 +350,7 @@ function do_widget!(
         padding,
         widget_height,
         widget_width,
+        font,
     )
 
     do_widget!(
@@ -367,7 +369,7 @@ function do_widget!(
         ui_context.image,
         get_content_alignment(widget_type),
         get_content_padding(widget_type),
-        ui_context.font,
+        font,
         get_colors(widget_type)...,
     )
 end

@@ -129,7 +129,7 @@ function start()
     check_box_value = false
     debug_text_list = String[]
 
-    ui_context = SI.UIContext(user_interaction_state, user_input_state, layout, image, font)
+    ui_context = SI.UIContext(user_interaction_state, user_input_state, layout, image)
 
     i = 0
 
@@ -164,6 +164,7 @@ function start()
             font_height,
             SI.get_num_printable_characters(text) * font_width,
             text,
+            font,
         )
 
         SI.do_widget!(
@@ -175,6 +176,7 @@ function start()
             font_height,
             12 * font_width,
             "Button",
+            font,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -187,6 +189,7 @@ function start()
             font_height,
             20 * font_width,
             "$(button_num_clicks)",
+            font,
         )
         if button_value
             button_num_clicks += 1
@@ -202,6 +205,7 @@ function start()
             font_height,
             12 * font_width,
             "Slider",
+            font,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -226,6 +230,7 @@ function start()
             font_height,
             12 * font_width,
             "TextBox",
+            font,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -238,6 +243,7 @@ function start()
             widget_gap,
             font_height,
             20 * font_width,
+            font,
         )
 
         layout.reference_bounding_box = temp_bounding_box
@@ -250,6 +256,7 @@ function start()
             font_height,
             12 * font_width,
             "Image",
+            font,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -289,6 +296,7 @@ function start()
             font_height,
             12 * font_width,
             "RadioButton",
+            font,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -308,6 +316,7 @@ function start()
                 font_height,
                 (max_num_chars + 2) * font_width,
                 "$(item)",
+                font,
             )
                 radio_button_value = j
             end
@@ -324,6 +333,7 @@ function start()
             font_height,
             12 * font_width,
             "DropDown",
+            font,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -342,6 +352,7 @@ function start()
             font_height,
             (max_num_chars + 2) * font_width,
             drop_down_item_list[drop_down_selected_item],
+            font,
         )
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
@@ -357,6 +368,7 @@ function start()
                     font_height,
                     (max_num_chars + 2) * font_width,
                     "$(item)",
+                    font,
                 )
                     drop_down_selected_item = j
                 end
@@ -374,6 +386,7 @@ function start()
             font_height,
             12 * font_width,
             "CheckBox",
+            font,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -400,6 +413,7 @@ function start()
             font_height,
             (SI.get_num_printable_characters(text) + 2) * font_width,
             text,
+            font,
         )
 
         if check_box_value
@@ -414,6 +428,7 @@ function start()
                     font_height,
                     SI.get_num_printable_characters(text) * font_width,
                     text,
+                    font,
                 )
             end
         end
