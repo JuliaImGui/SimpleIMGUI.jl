@@ -11,6 +11,10 @@ struct InputButton{I}
     num_transitions::I
 end
 
+mutable struct Cursor{I}
+    position::SD.Point{I}
+end
+
 abstract type AbstractUserInputState end
 
 """
@@ -23,8 +27,8 @@ abstract type AbstractUserInputState end
 
 Keep track of input events in a frame.
 """
-mutable struct UserInputState{I, T, C} <: AbstractUserInputState
-    cursor::SD.Point{I}
+struct UserInputState{I, T, C} <: AbstractUserInputState
+    cursor::Cursor{I}
     keyboard_buttons::Vector{T}
     mouse_buttons::Vector{T}
     characters::Vector{C}
