@@ -343,7 +343,7 @@ reset(input_button::AbstractInputButton) = typeof(input_button)(reset(input_butt
 Reset the input events tracked by `user_input_state` at the beginning of a frame.
 ```
 """
-function reset!(user_input_state)
+function reset!(user_input_state::AbstractUserInputState)
     # note that cursor field is not reset every frame because the callback to update it is only called if the actual cursor position changes. so if we reset it here, it will stay like that until the mouse is moved and will thus take incorrect values
 
     for (i, input_button) in enumerate(user_input_state.keyboard_buttons)
