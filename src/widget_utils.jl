@@ -1,7 +1,7 @@
-struct UIContext{S, I1, I2, I3, A, F}
-    user_interaction_state::UserInteractionState{S, I1}
-    user_input_state::UserInputState{I2}
-    layout::BoxLayout{I3}
+struct UIContext{T, I1, I2, A, F}
+    user_interaction_state::UserInteractionState{T}
+    user_input_state::UserInputState{I1}
+    layout::BoxLayout{I2}
     image::A
     font::F
 end

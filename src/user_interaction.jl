@@ -20,16 +20,16 @@ const NULL_WIDGET_ID = WidgetID("", 0, 0)
 abstract type AbstractUserInteractionState end
 
 """
-    mutable struct UserInteractionState{S, I} <: AbstractUserInteractionState
-        hot_widget::WidgetID{S, I}
-        active_widget::WidgetID{S, I}
-        null_widget::WidgetID{S, I}
+    mutable struct UserInteractionState{T <: AbstractWidgetID} <: AbstractUserInteractionState
+        hot_widget::T
+        active_widget::T
+        null_widget::T
     end
 
 Store the hot widget, active widget, and null widget. Used to keep track of the state of the user interaction. `hot_widget` is the widget that is about to be interacted with and `active_widget` is the widget that is actually being interacted with.
 """
-mutable struct UserInteractionState{S, I} <: AbstractUserInteractionState
-    hot_widget::WidgetID{S, I}
-    active_widget::WidgetID{S, I}
-    null_widget::WidgetID{S, I}
+mutable struct UserInteractionState{T <: AbstractWidgetID} <: AbstractUserInteractionState
+    hot_widget::T
+    active_widget::T
+    null_widget::T
 end
