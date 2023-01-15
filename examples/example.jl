@@ -28,14 +28,14 @@ function start()
     GLFW.MakeContextCurrent(window)
 
     user_input_state = SI.UserInputState(
-        SD.Point(1, 1),
+        SI.Cursor(SD.Point(1, 1)),
         fill(SI.InputButton(false, 0), 512),
         fill(SI.InputButton(false, 0), 8),
         Char[],
     )
 
     function cursor_position_callback(window, x, y)::Cvoid
-        user_input_state.cursor = SD.Point(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
+        user_input_state.cursor.position = SD.Point(round(Int, y, RoundDown) + 1, round(Int, x, RoundDown) + 1)
 
         return nothing
     end
