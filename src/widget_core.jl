@@ -180,47 +180,56 @@ do_widget!!(widget_type::Union{CheckBox, RadioButton, DropDown}, args...; kwargs
 ##### Slider
 #####
 
-function get_widget_value(widget_type::Slider, hot_widget, active_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, i_min, j_min, i_max, j_max)
+function get_widget_value(widget_type::Slider, hot_widget, active_widget, this_widget, i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, i_mouse, j_mouse, i_min_slider, j_min_slider, i_max_slider, j_max_slider)
     if (hot_widget == this_widget) && (active_widget == this_widget)
-        i_slider_value = i_mouse + i_slider_relative_mouse - i_min
-        j_slider_value = j_mouse + j_slider_relative_mouse - j_min
+        i_bar_wrt_slider = i_mouse + i_bar_wrt_mouse - i_min_slider
+        j_bar_wrt_slider = j_mouse + j_bar_wrt_mouse - j_min_slider
 
-        i_slider_value = clamp(i_slider_value, zero(i_slider_value), i_max - i_min + one(i_min) - height_slider)
-        j_slider_value = clamp(j_slider_value, zero(j_slider_value), j_max - j_min + one(j_min) - width_slider)
+        i_bar_wrt_slider = clamp(i_bar_wrt_slider, zero(i_bar_wrt_slider), i_max_slider - i_min_slider + one(i_min_slider) - height_bar)
+        j_bar_wrt_slider = clamp(j_bar_wrt_slider, zero(j_bar_wrt_slider), j_max_slider - j_min_slider + one(j_min_slider) - width_bar)
 
-        return i_slider_value, j_slider_value
+        return i_bar_wrt_slider, j_bar_wrt_slider
     else
-        return i_slider_value, j_slider_value
+        return i_bar_wrt_slider, j_bar_wrt_slider
     end
 end
 
-function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
-    i_min_slider = i_min + i_slider_value
-    j_min_slider = j_min + j_slider_value
+get_scroll_value(i_bar_wrt_slider, length_bar, length_slider, length_view, length_full) = i_bar_wrt_slider * (length_full - length_view) ÷ (length_slider - length_bar)
 
-    i_max_slider = i_min_slider + height_slider - one(height_slider)
-    j_max_slider = j_min_slider + width_slider - one(height_slider)
+get_bar_length(min_length_bar, length_slider, length_view, length_full) = max(min_length_bar, (length_slider * length_view) ÷ length_full)
 
-    mouse_over_slider = (i_min_slider <= i_mouse <= i_max_slider) && (j_min_slider <= j_mouse <= j_max_slider)
+function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, this_widget, i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, height_slider, width_slider, i_mouse, j_mouse, ended_down, num_transitions, i_min_slider, j_min_slider, i_max_slider, j_max_slider)
+    height_slider = i_max_slider - i_min_slider + one(i_min_slider)
+    width_slider = j_max_slider - j_min_slider + one(j_min_slider)
+
+    i_min_bar = i_min_slider + i_bar_wrt_slider
+    j_min_bar = j_min_slider + j_bar_wrt_slider
+
+    i_max_bar = i_min_bar + height_bar - one(height_bar)
+    j_max_bar = j_min_bar + width_bar - one(height_bar)
+
+    mouse_over_bar = (i_min_bar <= i_mouse <= i_max_bar) && (j_min_bar <= j_mouse <= j_max_bar)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)
 
-    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_slider)
+    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_bar)
 
+    # i_bar_wrt_mouse becomes freely changeable (controlled by the mouse) when the slider is in hot state
+    # this i_bar_wrt_mouse then constrains the i_bar_wrt_slider when the slider becomes active
     if (hot_widget == this_widget) && (active_widget == null_widget)
-        i_slider_relative_mouse = i_min_slider - i_mouse
-        j_slider_relative_mouse = j_min_slider - j_mouse
+        i_bar_wrt_mouse = i_min_bar - i_mouse
+        j_bar_wrt_mouse = j_min_bar - j_mouse
     end
 
-    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_slider && mouse_went_down)
+    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_bar && mouse_went_down)
 
-    i_slider_value, j_slider_value = get_widget_value(widget_type, hot_widget, active_widget, this_widget, i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse, i_mouse, j_mouse, i_min, j_min, i_max, j_max)
+    i_bar_wrt_slider, j_bar_wrt_slider = get_widget_value(widget_type, hot_widget, active_widget, this_widget, i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, i_mouse, j_mouse, i_min_slider, j_min_slider, i_max_slider, j_max_slider)
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_went_up)
 
-    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_slider)
+    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_bar)
 
-    return hot_widget, active_widget, null_widget, (i_slider_value, j_slider_value, height_slider, width_slider, i_slider_relative_mouse, j_slider_relative_mouse)
+    return hot_widget, active_widget, null_widget, (i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, height_slider, width_slider)
 end
 
 do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
