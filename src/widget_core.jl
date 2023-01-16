@@ -194,7 +194,10 @@ function get_widget_value(widget_type::Slider, hot_widget, active_widget, this_w
     end
 end
 
-function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, this_widget, i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, i_mouse, j_mouse, ended_down, num_transitions, i_min_slider, j_min_slider, i_max_slider, j_max_slider)
+function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, this_widget, i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, height_slider, width_slider, i_mouse, j_mouse, ended_down, num_transitions, i_min_slider, j_min_slider, i_max_slider, j_max_slider)
+    height_slider = i_max_slider - i_min_slider + one(i_min_slider)
+    width_slider = j_max_slider - j_min_slider + one(j_min_slider)
+
     i_min_bar = i_min_slider + i_bar_wrt_slider
     j_min_bar = j_min_slider + j_bar_wrt_slider
 
@@ -222,7 +225,7 @@ function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, 
 
     hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_bar)
 
-    return hot_widget, active_widget, null_widget, (i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse)
+    return hot_widget, active_widget, null_widget, (i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, height_slider, width_slider)
 end
 
 do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)

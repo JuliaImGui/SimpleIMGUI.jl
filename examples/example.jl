@@ -103,7 +103,9 @@ function start()
     button_num_clicks = 0
 
     # widget: slider
-    slider_value = (0, 0, font_height ÷ 2, 4 * font_width, 0, 0)
+    slider_height = font_height
+    slider_width = 20 * font_width
+    slider_value = (0, 0, font_height ÷ 2, 4 * font_width, 0, 0, slider_height, slider_width)
 
     # widget: image
     sample_image = map(x -> convert(ColorTypes.RGB24, x).color, FileIO.load("mandrill.png"))
@@ -114,7 +116,7 @@ function start()
     image_slider_height = font_height
     image_slider_width = 20 * font_width
     image_slider_bar_size = (image_slider_height, (image_slider_width * image_slider_width) ÷ sample_image_width)
-    image_slider_value = (0, 0, image_slider_bar_size..., 0, 0)
+    image_slider_value = (0, 0, image_slider_bar_size..., 0, 0, size(sample_image)...)
     image_widget_shape = SD.Image(SD.move(SD.Point(1, 1), -image_slider_value[1], -image_slider_value[2]), sample_image)
 
     # widget: text_box
@@ -218,8 +220,8 @@ function start()
             slider_value,
             SI.UP1_RIGHT2,
             widget_gap,
-            font_height,
-            20 * font_width,
+            slider_height,
+            slider_width,
         )
 
         layout.reference_bounding_box = temp_bounding_box
