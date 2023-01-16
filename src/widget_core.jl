@@ -207,6 +207,8 @@ function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, 
 
     hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_bar)
 
+    # i_bar_wrt_mouse becomes freely changeable (controlled by the mouse) when the slider is in hot state
+    # this i_bar_wrt_mouse then constrains the i_bar_wrt_slider when the slider becomes active
     if (hot_widget == this_widget) && (active_widget == null_widget)
         i_bar_wrt_mouse = i_min_bar - i_mouse
         j_bar_wrt_mouse = j_min_bar - j_mouse
