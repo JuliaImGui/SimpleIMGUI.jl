@@ -194,7 +194,7 @@ function get_widget_value(widget_type::Slider, hot_widget, active_widget, this_w
     end
 end
 
-get_scroll_value(i_bar_wrt_slider, height_bar, height_slider, height_view, height_full) = i_bar_wrt_slider * (height_full - height_view) ÷ (height_slider - height_bar)
+get_scroll_value(i_bar_wrt_slider, length_bar, length_slider, length_view, length_full) = i_bar_wrt_slider * (length_full - length_view) ÷ (length_slider - length_bar)
 
 get_bar_length(min_length_bar, length_slider, length_view, length_full) = max(min_length_bar, (length_slider * length_view) ÷ length_full)
 
