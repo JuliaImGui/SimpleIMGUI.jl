@@ -33,3 +33,7 @@ julia --project=. example.jl
 This will open a window and you can interact with the widgets present in it. Here is a screenshot
 
 <img src="https://user-images.githubusercontent.com/32610387/212503486-d3daedbb-9fd9-4764-8b52-f834e4b2cd05.png">
+
+# References:
+
+1. `example/mandrill.png`: https://commons.wikimedia.org/wiki/File:Wikipedia-sipi-image-db-mandrill-4.2.03-quantize-only-CCC.png
