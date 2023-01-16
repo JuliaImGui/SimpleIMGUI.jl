@@ -286,7 +286,7 @@ function start()
             font_height,
             20 * font_width,
         )
-        delta_j_image = (image_slider_value[2] * (sample_image_width - image_widget_width)) ÷ (image_widget_width  - max(image_slider_value[4], image_slider_min_bar_size))
+        delta_j_image = SI.get_scroll_value(image_slider_value[2], image_slider_value[4], image_slider_value[8], image_widget_width, SD.get_width(image_widget_shape))
         image_widget_shape = SD.Image(SD.move(SD.Point(1, 1), 0, -delta_j_image), image_widget_shape.image)
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
