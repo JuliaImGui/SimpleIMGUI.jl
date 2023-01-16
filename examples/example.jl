@@ -112,11 +112,10 @@ function start()
     sample_image_height, sample_image_width = size(sample_image)
     image_widget_height = 5 * font_height
     image_widget_width = 20 * font_width
-    image_slider_min_bar_size = font_width
     image_slider_height = font_height
     image_slider_width = 20 * font_width
-    image_slider_bar_size = (image_slider_height, (image_slider_width * image_slider_width) ÷ sample_image_width)
-    image_slider_value = (0, 0, image_slider_bar_size..., 0, 0, size(sample_image)...)
+    image_slider_bar_width = SI.get_bar_length(8, image_widget_width, image_widget_width, sample_image_width)
+    image_slider_value = (0, 0, image_slider_height, image_slider_bar_width, 0, 0, size(sample_image)...)
     image_widget_shape = SD.Image(SD.move(SD.Point(1, 1), -image_slider_value[1], -image_slider_value[2]), sample_image)
 
     # widget: text_box
