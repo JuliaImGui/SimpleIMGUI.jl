@@ -112,11 +112,11 @@ function start()
     sample_image_height, sample_image_width = size(sample_image)
     image_widget_height = 5 * font_height
     image_widget_width = 20 * font_width
-    image_slider_height = font_height
-    image_slider_width = 20 * font_width
-    image_slider_bar_width = SI.get_bar_length(8, image_widget_width, image_widget_width, sample_image_width)
-    image_slider_value = (0, 0, image_slider_height, image_slider_bar_width, 0, 0, size(sample_image)...)
-    image_widget_shape = SD.Image(SD.move(SD.Point(1, 1), -image_slider_value[1], -image_slider_value[2]), sample_image)
+    image_widget_horizontal_slider_height = font_height
+    image_widget_horizontal_slider_width = image_widget_width
+    image_widget_horizontal_slider_bar_width = SI.get_bar_length(8, image_widget_width, image_widget_width, sample_image_width)
+    image_widget_horizontal_slider_value = (0, 0, image_widget_horizontal_slider_height, image_widget_horizontal_slider_bar_width, 0, 0, image_widget_horizontal_slider_height, image_widget_horizontal_slider_width)
+    image_widget_drawable = SD.Image(SD.move(SD.Point(1, 1), -image_widget_horizontal_slider_value[1], -image_widget_horizontal_slider_value[2]), sample_image)
 
     # widget: text_box
     text_box_value = collect("Enter text")
@@ -271,22 +271,22 @@ function start()
             widget_gap,
             image_widget_height,
             image_widget_width,
-            image_widget_shape,
+            image_widget_drawable,
         )
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
-        image_slider_value = SI.do_widget!(
+        image_widget_horizontal_slider_value = SI.do_widget!(
             SI.SLIDER,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            image_slider_value,
+            image_widget_horizontal_slider_value,
             SI.DOWN2_LEFT1,
             widget_gap,
             font_height,
             20 * font_width,
         )
-        delta_j_image = SI.get_scroll_value(image_slider_value[2], image_slider_value[4], image_slider_value[8], image_widget_width, SD.get_width(image_widget_shape))
-        image_widget_shape = SD.Image(SD.move(SD.Point(1, 1), 0, -delta_j_image), image_widget_shape.image)
+        image_widget_j_scroll = SI.get_scroll_value(image_widget_horizontal_slider_value[2], image_widget_horizontal_slider_value[4], image_widget_horizontal_slider_value[8], image_widget_width, SD.get_width(image_widget_drawable))
+        image_widget_drawable = SD.Image(SD.move(SD.Point(1, 1), 0, -image_widget_j_scroll), image_widget_drawable.image)
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
         layout.reference_bounding_box = temp_bounding_box
