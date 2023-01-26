@@ -92,7 +92,7 @@ end
 ##### Button
 #####
 
-function get_widget_interaction(widget_type::Union{Button, Text, Image}, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+function get_widget_interaction(widget_type::Button, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)
@@ -135,6 +135,12 @@ function get_widget_interaction(widget_type::TextBox, hot_widget, active_widget,
 
     return hot_widget, active_widget, null_widget, widget_value
 end
+
+#####
+##### Text
+#####
+
+get_widget_interaction(widget_type::Text, args...; kwargs...) = get_widget_interaction(BUTTON, args...; kwargs...)
 
 #####
 ##### CheckBox
@@ -197,3 +203,9 @@ function get_widget_interaction(widget_type::Slider, hot_widget, active_widget, 
 
     return hot_widget, active_widget, null_widget, (i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, height_slider, width_slider)
 end
+
+#####
+##### Image
+#####
+
+get_widget_interaction(widget_type::Image, args...; kwargs...) = get_widget_interaction(BUTTON, args...; kwargs...)
