@@ -13,7 +13,7 @@ get_content_alignment(::Button) = CENTER
 get_content_padding(::AbstractWidgetType) = 0
 
 function do_widget!(
-        widget_type::Union{Button, Text},
+        widget_type::Button,
         ui_context::AbstractUIContext,
         this_widget,
         alignment,
@@ -61,8 +61,10 @@ function do_widget!(
     return widget_value
 end
 
+do_widget!(widget_type::Text, args...; kwargs...) = do_widget!(BUTTON, args...; kwargs...)
+
 function do_widget!(
-        widget_type::Union{CheckBox, RadioButton, DropDown},
+        widget_type::CheckBox,
         ui_context::AbstractUIContext,
         this_widget,
         widget_value,
@@ -111,6 +113,10 @@ function do_widget!(
 
     return widget_value
 end
+
+do_widget!(widget_type::RadioButton, args...; kwargs...) = do_widget!(CHECK_BOX, args...; kwargs...)
+
+do_widget!(widget_type::DropDown, args...; kwargs...) = do_widget!(CHECK_BOX, args...; kwargs...)
 
 function do_widget!(
         widget_type::TextBox,
