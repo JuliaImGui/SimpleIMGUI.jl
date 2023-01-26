@@ -35,7 +35,7 @@ function do_widget!(
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
 
-    hot_widget, active_widget, null_widget, widget_value = do_widget(
+    hot_widget, active_widget, null_widget, widget_value = get_widget_interaction(
         widget_type,
         user_interaction_state.hot_widget,
         user_interaction_state.active_widget,
@@ -86,7 +86,7 @@ function do_widget!(
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
 
-    hot_widget, active_widget, null_widget, widget_value = do_widget(
+    hot_widget, active_widget, null_widget, widget_value = get_widget_interaction(
         widget_type,
         user_interaction_state.hot_widget,
         user_interaction_state.active_widget,
@@ -137,7 +137,7 @@ function do_widget!(
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
 
-    hot_widget, active_widget, null_widget, widget_value = do_widget(
+    hot_widget, active_widget, null_widget, widget_value = get_widget_interaction(
         widget_type,
         user_interaction_state.hot_widget,
         user_interaction_state.active_widget,
@@ -196,7 +196,7 @@ function do_widget!(
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
 
-    hot_widget, active_widget, null_widget, widget_value = do_widget(
+    hot_widget, active_widget, null_widget, widget_value = get_widget_interaction(
         widget_type,
         user_interaction_state.hot_widget,
         user_interaction_state.active_widget,
@@ -243,7 +243,7 @@ function do_widget!(
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
 
-    hot_widget, active_widget, null_widget, widget_value = do_widget(
+    hot_widget, active_widget, null_widget, widget_value = get_widget_interaction(
         widget_type,
         user_interaction_state.hot_widget,
         user_interaction_state.active_widget,
