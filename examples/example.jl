@@ -20,14 +20,16 @@ function update_button(button, action)
 end
 
 function start()
-    image_height = 720
-    image_width = 1280
+    primary_monitor = GLFW.GetPrimaryMonitor()
+    video_mode = GLFW.GetVideoMode(primary_monitor)
+    image_height = Int(video_mode.height)
+    image_width = Int(video_mode.width)
     window_name = "Example"
 
     image = zeros(MGL.GLuint, image_height, image_width)
 
     setup_window_hints()
-    window = GLFW.CreateWindow(image_width, image_height, window_name)
+    window = GLFW.CreateWindow(image_width, image_height, window_name, primary_monitor)
     GLFW.MakeContextCurrent(window)
 
     user_input_state = SI.UserInputState(
@@ -392,10 +394,10 @@ function start()
             font,
         )
         temp_bounding_box = layout.reference_bounding_box
-
         push!(debug_text_list, "previous frame number: $(i)")
         push!(debug_text_list, "average total time spent per frame (averaged over previous $(length(frame_time_stamp_buffer)) frames): $(round((last(frame_time_stamp_buffer) - first(frame_time_stamp_buffer)) / (1e6 * length(frame_time_stamp_buffer)), digits = 2)) ms")
         push!(debug_text_list, "average compute time spent per frame (averaged over previous $(length(frame_compute_time_buffer)) frames): $(round(sum(frame_compute_time_buffer) / (1e6 * length(frame_compute_time_buffer)), digits = 2)) ms")
+        push!(debug_text_list, "Monitor video mode: $(GLFW.GetVideoMode(GLFW.GetWindowMonitor(window)))")
         push!(debug_text_list, "cursor: $(user_input_state.cursor)")
         push!(debug_text_list, "mouse_left: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1])")
         push!(debug_text_list, "count_went_down(mouse_left): $(SI.count_went_down(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1]))")
