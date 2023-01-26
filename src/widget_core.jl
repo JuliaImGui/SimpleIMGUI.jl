@@ -146,7 +146,7 @@ get_widget_interaction(widget_type::Text, args...; kwargs...) = get_widget_inter
 ##### CheckBox
 #####
 
-function get_widget_interaction(widget_type::Union{CheckBox, RadioButton, DropDown}, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+function get_widget_interaction(widget_type::CheckBox, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
     hot_widget, active_widget, null_widget, button_value = get_widget_interaction(BUTTON, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
 
     if button_value
@@ -155,6 +155,18 @@ function get_widget_interaction(widget_type::Union{CheckBox, RadioButton, DropDo
 
     return hot_widget, active_widget, null_widget, widget_value
 end
+
+#####
+##### RadioButton
+#####
+
+get_widget_interaction(widget_type::RadioButton, args...; kwargs...) = get_widget_interaction(CHECK_BOX, args...; kwargs...)
+
+#####
+##### DropDown
+#####
+
+get_widget_interaction(widget_type::DropDown, args...; kwargs...) = get_widget_interaction(CHECK_BOX, args...; kwargs...)
 
 #####
 ##### Slider
