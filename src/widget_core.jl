@@ -124,23 +124,9 @@ do_widget!!(widget_type::Union{Button, Text, Image}, args...; kwargs...) = do_wi
 ##### TextBox
 #####
 
-function get_widget_value!(::TextBox, hot_widget, active_widget, this_widget, widget_value, characters)
-    if (hot_widget == this_widget) && (active_widget == this_widget)
-        for character in characters
-            if isprint(character)
-                push!(widget_value, character)
-            elseif character == '\b'
-                if get_num_printable_characters(widget_value) > 0
-                    pop!(widget_value)
-                end
-            end
-        end
-    end
+get_widget_value(::TextBox, hot_widget, active_widget, this_widget) = (hot_widget == this_widget) && (active_widget == this_widget)
 
-    return widget_value
-end
-
-function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, characters, i_min, j_min, i_max, j_max)
+function do_widget(widget_type::TextBox, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, characters, i_min, j_min, i_max, j_max)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)
@@ -149,7 +135,7 @@ function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget
 
     active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget && mouse_went_up)
 
-    widget_value = get_widget_value!(widget_type, hot_widget, active_widget, this_widget, widget_value, characters)
+    widget_value = get_widget_value(widget_type, hot_widget, active_widget, this_widget)
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_widget && mouse_went_up)
 
@@ -158,7 +144,7 @@ function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget
     return hot_widget, active_widget, null_widget, widget_value
 end
 
-do_widget!!(widget_type::TextBox, args...; kwargs...) = do_widget!(widget_type, args...; kwargs...)
+do_widget!!(widget_type::TextBox, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
 #####
 ##### CheckBox

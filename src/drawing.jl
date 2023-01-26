@@ -86,7 +86,7 @@ function draw_widget_unclipped!(widget_type::Button, image, bounding_box, user_i
     return nothing
 end
 
-function draw_widget_unclipped!(widget_type::TextBox, image, bounding_box, user_interaction_state, this_widget, text, alignment, padding, font, background_contextual_color, border_contextual_color, text_contextual_color)
+function draw_widget_unclipped!(widget_type::TextBox, image, bounding_box, user_interaction_state, this_widget, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color)
     if this_widget == user_interaction_state.active_widget
         background_color = background_contextual_color.active_color
         border_color = border_contextual_color.active_color

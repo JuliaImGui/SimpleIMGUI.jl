@@ -116,7 +116,6 @@ function do_widget!(
         widget_type::TextBox,
         user_interaction_state::AbstractUserInteractionState,
         this_widget,
-        widget_value,
         cursor_position,
         input_button,
         characters,
@@ -128,6 +127,7 @@ function do_widget!(
         image,
         content_alignment,
         content_padding,
+        text,
         font,
         background_color,
         border_color,
@@ -143,7 +143,6 @@ function do_widget!(
         user_interaction_state.active_widget,
         user_interaction_state.null_widget,
         this_widget,
-        widget_value,
         cursor_position.i,
         cursor_position.j,
         input_button.ended_down,
@@ -159,7 +158,19 @@ function do_widget!(
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, font, background_color, border_color, text_color)
+    if widget_value
+        for character in characters
+            if isprint(character)
+                push!(text, character)
+            elseif character == '\b'
+                if get_num_printable_characters(text) > 0
+                    pop!(text)
+                end
+            end
+        end
+    end
+
+    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, content_alignment, content_padding, text, font, background_color, border_color, text_color)
 
     return widget_value
 end
@@ -336,11 +347,11 @@ function do_widget!(
         widget_type::TextBox,
         ui_context::AbstractUIContext,
         this_widget,
-        widget_value,
         alignment,
         padding,
         widget_height,
         widget_width,
+        text,
         font,
     )
 
@@ -348,7 +359,6 @@ function do_widget!(
         widget_type,
         ui_context.user_interaction_state,
         this_widget,
-        widget_value,
         ui_context.user_input_state.cursor.position,
         first(ui_context.user_input_state.mouse_buttons), # assuming first one is left mouse button (it will work for GLFW at least)
         ui_context.user_input_state.characters,
@@ -360,6 +370,7 @@ function do_widget!(
         ui_context.image,
         get_content_alignment(widget_type),
         get_content_padding(widget_type),
+        text,
         font,
         get_colors(widget_type)...,
     )

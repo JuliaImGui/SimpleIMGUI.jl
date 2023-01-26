@@ -239,15 +239,15 @@ function start()
         )
         temp_bounding_box = layout.reference_bounding_box
 
-        text_box_value = SI.do_widget!(
+        SI.do_widget!(
             SI.TEXT_BOX,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            text_box_value,
             SI.UP1_RIGHT2,
             widget_gap,
             font_height,
             20 * font_width,
+            text_box_value,
             font,
         )
 
