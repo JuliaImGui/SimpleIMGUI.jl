@@ -12,58 +12,6 @@ end
 #####
 
 function do_widget!(
-        widget_type::Union{CheckBox, RadioButton, DropDown},
-        user_interaction_state::AbstractUserInteractionState,
-        this_widget,
-        widget_value,
-        cursor_position,
-        input_button,
-        layout,
-        alignment,
-        padding,
-        widget_height,
-        widget_width,
-        image,
-        content_alignment,
-        content_padding,
-        text,
-        font,
-        background_color,
-        border_color,
-        text_color,
-        indicator_color,
-    )
-
-    widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
-    layout.reference_bounding_box = widget_bounding_box
-
-    hot_widget, active_widget, null_widget, widget_value = get_widget_interaction(
-        widget_type,
-        user_interaction_state.hot_widget,
-        user_interaction_state.active_widget,
-        user_interaction_state.null_widget,
-        this_widget,
-        widget_value,
-        cursor_position.i,
-        cursor_position.j,
-        input_button.ended_down,
-        input_button.num_transitions,
-        SD.get_i_min(widget_bounding_box),
-        SD.get_j_min(widget_bounding_box),
-        SD.get_i_max(widget_bounding_box),
-        SD.get_j_max(widget_bounding_box),
-    )
-
-    user_interaction_state.hot_widget = hot_widget
-    user_interaction_state.active_widget = active_widget
-    user_interaction_state.null_widget = null_widget
-
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, text, font, background_color, border_color, text_color, indicator_color)
-
-    return widget_value
-end
-
-function do_widget!(
         widget_type::TextBox,
         user_interaction_state::AbstractUserInteractionState,
         this_widget,
@@ -290,25 +238,42 @@ function do_widget!(
         font,
     )
 
-    do_widget!(
+    layout = ui_context.layout
+    user_interaction_state = ui_context.user_interaction_state
+    cursor_position = ui_context.user_input_state.cursor.position
+    input_button = first(ui_context.user_input_state.mouse_buttons)
+    image = ui_context.image
+    content_alignment = get_content_alignment(widget_type)
+    content_padding = get_content_padding(widget_type)
+    background_color, border_color, text_color, indicator_color = get_colors(widget_type)
+
+    widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
+    layout.reference_bounding_box = widget_bounding_box
+
+    hot_widget, active_widget, null_widget, widget_value = get_widget_interaction(
         widget_type,
-        ui_context.user_interaction_state,
+        user_interaction_state.hot_widget,
+        user_interaction_state.active_widget,
+        user_interaction_state.null_widget,
         this_widget,
         widget_value,
-        ui_context.user_input_state.cursor.position,
-        first(ui_context.user_input_state.mouse_buttons), # assuming first one is left mouse button (it will work for GLFW at least)
-        ui_context.layout,
-        alignment,
-        padding,
-        widget_height,
-        widget_width,
-        ui_context.image,
-        get_content_alignment(widget_type),
-        get_content_padding(widget_type),
-        text,
-        font,
-        get_colors(widget_type)...,
+        cursor_position.i,
+        cursor_position.j,
+        input_button.ended_down,
+        input_button.num_transitions,
+        SD.get_i_min(widget_bounding_box),
+        SD.get_j_min(widget_bounding_box),
+        SD.get_i_max(widget_bounding_box),
+        SD.get_j_max(widget_bounding_box),
     )
+
+    user_interaction_state.hot_widget = hot_widget
+    user_interaction_state.active_widget = active_widget
+    user_interaction_state.null_widget = null_widget
+
+    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, text, font, background_color, border_color, text_color, indicator_color)
+
+    return widget_value
 end
 
 function do_widget!(
