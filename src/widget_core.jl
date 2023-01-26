@@ -118,8 +118,6 @@ function do_widget(widget_type::Union{Button, Text, Image}, hot_widget, active_w
     return hot_widget, active_widget, null_widget, widget_value
 end
 
-do_widget!!(widget_type::Union{Button, Text, Image}, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
-
 #####
 ##### TextBox
 #####
@@ -144,8 +142,6 @@ function do_widget(widget_type::TextBox, hot_widget, active_widget, null_widget,
     return hot_widget, active_widget, null_widget, widget_value
 end
 
-do_widget!!(widget_type::TextBox, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
-
 #####
 ##### CheckBox
 #####
@@ -159,8 +155,6 @@ function do_widget(widget_type::Union{CheckBox, RadioButton, DropDown}, hot_widg
 
     return hot_widget, active_widget, null_widget, widget_value
 end
-
-do_widget!!(widget_type::Union{CheckBox, RadioButton, DropDown}, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
 
 #####
 ##### Slider
@@ -217,5 +211,3 @@ function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, 
 
     return hot_widget, active_widget, null_widget, (i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, height_slider, width_slider)
 end
-
-do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
