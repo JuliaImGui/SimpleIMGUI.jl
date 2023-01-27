@@ -7,9 +7,6 @@ struct UIContext{T, I1, I2, A} <: AbstractUIContext
     image::A
 end
 
-get_content_alignment(::AbstractWidgetType) = UP1_LEFT1
-get_content_alignment(::Button) = CENTER
-
 get_content_padding(::AbstractWidgetType) = 0
 
 function do_widget!(
@@ -22,6 +19,7 @@ function do_widget!(
         padding = SD.get_height(font) ÷ 4,
         widget_height = SD.get_height(font),
         widget_width = get_num_printable_characters(text) * SD.get_width(font),
+        content_alignment = CENTER,
     )
 
     layout = ui_context.layout
@@ -29,7 +27,6 @@ function do_widget!(
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
     image = ui_context.image
-    content_alignment = get_content_alignment(widget_type)
     content_padding = get_content_padding(widget_type)
     background_color, border_color, text_color = get_colors(widget_type)
 
@@ -71,6 +68,7 @@ function do_widget!(
         padding = SD.get_height(font) ÷ 4,
         widget_height = SD.get_height(font),
         widget_width = get_num_printable_characters(text) * SD.get_width(font),
+        content_alignment = UP1_LEFT1,
     )
 
     layout = ui_context.layout
@@ -78,7 +76,6 @@ function do_widget!(
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
     image = ui_context.image
-    content_alignment = get_content_alignment(widget_type)
     content_padding = get_content_padding(widget_type)
     background_color, border_color, text_color = get_colors(widget_type)
 
@@ -121,6 +118,7 @@ function do_widget!(
         padding = SD.get_height(font) ÷ 4,
         widget_height = SD.get_height(font),
         widget_width = (get_num_printable_characters(text) + 2) * SD.get_width(font),
+        content_alignment = UP1_LEFT1,
     )
 
     layout = ui_context.layout
@@ -128,7 +126,6 @@ function do_widget!(
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
     image = ui_context.image
-    content_alignment = get_content_alignment(widget_type)
     content_padding = get_content_padding(widget_type)
     background_color, border_color, text_color, indicator_color = get_colors(widget_type)
 
@@ -172,6 +169,7 @@ function do_widget!(
         padding = SD.get_height(font) ÷ 4,
         widget_height = SD.get_height(font),
         widget_width = (get_num_printable_characters(text) + 2) * SD.get_width(font),
+        content_alignment = UP1_LEFT1,
     )
 
     layout = ui_context.layout
@@ -179,7 +177,6 @@ function do_widget!(
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
     image = ui_context.image
-    content_alignment = get_content_alignment(widget_type)
     content_padding = get_content_padding(widget_type)
     background_color, border_color, text_color, indicator_color = get_colors(widget_type)
 
@@ -223,6 +220,7 @@ function do_widget!(
         padding = SD.get_height(font) ÷ 4,
         widget_height = SD.get_height(font),
         widget_width = (get_num_printable_characters(text) + 2) * SD.get_width(font),
+        content_alignment = UP1_LEFT1,
     )
 
     layout = ui_context.layout
@@ -230,7 +228,6 @@ function do_widget!(
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
     image = ui_context.image
-    content_alignment = get_content_alignment(widget_type)
     content_padding = get_content_padding(widget_type)
     background_color, border_color, text_color, indicator_color = get_colors(widget_type)
 
@@ -273,6 +270,7 @@ function do_widget!(
         padding = SD.get_height(font) ÷ 4,
         widget_height = SD.get_height(font),
         widget_width = max(1, get_num_printable_characters(text)) * SD.get_width(font),
+        content_alignment = UP1_LEFT1,
     )
 
     layout = ui_context.layout
@@ -281,7 +279,6 @@ function do_widget!(
     input_button = first(ui_context.user_input_state.mouse_buttons)
     characters = ui_context.user_input_state.characters
     image = ui_context.image
-    content_alignment = get_content_alignment(widget_type)
     content_padding = get_content_padding(widget_type)
     background_color, border_color, text_color = get_colors(widget_type)
 
@@ -343,7 +340,6 @@ function do_widget!(
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
     image = ui_context.image
-    content_alignment = get_content_alignment(widget_type)
     content_padding = get_content_padding(widget_type)
     background_color, border_color, indicator_color = get_colors(widget_type)
 
@@ -386,6 +382,7 @@ function do_widget!(
         padding = SD.get_height(font) ÷ 4,
         widget_height = SD.get_height(image_content),
         widget_width = SD.get_width(image_content),
+        content_alignment = UP1_LEFT1,
     )
 
     layout = ui_context.layout
@@ -393,7 +390,6 @@ function do_widget!(
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
     image = ui_context.image
-    content_alignment = get_content_alignment(widget_type)
     content_padding = get_content_padding(widget_type)
     border_color = get_colors(widget_type)[1]
 
