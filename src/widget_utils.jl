@@ -380,11 +380,12 @@ function do_widget!(
         widget_type::Image,
         ui_context::AbstractUIContext,
         this_widget,
-        alignment,
-        padding,
-        widget_height,
-        widget_width,
-        image_content,
+        image_content;
+        font = SD.TERMINUS_BOLD_24_12,
+        alignment = DOWN2_LEFT1,
+        padding = SD.get_height(font) ÷ 4,
+        widget_height = SD.get_height(image_content),
+        widget_width = SD.get_width(image_content),
     )
 
     layout = ui_context.layout

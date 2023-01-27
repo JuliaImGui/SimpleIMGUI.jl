@@ -242,11 +242,10 @@ function start()
             SI.IMAGE,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.UP1_RIGHT2,
-            widget_gap,
-            image_widget_height,
-            image_widget_width,
-            image_widget_drawable,
+            image_widget_drawable;
+            alignment = SI.UP1_RIGHT2,
+            widget_height = image_widget_height,
+            widget_width = image_widget_width,
         )
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
