@@ -89,21 +89,7 @@ function draw_widget_unclipped!(widget_type::Button, image, bounding_box, user_i
     return nothing
 end
 
-function draw_widget_unclipped!(widget_type::TextBox, image, bounding_box, user_interaction_state, this_widget, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color)
-    if this_widget == user_interaction_state.active_widget
-        background_color = background_contextual_color.active_color
-        border_color = border_contextual_color.active_color
-        text_color = text_contextual_color.active_color
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = background_contextual_color.hot_color
-        border_color = border_contextual_color.hot_color
-        text_color = text_contextual_color.hot_color
-    else
-        background_color = background_contextual_color.neutral_color
-        border_color = border_contextual_color.neutral_color
-        text_color = text_contextual_color.neutral_color
-    end
-
+function draw_widget_unclipped!(widget_type::TextBox, image, bounding_box, user_interaction_state, this_widget, alignment, padding, text, font, background_color, border_color, text_color)
     num_printable_characters = get_num_printable_characters(text)
 
     if num_printable_characters * SD.get_width(font) > bounding_box.width

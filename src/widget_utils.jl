@@ -399,6 +399,15 @@ function do_widget!(
         widget_width = max(1, get_num_printable_characters(text)) * SD.get_width(font),
         content_alignment = UP1_LEFT1,
         content_padding = 0,
+        background_color_neutral = ui_context.colors[:TEXT_BOX_BACKGROUND_NEUTRAL],
+        background_color_hot = ui_context.colors[:TEXT_BOX_BACKGROUND_HOT],
+        background_color_active = ui_context.colors[:TEXT_BOX_BACKGROUND_ACTIVE],
+        border_color_neutral = ui_context.colors[:TEXT_BOX_BORDER_NEUTRAL],
+        border_color_hot = ui_context.colors[:TEXT_BOX_BORDER_HOT],
+        border_color_active = ui_context.colors[:TEXT_BOX_BORDER_ACTIVE],
+        text_color_neutral = ui_context.colors[:TEXT_BOX_TEXT_NEUTRAL],
+        text_color_hot = ui_context.colors[:TEXT_BOX_TEXT_HOT],
+        text_color_active = ui_context.colors[:TEXT_BOX_TEXT_ACTIVE],
     )
 
     layout = ui_context.layout
@@ -407,7 +416,6 @@ function do_widget!(
     input_button = first(ui_context.user_input_state.mouse_buttons)
     characters = ui_context.user_input_state.characters
     image = ui_context.image
-    background_color, border_color, text_color = get_colors(widget_type)
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -443,6 +451,20 @@ function do_widget!(
                 end
             end
         end
+    end
+
+    if this_widget == user_interaction_state.active_widget
+        background_color = background_color_active
+        border_color = border_color_active
+        text_color = text_color_active
+    elseif this_widget == user_interaction_state.hot_widget
+        background_color = background_color_hot
+        border_color = border_color_hot
+        text_color = text_color_hot
+    else
+        background_color = background_color_neutral
+        border_color = border_color_neutral
+        text_color = text_color_neutral
     end
 
     draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, content_alignment, content_padding, text, font, background_color, border_color, text_color)
