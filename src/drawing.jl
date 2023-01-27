@@ -32,7 +32,6 @@ function draw!(image, drawable::ButtonDrawable)
     SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), background_color)
 
     i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, content_alignment, content_padding, SD.get_height(font), SD.get_width(font) * get_num_printable_characters(text))
-    # SD.draw!(image, SD.TextLine(SD.move(bounding_box.position, i_offset, j_offset), text, font), text_color)
     SD.draw!(image_view, SD.TextLine(SD.move(SD.Point(one(I), one(I)), i_offset, j_offset), text, font), text_color)
 
     SD.draw!(image, bounding_box, border_color)
@@ -125,13 +124,6 @@ function draw_widget_unclipped!(widget_type::Text, image, bounding_box, user_int
         text_color,
     )
 
-    return nothing
-end
-
-function draw_widget_unclipped!(widget_type::Button, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
-
-    drawable = ButtonDrawable(bounding_box, text, font, alignment, padding, background_color, border_color, text_color)
-    draw!(image, drawable)
     return nothing
 end
 
