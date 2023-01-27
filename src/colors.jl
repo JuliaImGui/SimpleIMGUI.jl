@@ -112,13 +112,3 @@ DEFAULT_COLORS[:SLIDER_INDICATOR_ACTIVE] = DEFAULT_COLORS[:INDICATOR]
 DEFAULT_COLORS[:IMAGE_BORDER_NEUTRAL] = DEFAULT_COLORS[:BORDER]
 DEFAULT_COLORS[:IMAGE_BORDER_HOT] = DEFAULT_COLORS[:BORDER]
 DEFAULT_COLORS[:IMAGE_BORDER_ACTIVE] = DEFAULT_COLORS[:BORDER]
-
-function get_contextual_color(user_interaction_state, this_widget, neutral_color, hot_color, active_color)
-    if this_widget == user_interaction_state.active_widget
-        return active_color
-    elseif this_widget == user_interaction_state.hot_widget
-        return hot_color
-    else
-        return neutral_color
-    end
-end
