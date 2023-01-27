@@ -164,24 +164,16 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.UP1_LEFT1,
-            widget_gap,
-            font_height,
-            SI.get_num_printable_characters(text) * font_width,
-            text,
-            font,
+            text;
+            alignment = SI.UP1_LEFT1,
         )
 
         SI.do_widget!(
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "Button",
-            font,
+            "Button";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -189,12 +181,9 @@ function start()
             SI.BUTTON,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.UP1_RIGHT2,
-            widget_gap,
-            font_height,
-            20 * font_width,
-            "$(button_num_clicks)",
-            font,
+            "$(button_num_clicks)";
+            alignment = SI.UP1_RIGHT2,
+            widget_width = 20 * font_width,
         )
         if button_value
             button_num_clicks += 1
@@ -205,12 +194,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "Slider",
-            font,
+            "Slider";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -230,12 +215,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "TextBox",
-            font,
+            "TextBox";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -256,12 +237,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "Image",
-            font,
+            "Image";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -296,12 +273,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "RadioButton",
-            font,
+            "RadioButton";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -333,12 +306,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "DropDown",
-            font,
+            "DropDown";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -386,12 +355,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "CheckBox",
-            font,
+            "CheckBox";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
         push!(debug_text_list, "previous frame number: $(i)")
@@ -428,12 +393,7 @@ function start()
                     SI.TEXT,
                     ui_context,
                     SI.WidgetID(@__FILE__, @__LINE__, j),
-                    SI.DOWN2_LEFT1,
-                    widget_gap,
-                    font_height,
-                    SI.get_num_printable_characters(text) * font_width,
-                    text,
-                    font,
+                    text;
                 )
             end
         end
