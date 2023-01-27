@@ -61,7 +61,54 @@ function do_widget!(
     return widget_value
 end
 
-do_widget!(widget_type::Text, args...; kwargs...) = do_widget!(BUTTON, args...; kwargs...)
+function do_widget!(
+        widget_type::Text,
+        ui_context::AbstractUIContext,
+        this_widget,
+        text;
+        font = SD.TERMINUS_BOLD_24_12,
+        alignment = DOWN2_LEFT1,
+        padding = SD.get_height(font) ÷ 4,
+        widget_height = SD.get_height(font),
+        widget_width = get_num_printable_characters(text) * SD.get_width(font),
+    )
+
+    layout = ui_context.layout
+    user_interaction_state = ui_context.user_interaction_state
+    cursor_position = ui_context.user_input_state.cursor.position
+    input_button = first(ui_context.user_input_state.mouse_buttons)
+    image = ui_context.image
+    content_alignment = get_content_alignment(widget_type)
+    content_padding = get_content_padding(widget_type)
+    background_color, border_color, text_color = get_colors(widget_type)
+
+    widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
+    layout.reference_bounding_box = widget_bounding_box
+
+    hot_widget, active_widget, null_widget, widget_value = get_widget_interaction(
+        widget_type,
+        user_interaction_state.hot_widget,
+        user_interaction_state.active_widget,
+        user_interaction_state.null_widget,
+        this_widget,
+        cursor_position.i,
+        cursor_position.j,
+        input_button.ended_down,
+        input_button.num_transitions,
+        SD.get_i_min(widget_bounding_box),
+        SD.get_j_min(widget_bounding_box),
+        SD.get_i_max(widget_bounding_box),
+        SD.get_j_max(widget_bounding_box),
+    )
+
+    user_interaction_state.hot_widget = hot_widget
+    user_interaction_state.active_widget = active_widget
+    user_interaction_state.null_widget = null_widget
+
+    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, text, font, content_alignment, content_padding, background_color, border_color, text_color)
+
+    return widget_value
+end
 
 function do_widget!(
         widget_type::CheckBox,
