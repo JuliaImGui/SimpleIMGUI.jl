@@ -74,7 +74,8 @@ function do_widget!(
         text_color = text_color_neutral
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, text, font, content_alignment, content_padding, background_color, border_color, text_color)
+    drawable = ButtonDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color)
+    draw!(image, drawable)
 
     return widget_value
 end
