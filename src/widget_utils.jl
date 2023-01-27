@@ -21,7 +21,7 @@ function do_widget!(
         alignment = DOWN2_LEFT1,
         padding = SD.get_height(font) ÷ 4,
         widget_height = SD.get_height(font),
-        widget_width = length(text) * SD.get_width(font),
+        widget_width = get_num_printable_characters(text) * SD.get_width(font),
     )
 
     layout = ui_context.layout
