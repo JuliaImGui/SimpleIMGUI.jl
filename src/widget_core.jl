@@ -92,15 +92,7 @@ end
 ##### Button
 #####
 
-function get_widget_value(::Union{Button, Text, Image}, hot_widget, active_widget, this_widget, condition)
-    if (hot_widget == this_widget) && (active_widget == this_widget) && condition
-        return true
-    else
-        return false
-    end
-end
-
-function do_widget(widget_type::Union{Button, Text, Image}, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+function get_widget_interaction(widget_type::Button, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)
@@ -109,7 +101,11 @@ function do_widget(widget_type::Union{Button, Text, Image}, hot_widget, active_w
 
     active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget && mouse_went_down)
 
-    widget_value = get_widget_value(widget_type, hot_widget, active_widget, this_widget, mouse_over_widget && mouse_went_up)
+    if (hot_widget == this_widget) && (active_widget == this_widget) && mouse_over_widget && mouse_went_up
+        widget_value = true
+    else
+        widget_value = false
+    end
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_went_up)
 
@@ -118,29 +114,11 @@ function do_widget(widget_type::Union{Button, Text, Image}, hot_widget, active_w
     return hot_widget, active_widget, null_widget, widget_value
 end
 
-do_widget!!(widget_type::Union{Button, Text, Image}, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
-
 #####
 ##### TextBox
 #####
 
-function get_widget_value!(::TextBox, hot_widget, active_widget, this_widget, widget_value, characters)
-    if (hot_widget == this_widget) && (active_widget == this_widget)
-        for character in characters
-            if isprint(character)
-                push!(widget_value, character)
-            elseif character == '\b'
-                if get_num_printable_characters(widget_value) > 0
-                    pop!(widget_value)
-                end
-            end
-        end
-    end
-
-    return widget_value
-end
-
-function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, characters, i_min, j_min, i_max, j_max)
+function get_widget_interaction(widget_type::TextBox, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, characters, i_min, j_min, i_max, j_max)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)
@@ -149,7 +127,7 @@ function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget
 
     active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget && mouse_went_up)
 
-    widget_value = get_widget_value!(widget_type, hot_widget, active_widget, this_widget, widget_value, characters)
+    widget_value = (hot_widget == this_widget) && (active_widget == this_widget)
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_widget && mouse_went_up)
 
@@ -158,14 +136,18 @@ function do_widget!(widget_type::TextBox, hot_widget, active_widget, null_widget
     return hot_widget, active_widget, null_widget, widget_value
 end
 
-do_widget!!(widget_type::TextBox, args...; kwargs...) = do_widget!(widget_type, args...; kwargs...)
+#####
+##### Text
+#####
+
+get_widget_interaction(widget_type::Text, args...; kwargs...) = get_widget_interaction(BUTTON, args...; kwargs...)
 
 #####
 ##### CheckBox
 #####
 
-function do_widget(widget_type::Union{CheckBox, RadioButton, DropDown}, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
-    hot_widget, active_widget, null_widget, button_value = do_widget(BUTTON, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+function get_widget_interaction(widget_type::CheckBox, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
+    hot_widget, active_widget, null_widget, button_value = get_widget_interaction(BUTTON, hot_widget, active_widget, null_widget, this_widget, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max)
 
     if button_value
         widget_value = !widget_value
@@ -174,31 +156,27 @@ function do_widget(widget_type::Union{CheckBox, RadioButton, DropDown}, hot_widg
     return hot_widget, active_widget, null_widget, widget_value
 end
 
-do_widget!!(widget_type::Union{CheckBox, RadioButton, DropDown}, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
+#####
+##### RadioButton
+#####
+
+get_widget_interaction(widget_type::RadioButton, args...; kwargs...) = get_widget_interaction(CHECK_BOX, args...; kwargs...)
+
+#####
+##### DropDown
+#####
+
+get_widget_interaction(widget_type::DropDown, args...; kwargs...) = get_widget_interaction(CHECK_BOX, args...; kwargs...)
 
 #####
 ##### Slider
 #####
 
-function get_widget_value(widget_type::Slider, hot_widget, active_widget, this_widget, i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, i_mouse, j_mouse, i_min_slider, j_min_slider, i_max_slider, j_max_slider)
-    if (hot_widget == this_widget) && (active_widget == this_widget)
-        i_bar_wrt_slider = i_mouse + i_bar_wrt_mouse - i_min_slider
-        j_bar_wrt_slider = j_mouse + j_bar_wrt_mouse - j_min_slider
-
-        i_bar_wrt_slider = clamp(i_bar_wrt_slider, zero(i_bar_wrt_slider), i_max_slider - i_min_slider + one(i_min_slider) - height_bar)
-        j_bar_wrt_slider = clamp(j_bar_wrt_slider, zero(j_bar_wrt_slider), j_max_slider - j_min_slider + one(j_min_slider) - width_bar)
-
-        return i_bar_wrt_slider, j_bar_wrt_slider
-    else
-        return i_bar_wrt_slider, j_bar_wrt_slider
-    end
-end
-
 get_scroll_value(i_bar_wrt_slider, length_bar, length_slider, length_view, length_full) = i_bar_wrt_slider * (length_full - length_view) ÷ (length_slider - length_bar)
 
 get_bar_length(min_length_bar, length_slider, length_view, length_full) = max(min_length_bar, (length_slider * length_view) ÷ length_full)
 
-function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, this_widget, i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, height_slider, width_slider, i_mouse, j_mouse, ended_down, num_transitions, i_min_slider, j_min_slider, i_max_slider, j_max_slider)
+function get_widget_interaction(widget_type::Slider, hot_widget, active_widget, null_widget, this_widget, i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, height_slider, width_slider, i_mouse, j_mouse, ended_down, num_transitions, i_min_slider, j_min_slider, i_max_slider, j_max_slider)
     height_slider = i_max_slider - i_min_slider + one(i_min_slider)
     width_slider = j_max_slider - j_min_slider + one(j_min_slider)
 
@@ -223,7 +201,13 @@ function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, 
 
     active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_bar && mouse_went_down)
 
-    i_bar_wrt_slider, j_bar_wrt_slider = get_widget_value(widget_type, hot_widget, active_widget, this_widget, i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, i_mouse, j_mouse, i_min_slider, j_min_slider, i_max_slider, j_max_slider)
+    if (hot_widget == this_widget) && (active_widget == this_widget)
+        i_bar_wrt_slider = i_mouse + i_bar_wrt_mouse - i_min_slider
+        j_bar_wrt_slider = j_mouse + j_bar_wrt_mouse - j_min_slider
+
+        i_bar_wrt_slider = clamp(i_bar_wrt_slider, zero(i_bar_wrt_slider), i_max_slider - i_min_slider + one(i_min_slider) - height_bar)
+        j_bar_wrt_slider = clamp(j_bar_wrt_slider, zero(j_bar_wrt_slider), j_max_slider - j_min_slider + one(j_min_slider) - width_bar)
+    end
 
     active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_went_up)
 
@@ -232,4 +216,8 @@ function do_widget(widget_type::Slider, hot_widget, active_widget, null_widget, 
     return hot_widget, active_widget, null_widget, (i_bar_wrt_slider, j_bar_wrt_slider, height_bar, width_bar, i_bar_wrt_mouse, j_bar_wrt_mouse, height_slider, width_slider)
 end
 
-do_widget!!(widget_type::Slider, args...; kwargs...) = do_widget(widget_type, args...; kwargs...)
+#####
+##### Image
+#####
+
+get_widget_interaction(widget_type::Image, args...; kwargs...) = get_widget_interaction(BUTTON, args...; kwargs...)

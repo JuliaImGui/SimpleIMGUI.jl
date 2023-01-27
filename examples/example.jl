@@ -164,24 +164,16 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.UP1_LEFT1,
-            widget_gap,
-            font_height,
-            SI.get_num_printable_characters(text) * font_width,
-            text,
-            font,
+            text;
+            alignment = SI.UP1_LEFT1,
         )
 
         SI.do_widget!(
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "Button",
-            font,
+            "Button";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -189,12 +181,9 @@ function start()
             SI.BUTTON,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.UP1_RIGHT2,
-            widget_gap,
-            font_height,
-            20 * font_width,
-            "$(button_num_clicks)",
-            font,
+            "$(button_num_clicks)";
+            alignment = SI.UP1_RIGHT2,
+            widget_width = 20 * font_width,
         )
         if button_value
             button_num_clicks += 1
@@ -205,12 +194,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "Slider",
-            font,
+            "Slider";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -218,11 +203,10 @@ function start()
             SI.SLIDER,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            slider_value,
-            SI.UP1_RIGHT2,
-            widget_gap,
-            slider_height,
-            slider_width,
+            slider_value;
+            alignment = SI.UP1_RIGHT2,
+            widget_height = slider_height,
+            widget_width = slider_width,
         )
 
         layout.reference_bounding_box = temp_bounding_box
@@ -230,25 +214,18 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "TextBox",
-            font,
+            "TextBox";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
-        text_box_value = SI.do_widget!(
+        SI.do_widget!(
             SI.TEXT_BOX,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            text_box_value,
-            SI.UP1_RIGHT2,
-            widget_gap,
-            font_height,
-            20 * font_width,
-            font,
+            text_box_value;
+            alignment = SI.UP1_RIGHT2,
+            widget_width = 20 * font_width,
         )
 
         layout.reference_bounding_box = temp_bounding_box
@@ -256,12 +233,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "Image",
-            font,
+            "Image";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -269,11 +242,10 @@ function start()
             SI.IMAGE,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.UP1_RIGHT2,
-            widget_gap,
-            image_widget_height,
-            image_widget_width,
-            image_widget_drawable,
+            image_widget_drawable;
+            alignment = SI.UP1_RIGHT2,
+            widget_height = image_widget_height,
+            widget_width = image_widget_width,
         )
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
@@ -281,11 +253,8 @@ function start()
             SI.SLIDER,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            image_widget_horizontal_slider_value,
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            20 * font_width,
+            image_widget_horizontal_slider_value;
+            widget_width = 20 * font_width,
         )
         image_widget_j_scroll = SI.get_scroll_value(image_widget_horizontal_slider_value[2], image_widget_horizontal_slider_value[4], image_widget_horizontal_slider_value[8], image_widget_width, SD.get_width(image_widget_drawable))
         image_widget_drawable = SD.Image(SD.move(SD.Point(1, 1), 0, -image_widget_j_scroll), image_widget_drawable.image)
@@ -296,12 +265,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "RadioButton",
-            font,
+            "RadioButton";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -316,12 +281,9 @@ function start()
                 ui_context,
                 SI.WidgetID(@__FILE__, @__LINE__, j),
                 radio_button_value == j,
-                SI.UP1_RIGHT2,
-                widget_gap,
-                font_height,
-                (max_num_chars + 2) * font_width,
-                "$(item)",
-                font,
+                "$(item)";
+                alignment = SI.UP1_RIGHT2,
+                widget_width = (max_num_chars + 2) * font_width,
             )
                 radio_button_value = j
             end
@@ -333,12 +295,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "DropDown",
-            font,
+            "DropDown";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -352,12 +310,9 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             drop_down_value,
-            SI.UP1_RIGHT2,
-            widget_gap,
-            font_height,
-            (max_num_chars + 2) * font_width,
-            drop_down_item_list[drop_down_selected_item],
-            font,
+            drop_down_item_list[drop_down_selected_item];
+            alignment = SI.UP1_RIGHT2,
+            widget_width = (max_num_chars + 2) * font_width,
         )
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
@@ -368,12 +323,9 @@ function start()
                     ui_context,
                     SI.WidgetID(@__FILE__, @__LINE__, j),
                     drop_down_selected_item == j,
-                    SI.DOWN2_LEFT1,
-                    0,
-                    font_height,
-                    (max_num_chars + 2) * font_width,
-                    "$(item)",
-                    font,
+                    "$(item)";
+                    padding = 0,
+                    widget_width = (max_num_chars + 2) * font_width,
                 )
                     drop_down_selected_item = j
                 end
@@ -386,12 +338,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            12 * font_width,
-            "CheckBox",
-            font,
+            "CheckBox";
+            widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
         push!(debug_text_list, "previous frame number: $(i)")
@@ -413,12 +361,8 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             check_box_value,
-            SI.UP1_RIGHT2,
-            widget_gap,
-            font_height,
-            (SI.get_num_printable_characters(text) + 2) * font_width,
-            text,
-            font,
+            text;
+            alignment = SI.UP1_RIGHT2,
         )
 
         if check_box_value
@@ -428,12 +372,7 @@ function start()
                     SI.TEXT,
                     ui_context,
                     SI.WidgetID(@__FILE__, @__LINE__, j),
-                    SI.DOWN2_LEFT1,
-                    widget_gap,
-                    font_height,
-                    SI.get_num_printable_characters(text) * font_width,
-                    text,
-                    font,
+                    text;
                 )
             end
         end
