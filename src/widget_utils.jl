@@ -36,7 +36,6 @@ function do_widget!(
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
     image = ui_context.image
-    background_color, border_color, text_color = get_colors(widget_type)
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
