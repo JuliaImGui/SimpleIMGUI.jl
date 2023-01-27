@@ -224,12 +224,9 @@ function start()
             SI.TEXT_BOX,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            SI.UP1_RIGHT2,
-            widget_gap,
-            font_height,
-            20 * font_width,
-            text_box_value,
-            font,
+            text_box_value;
+            alignment = SI.UP1_RIGHT2,
+            widget_width = 20 * font_width,
         )
 
         layout.reference_bounding_box = temp_bounding_box
