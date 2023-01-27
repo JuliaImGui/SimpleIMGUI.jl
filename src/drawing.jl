@@ -56,20 +56,23 @@ function draw_widget!(widget_type, image, bounding_box, args...; kwargs...)
     return nothing
 end
 
-function draw_widget_unclipped!(widget_type::Button, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color)
-    if this_widget == user_interaction_state.active_widget
-        background_color = background_contextual_color.active_color
-        border_color = border_contextual_color.active_color
-        text_color = text_contextual_color.active_color
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = background_contextual_color.hot_color
-        border_color = border_contextual_color.hot_color
-        text_color = text_contextual_color.hot_color
-    else
-        background_color = background_contextual_color.neutral_color
-        border_color = border_contextual_color.neutral_color
-        text_color = text_contextual_color.neutral_color
-    end
+function draw_widget_unclipped!(widget_type::Text, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
+    draw_text_line_in_a_box!(
+        image,
+        bounding_box,
+        text,
+        font,
+        alignment,
+        padding,
+        background_color,
+        border_color,
+        text_color,
+    )
+
+    return nothing
+end
+
+function draw_widget_unclipped!(widget_type::Button, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
 
     draw_text_line_in_a_box!(
         image,
@@ -86,21 +89,7 @@ function draw_widget_unclipped!(widget_type::Button, image, bounding_box, user_i
     return nothing
 end
 
-function draw_widget_unclipped!(widget_type::TextBox, image, bounding_box, user_interaction_state, this_widget, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color)
-    if this_widget == user_interaction_state.active_widget
-        background_color = background_contextual_color.active_color
-        border_color = border_contextual_color.active_color
-        text_color = text_contextual_color.active_color
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = background_contextual_color.hot_color
-        border_color = border_contextual_color.hot_color
-        text_color = text_contextual_color.hot_color
-    else
-        background_color = background_contextual_color.neutral_color
-        border_color = border_contextual_color.neutral_color
-        text_color = text_contextual_color.neutral_color
-    end
-
+function draw_widget_unclipped!(widget_type::TextBox, image, bounding_box, user_interaction_state, this_widget, alignment, padding, text, font, background_color, border_color, text_color)
     num_printable_characters = get_num_printable_characters(text)
 
     if num_printable_characters * SD.get_width(font) > bounding_box.width
@@ -127,26 +116,7 @@ function draw_widget_unclipped!(widget_type::TextBox, image, bounding_box, user_
     return nothing
 end
 
-draw_widget_unclipped!(widget_type::Text, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color) = draw_widget_unclipped!(BUTTON, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color)
-
-function draw_widget_unclipped!(widget_type::CheckBox, image, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color, indicator_contextual_color)
-    if this_widget == user_interaction_state.active_widget
-        background_color = background_contextual_color.active_color
-        border_color = border_contextual_color.active_color
-        text_color = text_contextual_color.active_color
-        indicator_color = indicator_contextual_color.active_color
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = background_contextual_color.hot_color
-        border_color = border_contextual_color.hot_color
-        text_color = text_contextual_color.hot_color
-        indicator_color = indicator_contextual_color.hot_color
-    else
-        background_color = background_contextual_color.neutral_color
-        border_color = border_contextual_color.neutral_color
-        text_color = text_contextual_color.neutral_color
-        indicator_color = indicator_contextual_color.neutral_color
-    end
-
+function draw_widget_unclipped!(widget_type::CheckBox, image, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
     font_width = SD.get_width(font)
     box_width = oftype(font_width, 2) * font_width
     x = box_width ÷ oftype(box_width, 8)
@@ -171,24 +141,7 @@ function draw_widget_unclipped!(widget_type::CheckBox, image, bounding_box, user
     return nothing
 end
 
-function draw_widget_unclipped!(widget_type::RadioButton, image, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color, indicator_contextual_color)
-    if this_widget == user_interaction_state.active_widget
-        background_color = background_contextual_color.active_color
-        border_color = border_contextual_color.active_color
-        text_color = text_contextual_color.active_color
-        indicator_color = indicator_contextual_color.active_color
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = background_contextual_color.hot_color
-        border_color = border_contextual_color.hot_color
-        text_color = text_contextual_color.hot_color
-        indicator_color = indicator_contextual_color.hot_color
-    else
-        background_color = background_contextual_color.neutral_color
-        border_color = border_contextual_color.neutral_color
-        text_color = text_contextual_color.neutral_color
-        indicator_color = indicator_contextual_color.neutral_color
-    end
-
+function draw_widget_unclipped!(widget_type::RadioButton, image, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
     font_width = SD.get_width(font)
     indicator_width = oftype(font_width, 2) * font_width
     x = indicator_width ÷ oftype(indicator_width, 8)
@@ -212,24 +165,7 @@ function draw_widget_unclipped!(widget_type::RadioButton, image, bounding_box, u
     return nothing
 end
 
-function draw_widget_unclipped!(widget_type::DropDown, image, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color, indicator_contextual_color)
-    if this_widget == user_interaction_state.active_widget
-        background_color = background_contextual_color.active_color
-        border_color = border_contextual_color.active_color
-        text_color = text_contextual_color.active_color
-        indicator_color = indicator_contextual_color.active_color
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = background_contextual_color.hot_color
-        border_color = border_contextual_color.hot_color
-        text_color = text_contextual_color.hot_color
-        indicator_color = indicator_contextual_color.hot_color
-    else
-        background_color = background_contextual_color.neutral_color
-        border_color = border_contextual_color.neutral_color
-        text_color = text_contextual_color.neutral_color
-        indicator_color = indicator_contextual_color.neutral_color
-    end
-
+function draw_widget_unclipped!(widget_type::DropDown, image, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_color, border_color, text_color, indicator_color)
     font_width = SD.get_width(font)
     indicator_width = oftype(font_width, 2) * font_width
     x = indicator_width ÷ oftype(indicator_width, 8)
@@ -254,21 +190,7 @@ function draw_widget_unclipped!(widget_type::DropDown, image, bounding_box, user
     return nothing
 end
 
-function draw_widget_unclipped!(widget_type::Slider, image, bounding_box, user_interaction_state, this_widget, widget_value, background_contextual_color, border_contextual_color, bar_contextual_color)
-    if this_widget == user_interaction_state.active_widget
-        background_color = background_contextual_color.active_color
-        border_color = border_contextual_color.active_color
-        bar_color = bar_contextual_color.active_color
-    elseif this_widget == user_interaction_state.hot_widget
-        background_color = background_contextual_color.hot_color
-        border_color = border_contextual_color.hot_color
-        bar_color = bar_contextual_color.hot_color
-    else
-        background_color = background_contextual_color.neutral_color
-        border_color = border_contextual_color.neutral_color
-        bar_color = bar_contextual_color.neutral_color
-    end
-
+function draw_widget_unclipped!(widget_type::Slider, image, bounding_box, user_interaction_state, this_widget, widget_value, background_color, border_color, bar_color)
     i_slider_value = widget_value[1]
     j_slider_value = widget_value[2]
     height_slider = widget_value[3]
@@ -285,15 +207,7 @@ function draw_widget_unclipped!(widget_type::Slider, image, bounding_box, user_i
     return nothing
 end
 
-function draw_widget_unclipped!(widget_type::Image, image, bounding_box, user_interaction_state, this_widget, content, alignment, padding, border_contextual_color)
-    if this_widget == user_interaction_state.active_widget
-        border_color = border_contextual_color.active_color
-    elseif this_widget == user_interaction_state.hot_widget
-        border_color = border_contextual_color.hot_color
-    else
-        border_color = border_contextual_color.neutral_color
-    end
-
+function draw_widget_unclipped!(widget_type::Image, image, bounding_box, user_interaction_state, this_widget, content, alignment, padding, border_color)
     SD.draw!(image, content)
 
     SD.draw!(image, bounding_box, border_color)
