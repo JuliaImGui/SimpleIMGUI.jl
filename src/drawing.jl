@@ -207,15 +207,7 @@ function draw_widget_unclipped!(widget_type::Slider, image, bounding_box, user_i
     return nothing
 end
 
-function draw_widget_unclipped!(widget_type::Image, image, bounding_box, user_interaction_state, this_widget, content, alignment, padding, border_contextual_color)
-    if this_widget == user_interaction_state.active_widget
-        border_color = border_contextual_color.active_color
-    elseif this_widget == user_interaction_state.hot_widget
-        border_color = border_contextual_color.hot_color
-    else
-        border_color = border_contextual_color.neutral_color
-    end
-
+function draw_widget_unclipped!(widget_type::Image, image, bounding_box, user_interaction_state, this_widget, content, alignment, padding, border_color)
     SD.draw!(image, content)
 
     SD.draw!(image, bounding_box, border_color)
