@@ -203,11 +203,10 @@ function start()
             SI.SLIDER,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            slider_value,
-            SI.UP1_RIGHT2,
-            widget_gap,
-            slider_height,
-            slider_width,
+            slider_value;
+            alignment = SI.UP1_RIGHT2,
+            widget_height = slider_height,
+            widget_width = slider_width,
         )
 
         layout.reference_bounding_box = temp_bounding_box
@@ -255,11 +254,8 @@ function start()
             SI.SLIDER,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            image_widget_horizontal_slider_value,
-            SI.DOWN2_LEFT1,
-            widget_gap,
-            font_height,
-            20 * font_width,
+            image_widget_horizontal_slider_value;
+            widget_width = 20 * font_width,
         )
         image_widget_j_scroll = SI.get_scroll_value(image_widget_horizontal_slider_value[2], image_widget_horizontal_slider_value[4], image_widget_horizontal_slider_value[8], image_widget_width, SD.get_width(image_widget_drawable))
         image_widget_drawable = SD.Image(SD.move(SD.Point(1, 1), 0, -image_widget_j_scroll), image_widget_drawable.image)

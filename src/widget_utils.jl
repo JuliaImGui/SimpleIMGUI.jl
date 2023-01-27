@@ -330,11 +330,12 @@ function do_widget!(
         widget_type::Slider,
         ui_context::AbstractUIContext,
         this_widget,
-        widget_value,
-        alignment,
-        padding,
-        widget_height,
-        widget_width,
+        widget_value;
+        font = SD.TERMINUS_BOLD_24_12,
+        alignment = DOWN2_LEFT1,
+        padding = SD.get_height(font) ÷ 4,
+        widget_height = SD.get_height(font),
+        widget_width = 8 * SD.get_width(font),
     )
 
     layout = ui_context.layout
