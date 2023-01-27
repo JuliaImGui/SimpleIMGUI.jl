@@ -1,3 +1,45 @@
+struct ButtonDrawable{I <: Integer, S, F, A, C}
+    bounding_box::SD.Rectangle{I}
+    text::S
+    font::F
+    content_alignment::A
+    content_padding::I
+    background_color::C
+    border_color::C
+    text_color::C
+end
+
+function draw!(image, drawable::ButtonDrawable)
+    I = typeof(drawable.bounding_box.height)
+
+    bounding_box = drawable.bounding_box
+    text = drawable.text
+    font = drawable.font
+    content_alignment = drawable.content_alignment
+    content_padding = drawable.content_padding
+    background_color = drawable.background_color
+    border_color = drawable.border_color
+    text_color = drawable.text_color
+
+    image_bounding_box = SD.Rectangle(SD.Point(one(I), one(I)), size(image)...)
+    if is_intersecting(image_bounding_box, bounding_box)
+        i_min, j_min, i_max, j_max = get_intersection_extrema(image_bounding_box, bounding_box)
+        image_view = @view image[i_min:i_max, j_min:j_max]
+    else
+        return nothing
+    end
+
+    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), background_color)
+
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, content_alignment, content_padding, SD.get_height(font), SD.get_width(font) * get_num_printable_characters(text))
+    # SD.draw!(image, SD.TextLine(SD.move(bounding_box.position, i_offset, j_offset), text, font), text_color)
+    SD.draw!(image_view, SD.TextLine(SD.move(SD.Point(one(I), one(I)), i_offset, j_offset), text, font), text_color)
+
+    SD.draw!(image, bounding_box, border_color)
+
+    return nothing
+end
+
 """
     get_num_printable_characters(text)
 
@@ -10,6 +52,20 @@ julia> SimpleIMGUI.get_num_printable_characters("hello █\n")
 ```
 """
 get_num_printable_characters(text) = count(isprint, text)
+
+function is_intersecting(shape1, shape2)
+    i_min_shape1, i_max_shape1 = SD.get_i_extrema(shape1)
+    i_min_shape2, i_max_shape2 = SD.get_i_extrema(shape2)
+
+    j_min_shape1, j_max_shape1 = SD.get_j_extrema(shape1)
+    j_min_shape2, j_max_shape2 = SD.get_j_extrema(shape2)
+
+    separating_i_axis_exists = (i_max_shape1 < i_min_shape2) || (i_max_shape2 < i_min_shape1)
+    separating_j_axis_exists = (j_max_shape1 < j_min_shape2) || (j_max_shape2 < j_min_shape1)
+    separating_axis_exists = separating_i_axis_exists || separating_j_axis_exists
+
+    return !separating_axis_exists
+end
 
 function get_intersection_extrema(image, shape)
     i_min_shape, i_max_shape = SD.get_i_extrema(shape)
@@ -74,18 +130,8 @@ end
 
 function draw_widget_unclipped!(widget_type::Button, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
 
-    draw_text_line_in_a_box!(
-        image,
-        bounding_box,
-        text,
-        font,
-        alignment,
-        padding,
-        background_color,
-        border_color,
-        text_color,
-    )
-
+    drawable = ButtonDrawable(bounding_box, text, font, alignment, padding, background_color, border_color, text_color)
+    draw!(image, drawable)
     return nothing
 end
 
