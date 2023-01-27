@@ -68,12 +68,12 @@ function do_widget!(
         ui_context::AbstractUIContext,
         this_widget,
         widget_value,
-        alignment,
-        padding,
-        widget_height,
-        widget_width,
-        text,
-        font,
+        text;
+        font = SD.TERMINUS_BOLD_24_12,
+        alignment = DOWN2_LEFT1,
+        padding = SD.get_height(font) ÷ 4,
+        widget_height = SD.get_height(font),
+        widget_width = (get_num_printable_characters(text) + 2) * SD.get_width(font),
     )
 
     layout = ui_context.layout

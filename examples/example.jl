@@ -289,12 +289,9 @@ function start()
                 ui_context,
                 SI.WidgetID(@__FILE__, @__LINE__, j),
                 radio_button_value == j,
-                SI.UP1_RIGHT2,
-                widget_gap,
-                font_height,
-                (max_num_chars + 2) * font_width,
-                "$(item)",
-                font,
+                "$(item)";
+                alignment = SI.UP1_RIGHT2,
+                widget_width = (max_num_chars + 2) * font_width,
             )
                 radio_button_value = j
             end
@@ -321,12 +318,9 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             drop_down_value,
-            SI.UP1_RIGHT2,
-            widget_gap,
-            font_height,
-            (max_num_chars + 2) * font_width,
-            drop_down_item_list[drop_down_selected_item],
-            font,
+            drop_down_item_list[drop_down_selected_item];
+            alignment = SI.UP1_RIGHT2,
+            widget_width = (max_num_chars + 2) * font_width,
         )
         temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
 
@@ -337,12 +331,9 @@ function start()
                     ui_context,
                     SI.WidgetID(@__FILE__, @__LINE__, j),
                     drop_down_selected_item == j,
-                    SI.DOWN2_LEFT1,
-                    0,
-                    font_height,
-                    (max_num_chars + 2) * font_width,
-                    "$(item)",
-                    font,
+                    "$(item)";
+                    padding = 0,
+                    widget_width = (max_num_chars + 2) * font_width,
                 )
                     drop_down_selected_item = j
                 end
@@ -378,12 +369,8 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             check_box_value,
-            SI.UP1_RIGHT2,
-            widget_gap,
-            font_height,
-            (SI.get_num_printable_characters(text) + 2) * font_width,
-            text,
-            font,
+            text;
+            alignment = SI.UP1_RIGHT2,
         )
 
         if check_box_value
