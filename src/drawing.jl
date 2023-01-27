@@ -56,7 +56,7 @@ function draw_widget!(widget_type, image, bounding_box, args...; kwargs...)
     return nothing
 end
 
-function draw_widget_unclipped!(widget_type::Button, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color)
+function draw_widget_unclipped!(widget_type::Text, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color)
     if this_widget == user_interaction_state.active_widget
         background_color = background_contextual_color.active_color
         border_color = border_contextual_color.active_color
@@ -70,6 +70,23 @@ function draw_widget_unclipped!(widget_type::Button, image, bounding_box, user_i
         border_color = border_contextual_color.neutral_color
         text_color = text_contextual_color.neutral_color
     end
+
+    draw_text_line_in_a_box!(
+        image,
+        bounding_box,
+        text,
+        font,
+        alignment,
+        padding,
+        background_color,
+        border_color,
+        text_color,
+    )
+
+    return nothing
+end
+
+function draw_widget_unclipped!(widget_type::Button, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
 
     draw_text_line_in_a_box!(
         image,
@@ -126,8 +143,6 @@ function draw_widget_unclipped!(widget_type::TextBox, image, bounding_box, user_
 
     return nothing
 end
-
-draw_widget_unclipped!(widget_type::Text, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color) = draw_widget_unclipped!(BUTTON, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_contextual_color, border_contextual_color, text_contextual_color)
 
 function draw_widget_unclipped!(widget_type::CheckBox, image, bounding_box, user_interaction_state, this_widget, widget_value, alignment, padding, text, font, background_contextual_color, border_contextual_color, text_contextual_color, indicator_contextual_color)
     if this_widget == user_interaction_state.active_widget

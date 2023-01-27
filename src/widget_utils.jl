@@ -1,10 +1,11 @@
 abstract type AbstractUIContext end
 
-struct UIContext{T, I1, I2, A} <: AbstractUIContext
+struct UIContext{T, I1, I2, A, C} <: AbstractUIContext
     user_interaction_state::UserInteractionState{T}
     user_input_state::UserInputState{I1}
     layout::BoxLayout{I2}
     image::A
+    colors::Dict{Symbol, C}
 end
 
 function do_widget!(
@@ -19,6 +20,15 @@ function do_widget!(
         widget_width = get_num_printable_characters(text) * SD.get_width(font),
         content_alignment = CENTER,
         content_padding = 0,
+        background_color_neutral = ui_context.colors[:BUTTON_BACKGROUND_NEUTRAL],
+        background_color_hot = ui_context.colors[:BUTTON_BACKGROUND_HOT],
+        background_color_active = ui_context.colors[:BUTTON_BACKGROUND_ACTIVE],
+        border_color_neutral = ui_context.colors[:BUTTON_BORDER_NEUTRAL],
+        border_color_hot = ui_context.colors[:BUTTON_BORDER_HOT],
+        border_color_active = ui_context.colors[:BUTTON_BORDER_ACTIVE],
+        text_color_neutral = ui_context.colors[:BUTTON_TEXT_NEUTRAL],
+        text_color_hot = ui_context.colors[:BUTTON_TEXT_HOT],
+        text_color_active = ui_context.colors[:BUTTON_TEXT_ACTIVE],
     )
 
     layout = ui_context.layout
@@ -50,6 +60,20 @@ function do_widget!(
     user_interaction_state.hot_widget = hot_widget
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
+
+    if this_widget == user_interaction_state.active_widget
+        background_color = background_color_active
+        border_color = border_color_active
+        text_color = text_color_active
+    elseif this_widget == user_interaction_state.hot_widget
+        background_color = background_color_hot
+        border_color = border_color_hot
+        text_color = text_color_hot
+    else
+        background_color = background_color_neutral
+        border_color = border_color_neutral
+        text_color = text_color_neutral
+    end
 
     draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, text, font, content_alignment, content_padding, background_color, border_color, text_color)
 

@@ -134,7 +134,7 @@ function start()
     check_box_value = false
     debug_text_list = String[]
 
-    ui_context = SI.UIContext(user_interaction_state, user_input_state, layout, image)
+    ui_context = SI.UIContext(user_interaction_state, user_input_state, layout, image, SI.DEFAULT_COLORS)
 
     i = 0
 
