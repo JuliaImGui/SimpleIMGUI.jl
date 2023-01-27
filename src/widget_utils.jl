@@ -482,6 +482,15 @@ function do_widget!(
         padding = SD.get_height(font) ÷ 4,
         widget_height = SD.get_height(font),
         widget_width = 8 * SD.get_width(font),
+        background_color_neutral = ui_context.colors[:SLIDER_BACKGROUND_NEUTRAL],
+        background_color_hot = ui_context.colors[:SLIDER_BACKGROUND_HOT],
+        background_color_active = ui_context.colors[:SLIDER_BACKGROUND_ACTIVE],
+        border_color_neutral = ui_context.colors[:SLIDER_BORDER_NEUTRAL],
+        border_color_hot = ui_context.colors[:SLIDER_BORDER_HOT],
+        border_color_active = ui_context.colors[:SLIDER_BORDER_ACTIVE],
+        indicator_color_neutral = ui_context.colors[:SLIDER_INDICATOR_NEUTRAL],
+        indicator_color_hot = ui_context.colors[:SLIDER_INDICATOR_HOT],
+        indicator_color_active = ui_context.colors[:SLIDER_INDICATOR_ACTIVE],
     )
 
     layout = ui_context.layout
@@ -489,7 +498,6 @@ function do_widget!(
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
     image = ui_context.image
-    background_color, border_color, indicator_color = get_colors(widget_type)
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -514,6 +522,20 @@ function do_widget!(
     user_interaction_state.hot_widget = hot_widget
     user_interaction_state.active_widget = active_widget
     user_interaction_state.null_widget = null_widget
+
+    if this_widget == user_interaction_state.active_widget
+        background_color = background_color_active
+        border_color = border_color_active
+        indicator_color = indicator_color_active
+    elseif this_widget == user_interaction_state.hot_widget
+        background_color = background_color_hot
+        border_color = border_color_hot
+        indicator_color = indicator_color_hot
+    else
+        background_color = background_color_neutral
+        border_color = border_color_neutral
+        indicator_color = indicator_color_neutral
+    end
 
     draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, background_color, border_color, indicator_color)
 
