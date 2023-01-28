@@ -9,6 +9,18 @@ struct BoxedTextLine{I <: Integer, S, F, A, C}
     text_color::C
 end
 
+struct TextBoxDrawable{I <: Integer, S, F, A, C}
+    bounding_box::SD.Rectangle{I}
+    text::S
+    font::F
+    content_alignment::A
+    content_padding::I
+    background_color::C
+    border_color::C
+    text_color::C
+    show_cursor::Bool
+end
+
 function draw!(image, drawable::BoxedTextLine)
     I = typeof(drawable.bounding_box.height)
 
@@ -33,6 +45,49 @@ function draw!(image, drawable::BoxedTextLine)
 
     i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, content_alignment, content_padding, SD.get_height(font), SD.get_width(font) * get_num_printable_characters(text))
     SD.draw!(image_view, SD.TextLine(SD.move(SD.Point(one(I), one(I)), i_offset, j_offset), text, font), text_color)
+
+    SD.draw!(image, bounding_box, border_color)
+
+    return nothing
+end
+
+function draw!(image, drawable::TextBoxDrawable)
+    bounding_box = drawable.bounding_box
+    text = drawable.text
+    font = drawable.font
+    content_alignment = drawable.content_alignment
+    content_padding = drawable.content_padding
+    background_color = drawable.background_color
+    border_color = drawable.border_color
+    text_color = drawable.text_color
+    show_cursor = drawable.show_cursor
+
+    I = typeof(drawable.bounding_box.height)
+
+    num_printable_characters = get_num_printable_characters(text)
+
+    if num_printable_characters * SD.get_width(font) > bounding_box.width
+        content_alignment = RIGHT1
+    end
+
+    image_bounding_box = SD.Rectangle(SD.Point(one(I), one(I)), size(image)...)
+    if is_intersecting(image_bounding_box, bounding_box)
+        i_min, j_min, i_max, j_max = get_intersection_extrema(image_bounding_box, bounding_box)
+        image_view = @view image[i_min:i_max, j_min:j_max]
+    else
+        return nothing
+    end
+
+    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), background_color)
+
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, content_alignment, content_padding, SD.get_height(font), SD.get_width(font) * get_num_printable_characters(text))
+    SD.draw!(image_view, SD.TextLine(SD.move(SD.Point(one(I), one(I)), i_offset, j_offset), text, font), text_color)
+
+    if show_cursor
+        first_char_position = SD.move(SD.Point(one(I), one(I)), i_offset, j_offset)
+        i_offset_first_character, j_offset_first_character = get_alignment_offset(bounding_box.height, bounding_box.width, content_alignment, content_padding, SD.get_height(font), SD.get_width(font) * num_printable_characters)
+        SD.draw!(image_view, SD.FilledRectangle(SD.move(SD.Point(one(I), one(I)), i_offset_first_character, j_offset_first_character + num_printable_characters * SD.get_width(font)), SD.get_height(font), oftype(SD.get_width(font), 2)), text_color)
+    end
 
     SD.draw!(image, bounding_box, border_color)
 
@@ -107,33 +162,6 @@ function draw_widget!(widget_type, image, bounding_box, args...; kwargs...)
     view_box_bounding_box = SD.Rectangle(SD.Point(bounding_box.position.i - i_min + one(i_min), bounding_box.position.j - j_min + one(j_min)), bounding_box.height, bounding_box.width)
 
     draw_widget_unclipped!(widget_type, view_box_image, view_box_bounding_box, args...; kwargs...)
-
-    return nothing
-end
-
-function draw_widget_unclipped!(widget_type::TextBox, image, bounding_box, user_interaction_state, this_widget, alignment, padding, text, font, background_color, border_color, text_color)
-    num_printable_characters = get_num_printable_characters(text)
-
-    if num_printable_characters * SD.get_width(font) > bounding_box.width
-        alignment = RIGHT1
-    end
-
-    draw_text_line_in_a_box!(
-        image,
-        bounding_box,
-        text,
-        font,
-        alignment,
-        padding,
-        background_color,
-        border_color,
-        text_color,
-    )
-
-    if this_widget == user_interaction_state.active_widget
-        _, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, alignment, padding, SD.get_height(font), SD.get_width(font) * num_printable_characters)
-        SD.draw!(image, SD.FilledRectangle(SD.move_j(bounding_box.position, j_offset + num_printable_characters * SD.get_width(font) - one(j_offset)), bounding_box.height, oftype(bounding_box.width, 2)), text_color)
-    end
 
     return nothing
 end

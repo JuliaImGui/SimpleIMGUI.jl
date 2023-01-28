@@ -459,17 +459,21 @@ function do_widget!(
         background_color = background_color_active
         border_color = border_color_active
         text_color = text_color_active
+        show_cursor = true
     elseif this_widget == user_interaction_state.hot_widget
         background_color = background_color_hot
         border_color = border_color_hot
         text_color = text_color_hot
+        show_cursor = false
     else
         background_color = background_color_neutral
         border_color = border_color_neutral
         text_color = text_color_neutral
+        show_cursor = false
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, content_alignment, content_padding, text, font, background_color, border_color, text_color)
+    drawable = TextBoxDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, show_cursor)
+    draw!(image, drawable)
 
     return widget_value
 end
