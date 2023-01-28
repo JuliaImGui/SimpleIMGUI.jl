@@ -111,22 +111,6 @@ function draw_widget!(widget_type, image, bounding_box, args...; kwargs...)
     return nothing
 end
 
-function draw_widget_unclipped!(widget_type::Text, image, bounding_box, user_interaction_state, this_widget, text, font, alignment, padding, background_color, border_color, text_color)
-    draw_text_line_in_a_box!(
-        image,
-        bounding_box,
-        text,
-        font,
-        alignment,
-        padding,
-        background_color,
-        border_color,
-        text_color,
-    )
-
-    return nothing
-end
-
 function draw_widget_unclipped!(widget_type::TextBox, image, bounding_box, user_interaction_state, this_widget, alignment, padding, text, font, background_color, border_color, text_color)
     num_printable_characters = get_num_printable_characters(text)
 
