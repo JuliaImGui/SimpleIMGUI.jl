@@ -226,7 +226,8 @@ function do_widget!(
         indicator_color = indicator_color_neutral
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, text, font, background_color, border_color, text_color, indicator_color)
+    drawable = CheckBoxDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
+    draw!(image, drawable)
 
     return widget_value
 end

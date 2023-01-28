@@ -27,6 +27,19 @@ struct CheckBoxIndicator{I <: Integer}
     value::Bool
 end
 
+struct CheckBoxDrawable{I <: Integer, S, F, A, C}
+    bounding_box::SD.Rectangle{I}
+    text::S
+    font::F
+    content_alignment::A
+    content_padding::I
+    background_color::C
+    border_color::C
+    text_color::C
+    indicator_color::C
+    value::Bool
+end
+
 function draw!(image, drawable::BoxedTextLine)
     I = typeof(drawable.bounding_box.height)
 
@@ -115,6 +128,43 @@ function draw!(image, shape::CheckBoxIndicator, color)
         outer_box_thickness = max(convert(I, 1), side_length ÷ convert(I, 4))
         SD.draw!(image, SD.ThickRectangle(position, side_length, side_length, outer_box_thickness), color)
     end
+
+    return nothing
+end
+
+function draw!(image, drawable::CheckBoxDrawable)
+    I = typeof(drawable.bounding_box.height)
+
+    bounding_box = drawable.bounding_box
+    text = drawable.text
+    font = drawable.font
+    content_alignment = drawable.content_alignment
+    content_padding = drawable.content_padding
+    background_color = drawable.background_color
+    border_color = drawable.border_color
+    text_color = drawable.text_color
+    indicator_color = drawable.indicator_color
+    value = drawable.value
+
+    image_bounding_box = SD.Rectangle(SD.Point(one(I), one(I)), size(image)...)
+    if is_intersecting(image_bounding_box, bounding_box)
+        i_min, j_min, i_max, j_max = get_intersection_extrema(image_bounding_box, bounding_box)
+        image_view = @view image[i_min:i_max, j_min:j_max]
+    else
+        return nothing
+    end
+
+    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), background_color)
+
+    num_printable_characters = get_num_printable_characters(text)
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, content_alignment, content_padding, SD.get_height(font), SD.get_width(font) * (num_printable_characters + convert(I, 2)))
+    SD.draw!(image_view, SD.TextLine(SD.move(SD.Point(one(I), one(I)), i_offset, j_offset + SD.get_width(font) * convert(I, 2)), text, font), text_color)
+
+    x = min(SD.get_height(font), convert(I, 2) * SD.get_width(font))
+    x_div_8 = x ÷ 8
+    draw!(image_view, CheckBoxIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
+
+    SD.draw!(image, bounding_box, border_color)
 
     return nothing
 end
