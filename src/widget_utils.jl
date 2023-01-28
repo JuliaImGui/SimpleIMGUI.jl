@@ -74,7 +74,7 @@ function do_widget!(
         text_color = text_color_neutral
     end
 
-    drawable = ButtonDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color)
+    drawable = BoxedTextLine(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color)
     draw!(image, drawable)
 
     return widget_value
@@ -146,7 +146,7 @@ function do_widget!(
         text_color = text_color_neutral
     end
 
-    drawable = ButtonDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color)
+    drawable = BoxedTextLine(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color)
     draw!(image, drawable)
 
     return widget_value

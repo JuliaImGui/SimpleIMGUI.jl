@@ -1,4 +1,4 @@
-struct ButtonDrawable{I <: Integer, S, F, A, C}
+struct BoxedTextLine{I <: Integer, S, F, A, C}
     bounding_box::SD.Rectangle{I}
     text::S
     font::F
@@ -9,7 +9,7 @@ struct ButtonDrawable{I <: Integer, S, F, A, C}
     text_color::C
 end
 
-function draw!(image, drawable::ButtonDrawable)
+function draw!(image, drawable::BoxedTextLine)
     I = typeof(drawable.bounding_box.height)
 
     bounding_box = drawable.bounding_box
