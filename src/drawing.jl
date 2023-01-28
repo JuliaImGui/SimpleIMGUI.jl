@@ -21,6 +21,12 @@ struct TextBoxDrawable{I <: Integer, S, F, A, C}
     show_cursor::Bool
 end
 
+struct CheckBoxIndicator{I <: Integer}
+    position::SD.Point{I}
+    side_length::I
+    value::Bool
+end
+
 function draw!(image, drawable::BoxedTextLine)
     I = typeof(drawable.bounding_box.height)
 
@@ -90,6 +96,25 @@ function draw!(image, drawable::TextBoxDrawable)
     end
 
     SD.draw!(image, bounding_box, border_color)
+
+    return nothing
+end
+
+function draw!(image, shape::CheckBoxIndicator, color)
+    position = shape.position
+    side_length = shape.side_length
+    value = shape.value
+
+    @assert side_length > zero(side_length)
+
+    I = typeof(side_length)
+
+    if value
+        SD.draw!(image, SD.FilledRectangle(position, side_length, side_length), color)
+    else
+        outer_box_thickness = max(convert(I, 1), side_length ÷ convert(I, 4))
+        SD.draw!(image, SD.ThickRectangle(position, side_length, side_length, outer_box_thickness), color)
+    end
 
     return nothing
 end
