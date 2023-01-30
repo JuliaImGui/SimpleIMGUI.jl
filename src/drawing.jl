@@ -59,6 +59,12 @@ struct RadioButtonDrawable{I <: Integer, S, F, A, C}
     value::Bool
 end
 
+struct DropDownIndicator{I <: Integer}
+    position::SD.Point{I}
+    side_length::I
+    value::Bool
+end
+
 function draw!(image, drawable::BoxedTextLine)
     I = typeof(drawable.bounding_box.height)
 
@@ -243,6 +249,25 @@ function draw!(image, drawable::RadioButtonDrawable)
 
     return nothing
 end
+
+function draw!(image, shape::DropDownIndicator, color)
+    position = shape.position
+    side_length = shape.side_length
+    value = shape.value
+
+    @assert side_length > zero(side_length)
+
+    I = typeof(side_length)
+
+    if value
+        SD.draw!(image, SD.FilledTriangle(position, SD.move_j(position, side_length - one(I)), SD.move(position, side_length - one(I), (side_length + one(I)) ÷ convert(I, 2) - one(I))), color)
+    else
+        SD.draw!(image, SD.FilledTriangle(position, SD.move_i(position, side_length - one(I)), SD.move(position, (side_length + one(I)) ÷ convert(I, 2) - one(I), side_length - one(I))), color)
+    end
+
+    return nothing
+end
+
 
 """
     get_num_printable_characters(text)
