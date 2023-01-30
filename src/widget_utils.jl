@@ -610,7 +610,8 @@ function do_widget!(
         border_color = border_color_neutral
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, image_content, content_alignment, content_padding, border_color)
+    drawable = ImageDrawable(widget_bounding_box, content_alignment, content_padding, image_content, border_color)
+    draw!(image, drawable)
 
     return widget_value
 end

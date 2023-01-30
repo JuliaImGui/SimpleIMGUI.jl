@@ -89,6 +89,14 @@ struct SliderDrawable{I <: Integer, C}
     bar_color::C
 end
 
+struct ImageDrawable{I <: Integer, A, M, C}
+    bounding_box::SD.Rectangle{I}
+    content_alignment::A
+    content_padding::I
+    image::M
+    border_color::C
+end
+
 function draw!(image, drawable::BoxedTextLine)
     I = typeof(drawable.bounding_box.height)
 
@@ -344,6 +352,32 @@ function draw!(image, drawable::SliderDrawable)
     SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), background_color)
 
     SD.draw!(image, SD.FilledRectangle(SD.move(bounding_box.position, bar_offset_i, bar_offset_j), bar_height, bar_width), bar_color)
+
+    SD.draw!(image, bounding_box, border_color)
+
+    return nothing
+end
+
+function draw!(image, drawable::ImageDrawable)
+    I = typeof(drawable.bounding_box.height)
+
+    bounding_box = drawable.bounding_box
+    content_alignment = drawable.content_alignment
+    content_padding = drawable.content_padding
+    image2 = drawable.image
+    image2_height, image2_width = size(image2.image)
+    border_color = drawable.border_color
+
+    image_bounding_box = SD.Rectangle(SD.Point(one(I), one(I)), size(image)...)
+    if is_intersecting(image_bounding_box, bounding_box)
+        i_min, j_min, i_max, j_max = get_intersection_extrema(image_bounding_box, bounding_box)
+        image_view = @view image[i_min:i_max, j_min:j_max]
+    else
+        return nothing
+    end
+
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, content_alignment, content_padding, image2_height, image2_width)
+    SD.draw!(image_view, SD.Image(SD.move(image2.position, i_offset, j_offset), image2.image))
 
     SD.draw!(image, bounding_box, border_color)
 
