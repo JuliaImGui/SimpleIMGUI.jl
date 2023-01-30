@@ -40,6 +40,12 @@ struct CheckBoxDrawable{I <: Integer, S, F, A, C}
     value::Bool
 end
 
+struct RadioButtonIndicator{I <: Integer}
+    position::SD.Point{I}
+    diameter::I
+    value::Bool
+end
+
 function draw!(image, drawable::BoxedTextLine)
     I = typeof(drawable.bounding_box.height)
 
@@ -165,6 +171,25 @@ function draw!(image, drawable::CheckBoxDrawable)
     draw!(image_view, CheckBoxIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
 
     SD.draw!(image, bounding_box, border_color)
+
+    return nothing
+end
+
+function draw!(image, shape::RadioButtonIndicator, color)
+    position = shape.position
+    diameter = shape.diameter
+    value = shape.value
+
+    @assert diameter > zero(diameter)
+
+    I = typeof(diameter)
+
+    if value
+        SD.draw!(image, SD.FilledCircle(position, diameter), color)
+    else
+        outer_circle_thickness = max(convert(I, 1), diameter ÷ convert(I, 4))
+        SD.draw!(image, SD.ThickCircle(position, diameter, outer_circle_thickness), color)
+    end
 
     return nothing
 end
