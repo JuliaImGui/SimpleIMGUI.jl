@@ -78,6 +78,17 @@ struct DropDownDrawable{I <: Integer, S, F, A, C}
     value::Bool
 end
 
+struct SliderDrawable{I <: Integer, C}
+    bounding_box::SD.Rectangle{I}
+    bar_offset_i::I
+    bar_offset_j::I
+    bar_height::I
+    bar_width::I
+    background_color::C
+    border_color::C
+    bar_color::C
+end
+
 function draw!(image, drawable::BoxedTextLine)
     I = typeof(drawable.bounding_box.height)
 
@@ -318,6 +329,26 @@ function draw!(image, drawable::DropDownDrawable)
     return nothing
 end
 
+function draw!(image, drawable::SliderDrawable)
+    I = typeof(drawable.bounding_box.height)
+
+    bounding_box = drawable.bounding_box
+    bar_offset_i = drawable.bar_offset_i
+    bar_offset_j = drawable.bar_offset_j
+    bar_height = drawable.bar_height
+    bar_width = drawable.bar_width
+    background_color = drawable.background_color
+    border_color = drawable.border_color
+    bar_color = drawable.bar_color
+
+    SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), background_color)
+
+    SD.draw!(image, SD.FilledRectangle(SD.move(bounding_box.position, bar_offset_i, bar_offset_j), bar_height, bar_width), bar_color)
+
+    SD.draw!(image, bounding_box, border_color)
+
+    return nothing
+end
 
 """
     get_num_printable_characters(text)

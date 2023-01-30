@@ -546,7 +546,12 @@ function do_widget!(
         indicator_color = indicator_color_neutral
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, background_color, border_color, indicator_color)
+    bar_offset_i = widget_value[1]
+    bar_offset_j = widget_value[2]
+    bar_height = widget_value[3]
+    bar_width = widget_value[4]
+    drawable = SliderDrawable(widget_bounding_box, bar_offset_i, bar_offset_j, bar_height, bar_width, background_color, border_color, indicator_color)
+    draw!(image, drawable)
 
     return widget_value
 end
