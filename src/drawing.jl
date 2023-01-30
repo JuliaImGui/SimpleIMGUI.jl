@@ -199,7 +199,7 @@ function draw!(image, drawable::CheckBoxDrawable)
     SD.draw!(image_view, SD.TextLine(SD.move(SD.Point(one(I), one(I)), i_offset, j_offset + SD.get_width(font) * convert(I, 2)), text, font), text_color)
 
     x = min(SD.get_height(font), convert(I, 2) * SD.get_width(font))
-    x_div_8 = x ÷ 8
+    x_div_8 = x ÷ convert(I, 8)
     draw!(image_view, CheckBoxIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
 
     SD.draw!(image, bounding_box, border_color)
@@ -255,7 +255,7 @@ function draw!(image, drawable::RadioButtonDrawable)
     SD.draw!(image_view, SD.TextLine(SD.move(SD.Point(one(I), one(I)), i_offset, j_offset + SD.get_width(font) * convert(I, 2)), text, font), text_color)
 
     x = min(SD.get_height(font), convert(I, 2) * SD.get_width(font))
-    x_div_8 = x ÷ 8
+    x_div_8 = x ÷ convert(I, 8)
     draw!(image_view, RadioButtonIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
 
     SD.draw!(image, bounding_box, border_color)
@@ -310,7 +310,7 @@ function draw!(image, drawable::DropDownDrawable)
     SD.draw!(image_view, SD.TextLine(SD.move(SD.Point(one(I), one(I)), i_offset, j_offset + SD.get_width(font) * convert(I, 2)), text, font), text_color)
 
     x = min(SD.get_height(font), convert(I, 2) * SD.get_width(font))
-    x_div_8 = x ÷ 8
+    x_div_8 = x ÷ convert(I, 8)
     draw!(image_view, DropDownIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
 
     SD.draw!(image, bounding_box, border_color)
