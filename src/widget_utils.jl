@@ -74,7 +74,8 @@ function do_widget!(
         text_color = text_color_neutral
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, text, font, content_alignment, content_padding, background_color, border_color, text_color)
+    drawable = BoxedTextLine(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -145,7 +146,8 @@ function do_widget!(
         text_color = text_color_neutral
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, text, font, content_alignment, content_padding, background_color, border_color, text_color)
+    drawable = BoxedTextLine(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -224,7 +226,8 @@ function do_widget!(
         indicator_color = indicator_color_neutral
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, text, font, background_color, border_color, text_color, indicator_color)
+    drawable = CheckBoxDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -303,7 +306,8 @@ function do_widget!(
         indicator_color = indicator_color_neutral
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, text, font, background_color, border_color, text_color, indicator_color)
+    drawable = RadioButtonDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -382,7 +386,8 @@ function do_widget!(
         indicator_color = indicator_color_neutral
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, content_alignment, content_padding, text, font, background_color, border_color, text_color, indicator_color)
+    drawable = DropDownDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -457,17 +462,21 @@ function do_widget!(
         background_color = background_color_active
         border_color = border_color_active
         text_color = text_color_active
+        show_cursor = true
     elseif this_widget == user_interaction_state.hot_widget
         background_color = background_color_hot
         border_color = border_color_hot
         text_color = text_color_hot
+        show_cursor = false
     else
         background_color = background_color_neutral
         border_color = border_color_neutral
         text_color = text_color_neutral
+        show_cursor = false
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, content_alignment, content_padding, text, font, background_color, border_color, text_color)
+    drawable = TextBoxDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, show_cursor)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -537,7 +546,12 @@ function do_widget!(
         indicator_color = indicator_color_neutral
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, widget_value, background_color, border_color, indicator_color)
+    bar_offset_i = widget_value[1]
+    bar_offset_j = widget_value[2]
+    bar_height = widget_value[3]
+    bar_width = widget_value[4]
+    drawable = SliderDrawable(widget_bounding_box, bar_offset_i, bar_offset_j, bar_height, bar_width, background_color, border_color, indicator_color)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -596,7 +610,8 @@ function do_widget!(
         border_color = border_color_neutral
     end
 
-    draw_widget!(widget_type, image, widget_bounding_box, user_interaction_state, this_widget, image_content, content_alignment, content_padding, border_color)
+    drawable = ImageDrawable(widget_bounding_box, content_alignment, content_padding, image_content, border_color)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
