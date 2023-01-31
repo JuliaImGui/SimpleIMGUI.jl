@@ -75,7 +75,7 @@ function do_widget!(
     end
 
     drawable = BoxedTextLine(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color)
-    draw!(image, drawable)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -147,7 +147,7 @@ function do_widget!(
     end
 
     drawable = BoxedTextLine(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color)
-    draw!(image, drawable)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -227,7 +227,7 @@ function do_widget!(
     end
 
     drawable = CheckBoxDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
-    draw!(image, drawable)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -307,7 +307,7 @@ function do_widget!(
     end
 
     drawable = RadioButtonDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
-    draw!(image, drawable)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -387,7 +387,7 @@ function do_widget!(
     end
 
     drawable = DropDownDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
-    draw!(image, drawable)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -476,7 +476,7 @@ function do_widget!(
     end
 
     drawable = TextBoxDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, show_cursor)
-    draw!(image, drawable)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -551,7 +551,7 @@ function do_widget!(
     bar_height = widget_value[3]
     bar_width = widget_value[4]
     drawable = SliderDrawable(widget_bounding_box, bar_offset_i, bar_offset_j, bar_height, bar_width, background_color, border_color, indicator_color)
-    draw!(image, drawable)
+    SD.draw!(image, drawable)
 
     return widget_value
 end
@@ -611,7 +611,7 @@ function do_widget!(
     end
 
     drawable = ImageDrawable(widget_bounding_box, content_alignment, content_padding, image_content, border_color)
-    draw!(image, drawable)
+    SD.draw!(image, drawable)
 
     return widget_value
 end

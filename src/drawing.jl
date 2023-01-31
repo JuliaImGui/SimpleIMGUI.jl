@@ -97,7 +97,7 @@ struct ImageDrawable{I <: Integer, A, M, C}
     border_color::C
 end
 
-function draw!(image, drawable::BoxedTextLine)
+function SD.draw!(image, drawable::BoxedTextLine)
     I = typeof(drawable.bounding_box.height)
 
     bounding_box = drawable.bounding_box
@@ -127,7 +127,7 @@ function draw!(image, drawable::BoxedTextLine)
     return nothing
 end
 
-function draw!(image, drawable::TextBoxDrawable)
+function SD.draw!(image, drawable::TextBoxDrawable)
     bounding_box = drawable.bounding_box
     text = drawable.text
     font = drawable.font
@@ -170,7 +170,7 @@ function draw!(image, drawable::TextBoxDrawable)
     return nothing
 end
 
-function draw!(image, shape::CheckBoxIndicator, color)
+function SD.draw!(image, shape::CheckBoxIndicator, color)
     position = shape.position
     side_length = shape.side_length
     value = shape.value
@@ -189,7 +189,7 @@ function draw!(image, shape::CheckBoxIndicator, color)
     return nothing
 end
 
-function draw!(image, drawable::CheckBoxDrawable)
+function SD.draw!(image, drawable::CheckBoxDrawable)
     I = typeof(drawable.bounding_box.height)
 
     bounding_box = drawable.bounding_box
@@ -219,14 +219,14 @@ function draw!(image, drawable::CheckBoxDrawable)
 
     x = min(SD.get_height(font), convert(I, 2) * SD.get_width(font))
     x_div_8 = x ÷ convert(I, 8)
-    draw!(image_view, CheckBoxIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
+    SD.draw!(image_view, CheckBoxIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
 
     SD.draw!(image, bounding_box, border_color)
 
     return nothing
 end
 
-function draw!(image, shape::RadioButtonIndicator, color)
+function SD.draw!(image, shape::RadioButtonIndicator, color)
     position = shape.position
     diameter = shape.diameter
     value = shape.value
@@ -245,7 +245,7 @@ function draw!(image, shape::RadioButtonIndicator, color)
     return nothing
 end
 
-function draw!(image, drawable::RadioButtonDrawable)
+function SD.draw!(image, drawable::RadioButtonDrawable)
     I = typeof(drawable.bounding_box.height)
 
     bounding_box = drawable.bounding_box
@@ -275,14 +275,14 @@ function draw!(image, drawable::RadioButtonDrawable)
 
     x = min(SD.get_height(font), convert(I, 2) * SD.get_width(font))
     x_div_8 = x ÷ convert(I, 8)
-    draw!(image_view, RadioButtonIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
+    SD.draw!(image_view, RadioButtonIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
 
     SD.draw!(image, bounding_box, border_color)
 
     return nothing
 end
 
-function draw!(image, shape::DropDownIndicator, color)
+function SD.draw!(image, shape::DropDownIndicator, color)
     position = shape.position
     side_length = shape.side_length
     value = shape.value
@@ -300,7 +300,7 @@ function draw!(image, shape::DropDownIndicator, color)
     return nothing
 end
 
-function draw!(image, drawable::DropDownDrawable)
+function SD.draw!(image, drawable::DropDownDrawable)
     I = typeof(drawable.bounding_box.height)
 
     bounding_box = drawable.bounding_box
@@ -330,14 +330,14 @@ function draw!(image, drawable::DropDownDrawable)
 
     x = min(SD.get_height(font), convert(I, 2) * SD.get_width(font))
     x_div_8 = x ÷ convert(I, 8)
-    draw!(image_view, DropDownIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
+    SD.draw!(image_view, DropDownIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
 
     SD.draw!(image, bounding_box, border_color)
 
     return nothing
 end
 
-function draw!(image, drawable::SliderDrawable)
+function SD.draw!(image, drawable::SliderDrawable)
     I = typeof(drawable.bounding_box.height)
 
     bounding_box = drawable.bounding_box
@@ -358,7 +358,7 @@ function draw!(image, drawable::SliderDrawable)
     return nothing
 end
 
-function draw!(image, drawable::ImageDrawable)
+function SD.draw!(image, drawable::ImageDrawable)
     I = typeof(drawable.bounding_box.height)
 
     bounding_box = drawable.bounding_box
