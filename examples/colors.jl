@@ -7,7 +7,8 @@ const COLORS = Dict{Symbol, CT.RGBA{FPN.N0f8}}()
 COLORS[:BACKGROUND] = CT.RGBA{FPN.N0f8}((Colors.color_names["lightgray"] ./ 255)...,)
 COLORS[:BORDER] = CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)...,)
 COLORS[:TEXT] = CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)...,)
-COLORS[:INDICATOR] = CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)...,)
+# COLORS[:INDICATOR] = CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)...,)
+COLORS[:INDICATOR] = CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)..., 0.5)
 
 # Button
 COLORS[:BUTTON_BACKGROUND_NEUTRAL] = CT.RGBA{FPN.N0f8}((Colors.color_names["gray69"] ./ 255)...,)

@@ -11,6 +11,35 @@ import FixedPointNumbers as FPN
 include("opengl_utils.jl")
 include("colors.jl")
 
+function blend(color_back::ColorTypes.RGBA{FPN.N0f8}, color_front::ColorTypes.RGBA{FPN.N0f8})
+    color_back_float = convert(ColorTypes.RGBA{Float32}, color_back)
+    color_front_float = convert(ColorTypes.RGBA{Float32}, color_front)
+
+    r_back = ColorTypes.red(color_back_float)
+    g_back = ColorTypes.green(color_back_float)
+    b_back = ColorTypes.blue(color_back_float)
+    a_back = ColorTypes.alpha(color_back_float)
+
+    r_front = ColorTypes.red(color_front_float)
+    g_front = ColorTypes.green(color_front_float)
+    b_front = ColorTypes.blue(color_front_float)
+    a_front = ColorTypes.alpha(color_front_float)
+
+    T = typeof(a_back)
+
+    r = a_front * r_front + a_back * r_back * (one(T) - a_front)
+    g = a_front * g_front + a_back * g_back * (one(T) - a_front)
+    b = a_front * b_front + a_back * b_back * (one(T) - a_front)
+    a = a_front + a_back * (one(T) - a_front)
+
+    return typeof(color_back)(r, g, b, a)
+end
+
+function SD.put_pixel_inbounds!(image, i, j, color::ColorTypes.RGBA{FPN.N0f8})
+    @inbounds image[i, j] = blend(image[i, j], color)
+    return nothing
+end
+
 function update_button(button, action)
     if action == GLFW.PRESS
         return SI.press(button)
