@@ -125,7 +125,7 @@ function setup_texture(image)
     MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MIN_FILTER, MGL.GL_NEAREST)
     MGL.glTexParameteri(MGL.GL_TEXTURE_2D, MGL.GL_TEXTURE_MAG_FILTER, MGL.GL_NEAREST)
 
-    MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, height_image, width_image, 0, MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
+    MGL.glTexImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GL_RGBA, height_image, width_image, 0, MGL.GL_RGBA, MGL.GL_UNSIGNED_BYTE, image)
 
     return texture_ref
 end
@@ -140,7 +140,7 @@ end
 function update_back_buffer(image)
     height_image, width_image = size(image)
 
-    MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(height_image), MGL.GLsizei(width_image), MGL.GL_BGRA, MGL.GL_UNSIGNED_INT_8_8_8_8_REV, image)
+    MGL.glTexSubImage2D(MGL.GL_TEXTURE_2D, 0, MGL.GLint(0), MGL.GLint(0), MGL.GLsizei(height_image), MGL.GLsizei(width_image), MGL.GL_RGBA, MGL.GL_UNSIGNED_BYTE, image)
     MGL.glDrawElements(MGL.GL_TRIANGLES, 6, MGL.GL_UNSIGNED_INT, Ptr{Cvoid}(0))
 
     return nothing
