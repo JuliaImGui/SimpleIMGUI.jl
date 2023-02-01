@@ -1,10 +1,9 @@
 abstract type AbstractUIContext end
 
-struct UIContext{T, I1, I2, A, C} <: AbstractUIContext
+struct UIContext{T, I1, I2, C} <: AbstractUIContext
     user_interaction_state::UserInteractionState{T}
     user_input_state::UserInputState{I1}
     layout::BoxLayout{I2}
-    image::A
     colors::Vector{C}
     draw_list::Vector{Any}
 end
@@ -36,7 +35,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -108,7 +106,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -184,7 +181,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -264,7 +260,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -344,7 +339,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -421,7 +415,6 @@ function do_widget!(
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
     characters = ui_context.user_input_state.characters
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -507,7 +500,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -578,7 +570,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box

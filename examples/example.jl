@@ -144,7 +144,7 @@ function start()
     check_box_value = false
     debug_text_list = String[]
 
-    ui_context = SI.UIContext(user_interaction_state, user_input_state, layout, image, COLORS, Any[])
+    ui_context = SI.UIContext(user_interaction_state, user_input_state, layout, COLORS, Any[])
 
     i = 0
 
@@ -392,7 +392,7 @@ function start()
         end
 
         for drawable in ui_context.draw_list
-            SD.draw!(ui_context.image, drawable)
+            SD.draw!(image, drawable)
         end
         empty!(ui_context.draw_list)
 
