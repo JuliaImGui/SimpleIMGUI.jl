@@ -170,7 +170,7 @@ function start()
 
         compute_time_start = time_ns()
 
-        SD.draw!(image, SD.Background(), ui_context.colors[:BACKGROUND])
+        SD.draw!(image, SD.Background(), ui_context.colors[Integer(SI.COLOR_INDEX_BACKGROUND)])
 
         text = "Press the escape key to quit"
         SI.do_widget!(
