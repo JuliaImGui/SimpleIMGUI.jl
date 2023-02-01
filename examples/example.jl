@@ -146,6 +146,9 @@ function start()
     frame_compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(frame_compute_time_buffer, zero(UInt))
 
+    texture_upload_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(texture_upload_time_buffer, zero(UInt))
+
     while !GLFW.WindowShouldClose(window)
         if SI.went_down(user_input_state.keyboard_buttons[Int(GLFW.KEY_ESCAPE) + 1])
             GLFW.SetWindowShouldClose(window, true)
@@ -345,6 +348,7 @@ function start()
         push!(debug_text_list, "previous frame number: $(i)")
         push!(debug_text_list, "average total time spent per frame (averaged over previous $(length(frame_time_stamp_buffer)) frames): $(round((last(frame_time_stamp_buffer) - first(frame_time_stamp_buffer)) / (1e6 * length(frame_time_stamp_buffer)), digits = 2)) ms")
         push!(debug_text_list, "average compute time spent per frame (averaged over previous $(length(frame_compute_time_buffer)) frames): $(round(sum(frame_compute_time_buffer) / (1e6 * length(frame_compute_time_buffer)), digits = 2)) ms")
+        push!(debug_text_list, "average texture upload time spent per frame (averaged over previous $(length(texture_upload_time_buffer)) frames): $(round(sum(texture_upload_time_buffer) / (1e6 * length(texture_upload_time_buffer)), digits = 3)) ms")
         push!(debug_text_list, "Monitor video mode: $(GLFW.GetVideoMode(GLFW.GetWindowMonitor(window)))")
         push!(debug_text_list, "cursor: $(user_input_state.cursor)")
         push!(debug_text_list, "mouse_left: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1])")
@@ -380,7 +384,10 @@ function start()
         compute_time_end = time_ns()
         push!(frame_compute_time_buffer, compute_time_end - compute_time_start)
 
+        texture_upload_start_time = time_ns()
         update_back_buffer(image)
+        texture_upload_end_time = time_ns()
+        push!(texture_upload_time_buffer, texture_upload_end_time - texture_upload_start_time)
 
         GLFW.SwapBuffers(window)
 
