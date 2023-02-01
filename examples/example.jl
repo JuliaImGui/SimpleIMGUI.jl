@@ -216,7 +216,8 @@ function start()
             SI.SLIDER,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            slider_value;
+            slider_value,
+            "$(slider_value[1]), $(slider_value[2])";
             alignment = SI.UP1_RIGHT2,
             widget_height = slider_height,
             widget_width = slider_width,
@@ -266,7 +267,8 @@ function start()
             SI.SLIDER,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            image_widget_horizontal_slider_value;
+            image_widget_horizontal_slider_value,
+            "$(image_widget_horizontal_slider_value[1]), $(image_widget_horizontal_slider_value[2])";
             widget_width = 20 * font_width,
         )
         image_widget_j_scroll = SI.get_scroll_value(image_widget_horizontal_slider_value[2], image_widget_horizontal_slider_value[4], image_widget_horizontal_slider_value[8], image_widget_width, SD.get_width(image_widget_drawable))

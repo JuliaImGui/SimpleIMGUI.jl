@@ -78,14 +78,19 @@ struct DropDownDrawable{I <: Integer, S, F, A, C}
     value::Bool
 end
 
-struct SliderDrawable{I <: Integer, C}
+struct SliderDrawable{I <: Integer, S, F, A, C}
     bounding_box::SD.Rectangle{I}
+    text::S
+    font::F
+    content_alignment::A
+    content_padding::I
     bar_offset_i::I
     bar_offset_j::I
     bar_height::I
     bar_width::I
     background_color::C
     border_color::C
+    text_color::C
     bar_color::C
 end
 
@@ -341,17 +346,33 @@ function SD.draw!(image, drawable::SliderDrawable)
     I = typeof(drawable.bounding_box.height)
 
     bounding_box = drawable.bounding_box
+    text = drawable.text
+    font = drawable.font
+    content_alignment = drawable.content_alignment
+    content_padding = drawable.content_padding
     bar_offset_i = drawable.bar_offset_i
     bar_offset_j = drawable.bar_offset_j
     bar_height = drawable.bar_height
     bar_width = drawable.bar_width
     background_color = drawable.background_color
     border_color = drawable.border_color
+    text_color = drawable.text_color
     bar_color = drawable.bar_color
+
+    image_bounding_box = SD.Rectangle(SD.Point(one(I), one(I)), size(image)...)
+    if is_intersecting(image_bounding_box, bounding_box)
+        i_min, j_min, i_max, j_max = get_intersection_extrema(image_bounding_box, bounding_box)
+        image_view = @view image[i_min:i_max, j_min:j_max]
+    else
+        return nothing
+    end
 
     SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), background_color)
 
     SD.draw!(image, SD.FilledRectangle(SD.move(bounding_box.position, bar_offset_i, bar_offset_j), bar_height, bar_width), bar_color)
+
+    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, content_alignment, content_padding, SD.get_height(font), SD.get_width(font) * get_num_printable_characters(text))
+    SD.draw!(image_view, SD.TextLine(SD.move(SD.Point(one(I), one(I)), i_offset, j_offset), text, font), text_color)
 
     SD.draw!(image, bounding_box, border_color)
 

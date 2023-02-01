@@ -479,18 +479,24 @@ function do_widget!(
         widget_type::Slider,
         ui_context::AbstractUIContext,
         this_widget,
-        widget_value;
+        widget_value,
+        text;
         font = SD.TERMINUS_BOLD_24_12,
         alignment = DOWN2_LEFT1,
         padding = SD.get_height(font) ÷ 4,
         widget_height = SD.get_height(font),
         widget_width = 8 * SD.get_width(font),
+        content_alignment = CENTER,
+        content_padding = 0,
         background_color_neutral = ui_context.colors[Integer(COLOR_INDEX_SLIDER_BACKGROUND_NEUTRAL)],
         background_color_hot = ui_context.colors[Integer(COLOR_INDEX_SLIDER_BACKGROUND_HOT)],
         background_color_active = ui_context.colors[Integer(COLOR_INDEX_SLIDER_BACKGROUND_ACTIVE)],
         border_color_neutral = ui_context.colors[Integer(COLOR_INDEX_SLIDER_BORDER_NEUTRAL)],
         border_color_hot = ui_context.colors[Integer(COLOR_INDEX_SLIDER_BORDER_HOT)],
         border_color_active = ui_context.colors[Integer(COLOR_INDEX_SLIDER_BORDER_ACTIVE)],
+        text_color_neutral = ui_context.colors[Integer(COLOR_INDEX_SLIDER_TEXT_NEUTRAL)],
+        text_color_hot = ui_context.colors[Integer(COLOR_INDEX_SLIDER_TEXT_HOT)],
+        text_color_active = ui_context.colors[Integer(COLOR_INDEX_SLIDER_TEXT_ACTIVE)],
         indicator_color_neutral = ui_context.colors[Integer(COLOR_INDEX_SLIDER_INDICATOR_NEUTRAL)],
         indicator_color_hot = ui_context.colors[Integer(COLOR_INDEX_SLIDER_INDICATOR_HOT)],
         indicator_color_active = ui_context.colors[Integer(COLOR_INDEX_SLIDER_INDICATOR_ACTIVE)],
@@ -528,14 +534,17 @@ function do_widget!(
     if this_widget == user_interaction_state.active_widget
         background_color = background_color_active
         border_color = border_color_active
+        text_color = text_color_active
         indicator_color = indicator_color_active
     elseif this_widget == user_interaction_state.hot_widget
         background_color = background_color_hot
         border_color = border_color_hot
+        text_color = text_color_hot
         indicator_color = indicator_color_hot
     else
         background_color = background_color_neutral
         border_color = border_color_neutral
+        text_color = text_color_neutral
         indicator_color = indicator_color_neutral
     end
 
@@ -543,7 +552,7 @@ function do_widget!(
     bar_offset_j = widget_value[2]
     bar_height = widget_value[3]
     bar_width = widget_value[4]
-    drawable = SliderDrawable(widget_bounding_box, bar_offset_i, bar_offset_j, bar_height, bar_width, background_color, border_color, indicator_color)
+    drawable = SliderDrawable(widget_bounding_box, text, font, content_alignment, content_padding, bar_offset_i, bar_offset_j, bar_height, bar_width, background_color, border_color, text_color, indicator_color)
     push!(ui_context.draw_list, drawable)
 
     return widget_value
