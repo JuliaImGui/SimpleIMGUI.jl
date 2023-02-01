@@ -1,11 +1,11 @@
 abstract type AbstractUIContext end
 
-struct UIContext{T, I1, I2, A, C} <: AbstractUIContext
+struct UIContext{T, I1, I2, C, D} <: AbstractUIContext
     user_interaction_state::UserInteractionState{T}
     user_input_state::UserInputState{I1}
     layout::BoxLayout{I2}
-    image::A
     colors::Vector{C}
+    draw_list::Vector{D}
 end
 
 function do_widget!(
@@ -35,7 +35,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -75,7 +74,7 @@ function do_widget!(
     end
 
     drawable = BoxedTextLine(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color)
-    SD.draw!(image, drawable)
+    push!(ui_context.draw_list, drawable)
 
     return widget_value
 end
@@ -107,7 +106,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -147,7 +145,7 @@ function do_widget!(
     end
 
     drawable = BoxedTextLine(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color)
-    SD.draw!(image, drawable)
+    push!(ui_context.draw_list, drawable)
 
     return widget_value
 end
@@ -183,7 +181,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -227,7 +224,7 @@ function do_widget!(
     end
 
     drawable = CheckBoxDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
-    SD.draw!(image, drawable)
+    push!(ui_context.draw_list, drawable)
 
     return widget_value
 end
@@ -263,7 +260,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -307,7 +303,7 @@ function do_widget!(
     end
 
     drawable = RadioButtonDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
-    SD.draw!(image, drawable)
+    push!(ui_context.draw_list, drawable)
 
     return widget_value
 end
@@ -343,7 +339,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -387,7 +382,7 @@ function do_widget!(
     end
 
     drawable = DropDownDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
-    SD.draw!(image, drawable)
+    push!(ui_context.draw_list, drawable)
 
     return widget_value
 end
@@ -420,7 +415,6 @@ function do_widget!(
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
     characters = ui_context.user_input_state.characters
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -476,7 +470,7 @@ function do_widget!(
     end
 
     drawable = TextBoxDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, show_cursor)
-    SD.draw!(image, drawable)
+    push!(ui_context.draw_list, drawable)
 
     return widget_value
 end
@@ -506,7 +500,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -551,7 +544,7 @@ function do_widget!(
     bar_height = widget_value[3]
     bar_width = widget_value[4]
     drawable = SliderDrawable(widget_bounding_box, bar_offset_i, bar_offset_j, bar_height, bar_width, background_color, border_color, indicator_color)
-    SD.draw!(image, drawable)
+    push!(ui_context.draw_list, drawable)
 
     return widget_value
 end
@@ -577,7 +570,6 @@ function do_widget!(
     user_interaction_state = ui_context.user_interaction_state
     cursor_position = ui_context.user_input_state.cursor.position
     input_button = first(ui_context.user_input_state.mouse_buttons)
-    image = ui_context.image
 
     widget_bounding_box = get_alignment_bounding_box(layout.reference_bounding_box, alignment, padding, widget_height, widget_width)
     layout.reference_bounding_box = widget_bounding_box
@@ -611,7 +603,7 @@ function do_widget!(
     end
 
     drawable = ImageDrawable(widget_bounding_box, content_alignment, content_padding, image_content, border_color)
-    SD.draw!(image, drawable)
+    push!(ui_context.draw_list, drawable)
 
     return widget_value
 end
