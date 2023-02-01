@@ -6,8 +6,18 @@ import SimpleIMGUI as SI
 import FileIO
 import ImageIO
 import ColorTypes
+import FixedPointNumbers as FPN
 
 include("opengl_utils.jl")
+include("colors.jl")
+
+function SD.put_pixel_inbounds!(image, i, j, color::BinaryTransparentColor)
+    if !iszero(ColorTypes.alpha(color.color))
+        @inbounds image[i, j] = color.color
+    end
+
+    return nothing
+end
 
 function update_button(button, action)
     if action == GLFW.PRESS
@@ -26,7 +36,7 @@ function start()
     image_width = Int(video_mode.width)
     window_name = "Example"
 
-    image = zeros(MGL.GLuint, image_height, image_width)
+    image = zeros(ColorTypes.RGBA{FPN.N0f8}, image_height, image_width)
 
     setup_window_hints()
     window = GLFW.CreateWindow(image_width, image_height, window_name, primary_monitor)
@@ -110,7 +120,7 @@ function start()
     slider_value = (0, 0, font_height ÷ 2, 4 * font_width, 0, 0, slider_height, slider_width)
 
     # widget: image
-    sample_image = map(x -> convert(ColorTypes.RGB24, x).color, FileIO.load("mandrill.png"))
+    sample_image = map(x -> BinaryTransparentColor(convert(ColorTypes.RGBA{FPN.N0f8}, x)), FileIO.load("mandrill.png"))
     sample_image_height, sample_image_width = size(sample_image)
     image_widget_height = 5 * font_height
     image_widget_width = 20 * font_width
@@ -134,7 +144,7 @@ function start()
     check_box_value = false
     debug_text_list = String[]
 
-    ui_context = SI.UIContext(user_interaction_state, user_input_state, layout, image, SI.DEFAULT_COLORS)
+    ui_context = SI.UIContext(user_interaction_state, user_input_state, layout, image, COLORS)
 
     i = 0
 
@@ -145,6 +155,9 @@ function start()
 
     frame_compute_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(frame_compute_time_buffer, zero(UInt))
+
+    texture_upload_time_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
+    push!(texture_upload_time_buffer, zero(UInt))
 
     while !GLFW.WindowShouldClose(window)
         if SI.went_down(user_input_state.keyboard_buttons[Int(GLFW.KEY_ESCAPE) + 1])
@@ -157,7 +170,7 @@ function start()
 
         compute_time_start = time_ns()
 
-        SD.draw!(image, SD.Background(), 0x00cccccc)
+        SD.draw!(image, SD.Background(), ui_context.colors[:BACKGROUND])
 
         text = "Press the escape key to quit"
         SI.do_widget!(
@@ -345,6 +358,7 @@ function start()
         push!(debug_text_list, "previous frame number: $(i)")
         push!(debug_text_list, "average total time spent per frame (averaged over previous $(length(frame_time_stamp_buffer)) frames): $(round((last(frame_time_stamp_buffer) - first(frame_time_stamp_buffer)) / (1e6 * length(frame_time_stamp_buffer)), digits = 2)) ms")
         push!(debug_text_list, "average compute time spent per frame (averaged over previous $(length(frame_compute_time_buffer)) frames): $(round(sum(frame_compute_time_buffer) / (1e6 * length(frame_compute_time_buffer)), digits = 2)) ms")
+        push!(debug_text_list, "average texture upload time spent per frame (averaged over previous $(length(texture_upload_time_buffer)) frames): $(round(sum(texture_upload_time_buffer) / (1e6 * length(texture_upload_time_buffer)), digits = 3)) ms")
         push!(debug_text_list, "Monitor video mode: $(GLFW.GetVideoMode(GLFW.GetWindowMonitor(window)))")
         push!(debug_text_list, "cursor: $(user_input_state.cursor)")
         push!(debug_text_list, "mouse_left: $(user_input_state.mouse_buttons[Int(GLFW.MOUSE_BUTTON_LEFT) + 1])")
@@ -380,7 +394,10 @@ function start()
         compute_time_end = time_ns()
         push!(frame_compute_time_buffer, compute_time_end - compute_time_start)
 
+        texture_upload_start_time = time_ns()
         update_back_buffer(image)
+        texture_upload_end_time = time_ns()
+        push!(texture_upload_time_buffer, texture_upload_end_time - texture_upload_start_time)
 
         GLFW.SwapBuffers(window)
 
