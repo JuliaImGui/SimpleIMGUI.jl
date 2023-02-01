@@ -1,11 +1,11 @@
 abstract type AbstractUIContext end
 
-struct UIContext{T, I1, I2, C} <: AbstractUIContext
+struct UIContext{T, I1, I2, C, D} <: AbstractUIContext
     user_interaction_state::UserInteractionState{T}
     user_input_state::UserInputState{I1}
     layout::BoxLayout{I2}
     colors::Vector{C}
-    draw_list::Vector{Any}
+    draw_list::Vector{D}
 end
 
 function do_widget!(
