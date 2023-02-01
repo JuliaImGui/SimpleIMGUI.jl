@@ -2,18 +2,22 @@ import ColorTypes as CT
 import Colors
 import FixedPointNumbers as FPN
 
-const COLORS = Dict{Symbol, CT.RGBA{FPN.N0f8}}()
+struct BinaryTransparentColor{C}
+    color::C
+end
 
-COLORS[:BACKGROUND] = CT.RGBA{FPN.N0f8}((Colors.color_names["lightgray"] ./ 255)...,)
-COLORS[:BORDER] = CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)...,)
-COLORS[:TEXT] = CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)...,)
-# COLORS[:INDICATOR] = CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)...,)
-COLORS[:INDICATOR] = CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)..., 0.5)
+const COLORS = Dict{Symbol, BinaryTransparentColor{CT.RGBA{FPN.N0f8}}}()
+
+COLORS[:BACKGROUND] = BinaryTransparentColor(CT.RGBA{FPN.N0f8}((Colors.color_names["lightgray"] ./ 255)...,))
+COLORS[:BORDER] = BinaryTransparentColor(CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)...,))
+COLORS[:TEXT] = BinaryTransparentColor(CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)...,))
+# COLORS[:INDICATOR] = BinaryTransparentColor(CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)...,))
+COLORS[:INDICATOR] = BinaryTransparentColor(CT.RGBA{FPN.N0f8}((Colors.color_names["black"] ./ 255)..., 0.5))
 
 # Button
-COLORS[:BUTTON_BACKGROUND_NEUTRAL] = CT.RGBA{FPN.N0f8}((Colors.color_names["gray69"] ./ 255)...,)
-COLORS[:BUTTON_BACKGROUND_HOT] = CT.RGBA{FPN.N0f8}((Colors.color_names["gray75"] ./ 255)...,)
-COLORS[:BUTTON_BACKGROUND_ACTIVE] = CT.RGBA{FPN.N0f8}((Colors.color_names["gray75"] ./ 255)...,)
+COLORS[:BUTTON_BACKGROUND_NEUTRAL] = BinaryTransparentColor(CT.RGBA{FPN.N0f8}((Colors.color_names["gray69"] ./ 255)...,))
+COLORS[:BUTTON_BACKGROUND_HOT] = BinaryTransparentColor(CT.RGBA{FPN.N0f8}((Colors.color_names["gray75"] ./ 255)...,))
+COLORS[:BUTTON_BACKGROUND_ACTIVE] = BinaryTransparentColor(CT.RGBA{FPN.N0f8}((Colors.color_names["gray75"] ./ 255)...,))
 
 COLORS[:BUTTON_BORDER_NEUTRAL] = COLORS[:BORDER]
 COLORS[:BUTTON_BORDER_HOT] = COLORS[:BORDER]
@@ -24,9 +28,9 @@ COLORS[:BUTTON_TEXT_HOT] = COLORS[:TEXT]
 COLORS[:BUTTON_TEXT_ACTIVE] = COLORS[:TEXT]
 
 # TextBox
-COLORS[:TEXT_BOX_BACKGROUND_NEUTRAL] = CT.RGBA{FPN.N0f8}((Colors.color_names["white"] ./ 255)...,)
-COLORS[:TEXT_BOX_BACKGROUND_HOT] = CT.RGBA{FPN.N0f8}((Colors.color_names["white"] ./ 255)...,)
-COLORS[:TEXT_BOX_BACKGROUND_ACTIVE] = CT.RGBA{FPN.N0f8}((Colors.color_names["white"] ./ 255)...,)
+COLORS[:TEXT_BOX_BACKGROUND_NEUTRAL] = BinaryTransparentColor(CT.RGBA{FPN.N0f8}((Colors.color_names["white"] ./ 255)...,))
+COLORS[:TEXT_BOX_BACKGROUND_HOT] = BinaryTransparentColor(CT.RGBA{FPN.N0f8}((Colors.color_names["white"] ./ 255)...,))
+COLORS[:TEXT_BOX_BACKGROUND_ACTIVE] = BinaryTransparentColor(CT.RGBA{FPN.N0f8}((Colors.color_names["white"] ./ 255)...,))
 
 COLORS[:TEXT_BOX_BORDER_NEUTRAL] = COLORS[:BORDER]
 COLORS[:TEXT_BOX_BORDER_HOT] = COLORS[:BORDER]
