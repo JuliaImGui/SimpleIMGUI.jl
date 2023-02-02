@@ -486,6 +486,8 @@ function do_widget!(
         padding = SD.get_height(font) ÷ 4,
         widget_height = SD.get_height(font),
         widget_width = 8 * SD.get_width(font),
+        bar_height = widget_height ÷ 2,
+        bar_width = widget_width ÷ 2,
         content_alignment = CENTER,
         content_padding = 0,
         background_color_neutral = ui_context.colors[Integer(COLOR_INDEX_SLIDER_BACKGROUND_NEUTRAL)],
@@ -525,6 +527,8 @@ function do_widget!(
         SD.get_j_min(widget_bounding_box),
         SD.get_i_max(widget_bounding_box),
         SD.get_j_max(widget_bounding_box),
+        bar_height,
+        bar_width,
     )
 
     user_interaction_state.hot_widget = hot_widget
@@ -550,8 +554,6 @@ function do_widget!(
 
     bar_offset_i = widget_value[1]
     bar_offset_j = widget_value[2]
-    bar_height = widget_value[3]
-    bar_width = widget_value[4]
     drawable = SliderDrawable(widget_bounding_box, text, font, content_alignment, content_padding, bar_offset_i, bar_offset_j, bar_height, bar_width, background_color, border_color, text_color, indicator_color)
     push!(ui_context.draw_list, drawable)
 
