@@ -150,6 +150,9 @@ function start()
 
     sliding_window_size = 30
 
+    max_frames_per_second = 60
+    min_seconds_per_frame = 1 / max_frames_per_second
+
     frame_time_stamp_buffer = DS.CircularBuffer{typeof(time_ns())}(sliding_window_size)
     push!(frame_time_stamp_buffer, time_ns())
 
@@ -398,6 +401,8 @@ function start()
         GLFW.PollEvents()
 
         i = i + 1
+
+        sleep(max(0.0, min_seconds_per_frame - (time_ns() - last(frame_time_stamp_buffer)) / 1e9))
 
         push!(frame_time_stamp_buffer, time_ns())
     end
