@@ -32,7 +32,7 @@ julia --project=. example.jl
 
 This will open a window and you can interact with the widgets present in it. Here is a screenshot
 
-<img src="https://user-images.githubusercontent.com/32610387/213902028-ede69c75-f36c-4df2-9d8b-4db107aabe13.png">
+<img src="https://user-images.githubusercontent.com/32610387/216698734-400e1dcb-ff51-4a53-b6e3-87d5f7b60570.png">
 
 # References:
 
