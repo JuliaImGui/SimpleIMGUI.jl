@@ -48,7 +48,7 @@ end
 
 struct RadioButtonDrawable{I <: Integer, S, F, A, C}
     bounding_box::SD.Rectangle{I}
-    text::S
+    item_list::S
     font::F
     content_alignment::A
     content_padding::I
@@ -56,7 +56,7 @@ struct RadioButtonDrawable{I <: Integer, S, F, A, C}
     border_color::C
     text_color::C
     indicator_color::C
-    value::Bool
+    value::I
 end
 
 struct DropDownIndicator{I <: Integer}
@@ -254,7 +254,7 @@ function SD.draw!(image, drawable::RadioButtonDrawable)
     I = typeof(drawable.bounding_box.height)
 
     bounding_box = drawable.bounding_box
-    text = drawable.text
+    item_list = drawable.item_list
     font = drawable.font
     content_alignment = drawable.content_alignment
     content_padding = drawable.content_padding
@@ -274,13 +274,24 @@ function SD.draw!(image, drawable::RadioButtonDrawable)
 
     SD.draw!(image, SD.FilledRectangle(bounding_box.position, bounding_box.height, bounding_box.width), background_color)
 
-    num_printable_characters = get_num_printable_characters(text)
-    i_offset, j_offset = get_alignment_offset(bounding_box.height, bounding_box.width, content_alignment, content_padding, SD.get_height(font), SD.get_width(font) * (num_printable_characters + convert(I, 2)))
-    SD.draw!(image_view, SD.TextLine(SD.move(SD.Point(one(I), one(I)), i_offset, j_offset + SD.get_width(font) * convert(I, 2)), text, font), text_color)
-
     x = min(SD.get_height(font), convert(I, 2) * SD.get_width(font))
     x_div_8 = x ÷ convert(I, 8)
-    SD.draw!(image_view, RadioButtonIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), value), indicator_color)
+
+    content_height = length(item_list) * SD.get_height(font)
+    content_width = (maximum(get_num_printable_characters, item_list) + 2) * SD.get_width(font)
+
+    i_offset_full, j_offset_full = get_alignment_offset(bounding_box.height, bounding_box.width, content_alignment, content_padding, content_height, content_width)
+
+    for (k, text) in enumerate(item_list)
+        num_printable_characters = get_num_printable_characters(text)
+
+        i_offset = i_offset_full + (k - one(k)) * SD.get_height(font)
+        j_offset = j_offset_full
+
+        SD.draw!(image_view, SD.TextLine(SD.move(SD.Point(one(I), one(I)), i_offset, j_offset + SD.get_width(font) * convert(I, 2)), text, font), text_color)
+
+        SD.draw!(image_view, RadioButtonIndicator(SD.move(SD.Point(one(I), one(I)), i_offset + x_div_8, j_offset + x_div_8), (convert(I, 3) * x) ÷ convert(I, 4), k == value), indicator_color)
+    end
 
     SD.draw!(image, bounding_box, border_color)
 

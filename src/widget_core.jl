@@ -160,7 +160,27 @@ end
 ##### RadioButton
 #####
 
-get_widget_interaction(widget_type::RadioButton, args...; kwargs...) = get_widget_interaction(CHECK_BOX, args...; kwargs...)
+function get_widget_interaction(widget_type::RadioButton, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max, num_items)
+    mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
+    mouse_went_down = went_down(ended_down, num_transitions)
+    mouse_went_up = went_up(ended_down, num_transitions)
+
+    hot_widget = try_set_hot_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget)
+
+    active_widget = try_set_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_over_widget && mouse_went_down)
+
+    widget_height = i_max - i_min + one(i_min)
+    if (hot_widget == this_widget) && (active_widget == this_widget) && mouse_over_widget && mouse_went_up
+        widget_value = ((i_mouse - i_min) * num_items) ÷ widget_height + one(num_items)
+    end
+
+    active_widget = try_reset_active_widget(hot_widget, active_widget, null_widget, this_widget, mouse_went_up)
+
+    hot_widget = try_reset_hot_widget(hot_widget, active_widget, null_widget, this_widget, !mouse_over_widget)
+
+    return hot_widget, active_widget, null_widget, widget_value
+end
+
 
 #####
 ##### DropDown

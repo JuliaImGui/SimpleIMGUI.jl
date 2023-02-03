@@ -234,12 +234,12 @@ function do_widget!(
         ui_context::AbstractUIContext,
         this_widget,
         widget_value,
-        text;
+        item_list;
         font = SD.TERMINUS_BOLD_24_12,
         alignment = DOWN2_LEFT1,
         padding = SD.get_height(font) ÷ 4,
-        widget_height = SD.get_height(font),
-        widget_width = (get_num_printable_characters(text) + 2) * SD.get_width(font),
+        widget_height = length(item_list) * SD.get_height(font),
+        widget_width = (maximum(get_num_printable_characters, item_list) + 2) * SD.get_width(font),
         content_alignment = UP1_LEFT1,
         content_padding = 0,
         background_color_neutral = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_BACKGROUND_NEUTRAL)],
@@ -279,6 +279,7 @@ function do_widget!(
         SD.get_j_min(widget_bounding_box),
         SD.get_i_max(widget_bounding_box),
         SD.get_j_max(widget_bounding_box),
+        length(item_list),
     )
 
     user_interaction_state.hot_widget = hot_widget
@@ -302,7 +303,7 @@ function do_widget!(
         indicator_color = indicator_color_neutral
     end
 
-    drawable = RadioButtonDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
+    drawable = RadioButtonDrawable(widget_bounding_box, item_list, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
     push!(ui_context.draw_list, drawable)
 
     return widget_value
