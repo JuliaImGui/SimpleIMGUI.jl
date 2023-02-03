@@ -12,8 +12,8 @@ const TEXT = Text()
 struct CheckBox <: AbstractWidgetType end
 const CHECK_BOX = CheckBox()
 
-struct RadioButton <: AbstractWidgetType end
-const RADIO_BUTTON = RadioButton()
+struct RadioButtonList <: AbstractWidgetType end
+const RADIO_BUTTON = RadioButtonList()
 
 struct DropDown <: AbstractWidgetType end
 const DROP_DOWN = DropDown()
@@ -157,10 +157,10 @@ function get_widget_interaction(widget_type::CheckBox, hot_widget, active_widget
 end
 
 #####
-##### RadioButton
+##### RadioButtonList
 #####
 
-function get_widget_interaction(widget_type::RadioButton, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max, num_items)
+function get_widget_interaction(widget_type::RadioButtonList, hot_widget, active_widget, null_widget, this_widget, widget_value, i_mouse, j_mouse, ended_down, num_transitions, i_min, j_min, i_max, j_max, num_items)
     mouse_over_widget = (i_min <= i_mouse <= i_max) && (j_min <= j_mouse <= j_max)
     mouse_went_down = went_down(ended_down, num_transitions)
     mouse_went_up = went_up(ended_down, num_transitions)

@@ -46,7 +46,7 @@ struct RadioButtonIndicator{I <: Integer}
     value::Bool
 end
 
-struct RadioButtonDrawable{I <: Integer, S, F, A, C}
+struct RadioButtonListDrawable{I <: Integer, S, F, A, C}
     bounding_box::SD.Rectangle{I}
     item_list::S
     font::F
@@ -250,7 +250,7 @@ function SD.draw!(image, shape::RadioButtonIndicator, color)
     return nothing
 end
 
-function SD.draw!(image, drawable::RadioButtonDrawable)
+function SD.draw!(image, drawable::RadioButtonListDrawable)
     I = typeof(drawable.bounding_box.height)
 
     bounding_box = drawable.bounding_box

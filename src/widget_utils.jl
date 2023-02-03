@@ -230,7 +230,7 @@ function do_widget!(
 end
 
 function do_widget!(
-        widget_type::RadioButton,
+        widget_type::RadioButtonList,
         ui_context::AbstractUIContext,
         this_widget,
         widget_value,
@@ -303,7 +303,7 @@ function do_widget!(
         indicator_color = indicator_color_neutral
     end
 
-    drawable = RadioButtonDrawable(widget_bounding_box, item_list, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
+    drawable = RadioButtonListDrawable(widget_bounding_box, item_list, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
     push!(ui_context.draw_list, drawable)
 
     return widget_value

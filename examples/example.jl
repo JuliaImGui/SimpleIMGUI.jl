@@ -284,7 +284,7 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            "RadioButton";
+            "RadioButtonList";
             widget_width = 12 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
