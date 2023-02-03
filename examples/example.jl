@@ -186,7 +186,7 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             "Button";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -208,7 +208,7 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             "Slider";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -231,7 +231,7 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             "TextBox";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -250,7 +250,7 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             "Image";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -284,28 +284,52 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            "RadioButton";
-            widget_width = 12 * font_width,
+            "RadioButtonList";
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
         radio_button_item_list = ("item a", "item b", "item c")
-        max_num_chars = length(first(radio_button_item_list))
-        for item in radio_button_item_list
-            max_num_chars = max(max_num_chars, length(item))
-        end
-        for (j, item) in enumerate(radio_button_item_list)
-            if SI.do_widget!(
-                SI.RADIO_BUTTON,
+        radio_button_value = SI.do_widget!(
+            SI.RADIO_BUTTON_LIST,
+            ui_context,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            radio_button_value,
+            radio_button_item_list;
+            alignment = SI.UP1_RIGHT2,
+        )
+        temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
+
+        layout.reference_bounding_box = temp_bounding_box
+        SI.do_widget!(
+            SI.TEXT,
+            ui_context,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            "DropDown";
+            widget_width = 16 * font_width,
+        )
+        temp_bounding_box = layout.reference_bounding_box
+
+        drop_down_item_list = ("item 1", "item 2", "item 3")
+        drop_down_value = SI.do_widget!(
+            SI.DROP_DOWN,
+            ui_context,
+            SI.WidgetID(@__FILE__, @__LINE__, 1),
+            drop_down_value,
+            drop_down_item_list[drop_down_selected_item];
+            alignment = SI.UP1_RIGHT2,
+            widget_width = (maximum(SI.get_num_printable_characters, drop_down_item_list) + 2) * font_width,
+        )
+        temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
+
+        if drop_down_value
+            drop_down_selected_item = SI.do_widget!(
+                SI.RADIO_BUTTON_LIST,
                 ui_context,
-                SI.WidgetID(@__FILE__, @__LINE__, j),
-                radio_button_value == j,
-                "$(item)";
-                alignment = SI.UP1_RIGHT2,
-                widget_width = (max_num_chars + 2) * font_width,
+                SI.WidgetID(@__FILE__, @__LINE__, 1),
+                drop_down_selected_item,
+                drop_down_item_list;
             )
-                radio_button_value = j
-            end
             temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
         end
 
@@ -314,51 +338,8 @@ function start()
             SI.TEXT,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
-            "DropDown";
-            widget_width = 12 * font_width,
-        )
-        temp_bounding_box = layout.reference_bounding_box
-
-        drop_down_item_list = ("item 1", "item 2", "item 3")
-        max_num_chars = length(first(drop_down_item_list))
-        for item in drop_down_item_list
-            max_num_chars = max(max_num_chars, length(item))
-        end
-        drop_down_value = SI.do_widget!(
-            SI.DROP_DOWN,
-            ui_context,
-            SI.WidgetID(@__FILE__, @__LINE__, 1),
-            drop_down_value,
-            drop_down_item_list[drop_down_selected_item];
-            alignment = SI.UP1_RIGHT2,
-            widget_width = (max_num_chars + 2) * font_width,
-        )
-        temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
-
-        if drop_down_value
-            for (j, item) in enumerate(drop_down_item_list)
-                if SI.do_widget!(
-                    SI.RADIO_BUTTON,
-                    ui_context,
-                    SI.WidgetID(@__FILE__, @__LINE__, j),
-                    drop_down_selected_item == j,
-                    "$(item)";
-                    padding = 0,
-                    widget_width = (max_num_chars + 2) * font_width,
-                )
-                    drop_down_selected_item = j
-                end
-                temp_bounding_box = SI.get_enclosing_bounding_box(temp_bounding_box, layout.reference_bounding_box)
-            end
-        end
-
-        layout.reference_bounding_box = temp_bounding_box
-        SI.do_widget!(
-            SI.TEXT,
-            ui_context,
-            SI.WidgetID(@__FILE__, @__LINE__, 1),
             "CheckBox";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
         push!(debug_text_list, "previous frame number: $(i)")

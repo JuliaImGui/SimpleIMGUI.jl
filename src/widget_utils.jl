@@ -230,30 +230,30 @@ function do_widget!(
 end
 
 function do_widget!(
-        widget_type::RadioButton,
+        widget_type::RadioButtonList,
         ui_context::AbstractUIContext,
         this_widget,
         widget_value,
-        text;
+        item_list;
         font = SD.TERMINUS_BOLD_24_12,
         alignment = DOWN2_LEFT1,
         padding = SD.get_height(font) ÷ 4,
-        widget_height = SD.get_height(font),
-        widget_width = (get_num_printable_characters(text) + 2) * SD.get_width(font),
+        widget_height = length(item_list) * SD.get_height(font),
+        widget_width = (maximum(get_num_printable_characters, item_list) + 2) * SD.get_width(font),
         content_alignment = UP1_LEFT1,
         content_padding = 0,
-        background_color_neutral = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_BACKGROUND_NEUTRAL)],
-        background_color_hot = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_BACKGROUND_HOT)],
-        background_color_active = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_BACKGROUND_ACTIVE)],
-        border_color_neutral = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_BORDER_NEUTRAL)],
-        border_color_hot = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_BORDER_HOT)],
-        border_color_active = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_BORDER_ACTIVE)],
-        text_color_neutral = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_TEXT_NEUTRAL)],
-        text_color_hot = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_TEXT_HOT)],
-        text_color_active = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_TEXT_ACTIVE)],
-        indicator_color_neutral = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_INDICATOR_NEUTRAL)],
-        indicator_color_hot = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_INDICATOR_HOT)],
-        indicator_color_active = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_INDICATOR_ACTIVE)],
+        background_color_neutral = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_BACKGROUND_NEUTRAL)],
+        background_color_hot = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_BACKGROUND_HOT)],
+        background_color_active = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_BACKGROUND_ACTIVE)],
+        border_color_neutral = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_BORDER_NEUTRAL)],
+        border_color_hot = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_BORDER_HOT)],
+        border_color_active = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_BORDER_ACTIVE)],
+        text_color_neutral = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_TEXT_NEUTRAL)],
+        text_color_hot = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_TEXT_HOT)],
+        text_color_active = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_TEXT_ACTIVE)],
+        indicator_color_neutral = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_INDICATOR_NEUTRAL)],
+        indicator_color_hot = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_INDICATOR_HOT)],
+        indicator_color_active = ui_context.colors[Integer(COLOR_INDEX_RADIO_BUTTON_LIST_INDICATOR_ACTIVE)],
     )
 
     layout = ui_context.layout
@@ -279,6 +279,7 @@ function do_widget!(
         SD.get_j_min(widget_bounding_box),
         SD.get_i_max(widget_bounding_box),
         SD.get_j_max(widget_bounding_box),
+        length(item_list),
     )
 
     user_interaction_state.hot_widget = hot_widget
@@ -302,7 +303,7 @@ function do_widget!(
         indicator_color = indicator_color_neutral
     end
 
-    drawable = RadioButtonDrawable(widget_bounding_box, text, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
+    drawable = RadioButtonListDrawable(widget_bounding_box, item_list, font, content_alignment, content_padding, background_color, border_color, text_color, indicator_color, widget_value)
     push!(ui_context.draw_list, drawable)
 
     return widget_value
