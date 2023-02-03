@@ -13,7 +13,7 @@ struct CheckBox <: AbstractWidgetType end
 const CHECK_BOX = CheckBox()
 
 struct RadioButtonList <: AbstractWidgetType end
-const RADIO_BUTTON = RadioButtonList()
+const RADIO_BUTTON_LIST = RadioButtonList()
 
 struct DropDown <: AbstractWidgetType end
 const DROP_DOWN = DropDown()

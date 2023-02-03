@@ -291,7 +291,7 @@ function start()
 
         radio_button_item_list = ("item a", "item b", "item c")
         radio_button_value = SI.do_widget!(
-            SI.RADIO_BUTTON,
+            SI.RADIO_BUTTON_LIST,
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             radio_button_value,
@@ -324,7 +324,7 @@ function start()
 
         if drop_down_value
             drop_down_selected_item = SI.do_widget!(
-                SI.RADIO_BUTTON,
+                SI.RADIO_BUTTON_LIST,
                 ui_context,
                 SI.WidgetID(@__FILE__, @__LINE__, 1),
                 drop_down_selected_item,
