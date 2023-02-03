@@ -186,7 +186,7 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             "Button";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -208,7 +208,7 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             "Slider";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -231,7 +231,7 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             "TextBox";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -250,7 +250,7 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             "Image";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -285,7 +285,7 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             "RadioButtonList";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -306,7 +306,7 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             "DropDown";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
 
@@ -339,7 +339,7 @@ function start()
             ui_context,
             SI.WidgetID(@__FILE__, @__LINE__, 1),
             "CheckBox";
-            widget_width = 12 * font_width,
+            widget_width = 16 * font_width,
         )
         temp_bounding_box = layout.reference_bounding_box
         push!(debug_text_list, "previous frame number: $(i)")
