@@ -2,6 +2,8 @@
 
 Simple Immediate-Mode Graphical User Interface (IMGUI) library in Julia.
 
+This package is not documented yet. However, the following video (slightly outdated) should help with the conceptual understanding of the immediate mode implementation in this package: https://www.youtube.com/watch?v=-z8_F9ozERc
+
 # Getting Started
 
 To test the example
